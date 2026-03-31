@@ -22,6 +22,8 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
     setError(null)
     setUploading(true)
 
+    console.log('📸 Fil valgt:', file.name, file.type, file.size)
+
     // Vis forhåndsvisning
     const reader = new FileReader()
     reader.onloadend = () => {
@@ -38,8 +40,10 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
     setUploading(false)
 
     if (result.success && result.imageUrl) {
+      console.log('✅ Bilde lastet opp:', result.imageUrl)
       onImageUploaded(result.imageUrl)
     } else {
+      console.error('❌ Opplasting feilet:', result.error)
       setError(result.error || 'Opplasting feilet')
       setPreview(null)
     }
@@ -50,12 +54,20 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       <label className="form-label">Bilde</label>
       
       {preview && (
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <img 
             src={preview} 
             alt="Forhåndsvisning" 
             className="w-full h-48 object-cover rounded-lg"
           />
+          {uploading && (
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
+              <div className="text-white flex items-center gap-2">
+                <span className="spinner"></span>
+                <span>Laster opp...</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -63,7 +75,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/jpg"
+        accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif"
         onChange={handleFileChange}
         className="hidden"
       />
@@ -72,7 +84,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       <input
         ref={cameraInputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/jpg"
+        accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif"
         capture="environment"
         onChange={handleFileChange}
         className="hidden"
@@ -85,16 +97,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
           disabled={uploading}
           className="btn btn-secondary"
         >
-          {uploading ? (
-            <span className="flex items-center gap-2">
-              <span className="spinner"></span>
-              Laster opp...
-            </span>
-          ) : (
-            <>
-              🖼️ {preview ? 'Endre fra galleri' : 'Velg fra galleri'}
-            </>
-          )}
+          🖼️ {preview ? 'Endre fra galleri' : 'Velg fra galleri'}
         </button>
 
         <button
@@ -103,16 +106,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
           disabled={uploading}
           className="btn btn-secondary"
         >
-          {uploading ? (
-            <span className="flex items-center gap-2">
-              <span className="spinner"></span>
-              Laster opp...
-            </span>
-          ) : (
-            <>
-              📷 Ta bilde
-            </>
-          )}
+          📷 Ta bilde
         </button>
       </div>
 
@@ -123,7 +117,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       )}
 
       <small className="text-gray-500 mt-1 block">
-        Maks 5MB. Støtter JPEG, PNG og WebP.
+        Maks 5MB. Støtter JPEG, PNG, WebP og HEIC (iPhone).
       </small>
     </div>
   )
