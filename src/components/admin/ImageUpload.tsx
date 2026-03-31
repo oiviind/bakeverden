@@ -13,7 +13,6 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
   const [preview, setPreview] = useState<string | null>(currentImageUrl || null)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const cameraInputRef = useRef<HTMLInputElement>(null)
 
   async function convertHeicToJpeg(file: File): Promise<Blob> {
     console.log('🔄 Konverterer HEIC til JPEG...')
@@ -60,9 +59,9 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
         fileName = originalFile.name.replace(/\.(heic|heif)$/i, '.jpg')
       }
 
-      // Valider størrelse - ØKT TIL 20MB
+      // Valider størrelse - 20MB
       if (blob.size > 20 * 1024 * 1024) {
-        throw new Error('Bildet må være mindre enn 10MB')
+        throw new Error('Bildet må være mindre enn 20MB')
       }
 
       // Vis forhåndsvisning
@@ -135,6 +134,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
         </div>
       )}
 
+      {/* Input for bilder (både kamera og galleri) */}
       <input
         ref={fileInputRef}
         type="file"
@@ -143,34 +143,14 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
         className="hidden"
       />
 
-      <input
-        ref={cameraInputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        onChange={handleFileChange}
-        className="hidden"
-      />
-
-      <div className="flex gap-2 flex-wrap">
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={uploading}
-          className="btn btn-secondary"
-        >
-          {uploading ? '⏳ Laster opp...' : '🖼️ Velg fra galleri'}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => cameraInputRef.current?.click()}
-          disabled={uploading}
-          className="btn btn-secondary"
-        >
-          {uploading ? '⏳ Laster opp...' : '📷 Ta bilde'}
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={() => fileInputRef.current?.click()}
+        disabled={uploading}
+        className="btn btn-secondary"
+      >
+        {uploading ? '⏳ Laster opp...' : (preview ? '🔄 Endre bilde' : '📷 Velg bilde')}
+      </button>
 
       {error && (
         <div className="alert alert-error mt-2">
@@ -179,7 +159,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       )}
 
       <small className="text-gray-500 mt-1 block">
-        Maks 10MB. iPhone HEIC-bilder konverteres automatisk.
+        Maks 20MB. iPhone HEIC-bilder konverteres automatisk.
       </small>
     </div>
   )
