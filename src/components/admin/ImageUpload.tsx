@@ -24,28 +24,38 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
 
     console.log('📸 Fil valgt:', file.name, file.type, file.size)
 
-    // Vis forhåndsvisning
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setPreview(reader.result as string)
-    }
-    reader.readAsDataURL(file)
+    try {
+      // Vis forhåndsvisning
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
 
-    // Last opp
-    const formData = new FormData()
-    formData.append('file', file)
+      // Last opp
+      const formData = new FormData()
+      formData.append('file', file)
 
-    const result = await uploadImage(formData)
+      console.log('🚀 Starter opplasting...')
+      const result = await uploadImage(formData)
+      console.log('📦 Resultat mottatt:', result)
 
-    setUploading(false)
-
-    if (result.success && result.imageUrl) {
-      console.log('✅ Bilde lastet opp:', result.imageUrl)
-      onImageUploaded(result.imageUrl)
-    } else {
-      console.error('❌ Opplasting feilet:', result.error)
-      setError(result.error || 'Opplasting feilet')
+      if (result.success && result.imageUrl) {
+        console.log('✅ Bilde lastet opp:', result.imageUrl)
+        onImageUploaded(result.imageUrl)
+        setError(null)
+      } else {
+        console.error('❌ Opplasting feilet:', result.error)
+        setError(result.error || 'Opplasting feilet')
+        setPreview(null)
+      }
+    } catch (err) {
+      console.error('❌ Uventet feil:', err)
+      setError('En uventet feil oppstod')
       setPreview(null)
+    } finally {
+      setUploading(false)
+      console.log('🏁 Opplasting fullført, uploading satt til false')
     }
   }
 
