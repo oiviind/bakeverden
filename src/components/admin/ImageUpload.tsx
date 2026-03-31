@@ -13,6 +13,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
   const [preview, setPreview] = useState<string | null>(currentImageUrl || null)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const cameraInputRef = useRef<HTMLInputElement>(null)
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -58,8 +59,18 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
         </div>
       )}
 
+      {/* Input for bildebibliotek (uten capture) */}
       <input
         ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/jpg"
+        onChange={handleFileChange}
+        className="hidden"
+      />
+
+      {/* Input for kamera (med capture) */}
+      <input
+        ref={cameraInputRef}
         type="file"
         accept="image/jpeg,image/png,image/webp,image/jpg"
         capture="environment"
@@ -67,7 +78,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
         className="hidden"
       />
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
@@ -81,7 +92,25 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
             </span>
           ) : (
             <>
-              📷 {preview ? 'Endre bilde' : 'Velg bilde'}
+              🖼️ {preview ? 'Endre fra galleri' : 'Velg fra galleri'}
+            </>
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => cameraInputRef.current?.click()}
+          disabled={uploading}
+          className="btn btn-secondary"
+        >
+          {uploading ? (
+            <span className="flex items-center gap-2">
+              <span className="spinner"></span>
+              Laster opp...
+            </span>
+          ) : (
+            <>
+              📷 Ta bilde
             </>
           )}
         </button>
