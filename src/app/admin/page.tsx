@@ -59,14 +59,14 @@ export default async function AdminPage() {
   <div className="container">
     <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
       <h1 className="text-xl sm:text-2xl font-bold text-pink-600">
-        👨‍🍳 Admin - Bestillinger
+        ⚙️ Oversikt over bestillinger
       </h1>
       <div className="flex gap-4">
         <Link 
           href="/admin/batches" 
           className="text-blue-500 hover:underline text-sm sm:text-base"
         >
-          Administrer kaker
+          + Legg til kaker
         </Link>
         <Link 
           href="/" 

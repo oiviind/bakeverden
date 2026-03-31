@@ -7,13 +7,6 @@ export default async function Home() {
   const batches = await getAvailableBatches()
   
   return (
-    <div>
-      <header className="header">
-        <div className="container">
-          <h1 className="header-title">🧁 Kjerstis Bakeverden</h1>
-        </div>
-      </header>
-
       <main className="container">
         <section className="mb-8">
           <h2 className="text-3xl font-bold mb-2">Julebaksten 2026</h2>
@@ -26,7 +19,7 @@ export default async function Home() {
           <div className="card card-content text-center">
             <p className="text-gray-500">Ingen kaker tilgjengelig akkurat nå.</p>
             <p className="text-sm text-gray-400 mt-2">
-              Sjekk tilbake senere eller følg oss på sosiale medier!
+              Sjekk tilbake senere eller følg meg på sosiale medier!
             </p>
           </div>
         ) : (
@@ -37,6 +30,5 @@ export default async function Home() {
           </div>
         )}
       </main>
-    </div>
   )
 }

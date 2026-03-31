@@ -37,7 +37,7 @@ export default async function AdminBatchesPage() {
               👨‍🍳 Admin - Kaker
             </h1>
             <Link href="/admin" className="text-blue-500 hover:underline">
-              ← Bestillinger
+              ← Oversikt over bestillinger
             </Link>
           </div>
         </div>
