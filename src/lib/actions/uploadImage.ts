@@ -8,59 +8,55 @@ interface UploadImageResult {
   error?: string
 }
 
-export async function uploadImage(formData: FormData): Promise<UploadImageResult> {
+interface UploadImageParams {
+  base64Data: string
+  fileName: string
+  mimeType: string
+}
+
+export async function uploadImage(params: UploadImageParams): Promise<UploadImageResult> {
+  const { base64Data, fileName, mimeType } = params
   const supabase = createClient()
   
-  const file = formData.get('file') as File
+  console.log('📤 Mottar fil:', fileName, mimeType, 'size:', base64Data.length)
+
+  // Valider filtype
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
   
-  if (!file || file.size === 0) {
+  if (!allowedTypes.includes(mimeType.toLowerCase())) {
+    console.error('❌ Ugyldig filtype:', mimeType)
     return {
       success: false,
-      error: 'Ingen fil valgt'
-    }
-  }
-
-  console.log('📤 Mottar fil:', file.name, file.type, file.size)
-
-  // Valider filtype - HEIC konverteres på klientsiden
-  const allowedTypes = [
-    'image/jpeg',
-    'image/jpg', 
-    'image/png', 
-    'image/webp'
-  ]
-  
-  if (!allowedTypes.includes(file.type.toLowerCase())) {
-    console.error('❌ Ugyldig filtype:', file.type)
-    return {
-      success: false,
-      error: 'Kun JPEG, PNG og WebP er tillatt (HEIC konverteres automatisk)'
-    }
-  }
-
-  // Valider filstørrelse (maks 5MB)
-  if (file.size > 5 * 1024 * 1024) {
-    return {
-      success: false,
-      error: 'Bildet må være mindre enn 5MB'
+      error: 'Kun JPEG, PNG og WebP er tillatt'
     }
   }
 
   try {
+    // Konverter base64 til Buffer
+    const buffer = Buffer.from(base64Data, 'base64')
+    
+    // Valider størrelse (maks 5MB)
+    if (buffer.length > 5 * 1024 * 1024) {
+      return {
+        success: false,
+        error: 'Bildet må være mindre enn 5MB'
+      }
+    }
+
     // Generer unikt filnavn
-    const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg'
-    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
-    const filePath = `batches/${fileName}`
+    const fileExt = fileName.split('.').pop()?.toLowerCase() || 'jpg'
+    const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+    const filePath = `batches/${uniqueFileName}`
 
     console.log('📂 Laster opp til:', filePath)
 
     // Last opp til Supabase Storage
     const { data, error: uploadError } = await supabase.storage
       .from('product-images')
-      .upload(filePath, file, {
+      .upload(filePath, buffer, {
         cacheControl: '3600',
         upsert: false,
-        contentType: file.type
+        contentType: mimeType
       })
 
     if (uploadError) {

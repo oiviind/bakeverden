@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react'
 import { uploadImage } from '@/lib/actions/uploadImage'
-import heic2any from 'heic2any'
 
 interface ImageUploadProps {
   onImageUploaded: (url: string) => void
@@ -16,6 +15,27 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
 
+  async function convertHeicToJpeg(file: File): Promise<Blob> {
+    console.log('🔄 Konverterer HEIC til JPEG...')
+    
+    try {
+      const heic2any = (await import('heic2any')).default
+      
+      const convertedBlob = await heic2any({
+        blob: file,
+        toType: 'image/jpeg',
+        quality: 0.9
+      })
+      
+      const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob
+      console.log('✅ HEIC konvertert til JPEG')
+      return blob
+    } catch (convertError) {
+      console.error('❌ HEIC konverteringsfeil:', convertError)
+      throw new Error('Kunne ikke konvertere HEIC-bilde. Prøv å ta et nytt bilde.')
+    }
+  }
+
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const originalFile = e.target.files?.[0]
     if (!originalFile) return
@@ -26,38 +46,23 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
     console.log('📸 Fil valgt:', originalFile.name, originalFile.type, originalFile.size)
 
     try {
-      let file = originalFile
+      let blob: Blob = originalFile
+      let fileName = originalFile.name
 
-      // Konverter HEIC/HEIF til JPEG
-      if (originalFile.type === 'image/heic' || 
-          originalFile.type === 'image/heif' ||
-          originalFile.name.toLowerCase().endsWith('.heic') ||
-          originalFile.name.toLowerCase().endsWith('.heif')) {
-        
-        console.log('🔄 Konverterer HEIC til JPEG...')
-        
-        try {
-          const convertedBlob = await heic2any({
-            blob: originalFile,
-            toType: 'image/jpeg',
-            quality: 0.9
-          })
-          
-          // heic2any kan returnere array eller enkelt Blob
-          const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob
-          
-          // Lag ny File fra Blob
-          file = new File(
-            [blob], 
-            originalFile.name.replace(/\.(heic|heif)$/i, '.jpg'),
-            { type: 'image/jpeg' }
-          )
-          
-          console.log('✅ HEIC konvertert til JPEG:', file.name, file.size)
-        } catch (convertError) {
-          console.error('❌ HEIC konverteringsfeil:', convertError)
-          throw new Error('Kunne ikke konvertere HEIC-bilde. Prøv å velge et JPEG/PNG-bilde.')
-        }
+      // Sjekk om det er HEIC/HEIF
+      const isHeic = originalFile.type === 'image/heic' || 
+                     originalFile.type === 'image/heif' ||
+                     originalFile.name.toLowerCase().endsWith('.heic') ||
+                     originalFile.name.toLowerCase().endsWith('.heif')
+
+      if (isHeic) {
+        blob = await convertHeicToJpeg(originalFile)
+        fileName = originalFile.name.replace(/\.(heic|heif)$/i, '.jpg')
+      }
+
+      // Valider størrelse
+      if (blob.size > 5 * 1024 * 1024) {
+        throw new Error('Bildet må være mindre enn 5MB')
       }
 
       // Vis forhåndsvisning
@@ -65,14 +70,28 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       reader.onloadend = () => {
         setPreview(reader.result as string)
       }
-      reader.readAsDataURL(file)
+      reader.readAsDataURL(blob)
 
-      // Last opp
-      const formData = new FormData()
-      formData.append('file', file)
+      // Konverter til base64 for opplasting
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          const result = reader.result as string
+          // Fjern "data:image/jpeg;base64," prefix
+          const base64Data = result.split(',')[1]
+          resolve(base64Data)
+        }
+        reader.onerror = reject
+        reader.readAsDataURL(blob)
+      })
 
       console.log('🚀 Starter opplasting...')
-      const result = await uploadImage(formData)
+      const result = await uploadImage({
+        base64Data: base64,
+        fileName: fileName,
+        mimeType: isHeic ? 'image/jpeg' : originalFile.type
+      })
+      
       console.log('📦 Resultat mottatt:', result)
 
       if (result.success && result.imageUrl) {
@@ -90,7 +109,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       setPreview(null)
     } finally {
       setUploading(false)
-      console.log('🏁 Opplasting fullført, uploading satt til false')
+      console.log('🏁 Opplasting fullført')
     }
   }
 
@@ -116,20 +135,18 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
         </div>
       )}
 
-      {/* Input for bildebibliotek (uten capture) */}
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif"
+        accept="image/*"
         onChange={handleFileChange}
         className="hidden"
       />
 
-      {/* Input for kamera (med capture) */}
       <input
         ref={cameraInputRef}
         type="file"
-        accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif"
+        accept="image/*"
         capture="environment"
         onChange={handleFileChange}
         className="hidden"
@@ -162,7 +179,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       )}
 
       <small className="text-gray-500 mt-1 block">
-        Maks 5MB. iPhone-bilder (HEIC) konverteres automatisk.
+        Maks 5MB. iPhone HEIC-bilder konverteres automatisk.
       </small>
     </div>
   )
