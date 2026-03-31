@@ -60,9 +60,9 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
         fileName = originalFile.name.replace(/\.(heic|heif)$/i, '.jpg')
       }
 
-      // Valider størrelse
-      if (blob.size > 5 * 1024 * 1024) {
-        throw new Error('Bildet må være mindre enn 5MB')
+      // Valider størrelse - ØKT TIL 20MB
+      if (blob.size > 20 * 1024 * 1024) {
+        throw new Error('Bildet må være mindre enn 10MB')
       }
 
       // Vis forhåndsvisning
@@ -179,7 +179,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       )}
 
       <small className="text-gray-500 mt-1 block">
-        Maks 5MB. iPhone HEIC-bilder konverteres automatisk.
+        Maks 10MB. iPhone HEIC-bilder konverteres automatisk.
       </small>
     </div>
   )

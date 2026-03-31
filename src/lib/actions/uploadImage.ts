@@ -35,11 +35,11 @@ export async function uploadImage(params: UploadImageParams): Promise<UploadImag
     // Konverter base64 til Buffer
     const buffer = Buffer.from(base64Data, 'base64')
     
-    // Valider størrelse (maks 5MB)
-    if (buffer.length > 5 * 1024 * 1024) {
+    // Valider størrelse - ØKT TIL 20MB
+    if (buffer.length > 20 * 1024 * 1024) {
       return {
         success: false,
-        error: 'Bildet må være mindre enn 5MB'
+        error: 'Bildet må være mindre enn 10MB'
       }
     }
 
