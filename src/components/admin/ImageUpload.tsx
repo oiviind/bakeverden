@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { uploadImage } from '@/lib/actions/uploadImage'
+import heic2any from 'heic2any'
 
 interface ImageUploadProps {
   onImageUploaded: (url: string) => void
@@ -16,15 +17,49 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
   const cameraInputRef = useRef<HTMLInputElement>(null)
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const originalFile = e.target.files?.[0]
+    if (!originalFile) return
 
     setError(null)
     setUploading(true)
 
-    console.log('📸 Fil valgt:', file.name, file.type, file.size)
+    console.log('📸 Fil valgt:', originalFile.name, originalFile.type, originalFile.size)
 
     try {
+      let file = originalFile
+
+      // Konverter HEIC/HEIF til JPEG
+      if (originalFile.type === 'image/heic' || 
+          originalFile.type === 'image/heif' ||
+          originalFile.name.toLowerCase().endsWith('.heic') ||
+          originalFile.name.toLowerCase().endsWith('.heif')) {
+        
+        console.log('🔄 Konverterer HEIC til JPEG...')
+        
+        try {
+          const convertedBlob = await heic2any({
+            blob: originalFile,
+            toType: 'image/jpeg',
+            quality: 0.9
+          })
+          
+          // heic2any kan returnere array eller enkelt Blob
+          const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob
+          
+          // Lag ny File fra Blob
+          file = new File(
+            [blob], 
+            originalFile.name.replace(/\.(heic|heif)$/i, '.jpg'),
+            { type: 'image/jpeg' }
+          )
+          
+          console.log('✅ HEIC konvertert til JPEG:', file.name, file.size)
+        } catch (convertError) {
+          console.error('❌ HEIC konverteringsfeil:', convertError)
+          throw new Error('Kunne ikke konvertere HEIC-bilde. Prøv å velge et JPEG/PNG-bilde.')
+        }
+      }
+
       // Vis forhåndsvisning
       const reader = new FileReader()
       reader.onloadend = () => {
@@ -51,7 +86,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       }
     } catch (err) {
       console.error('❌ Uventet feil:', err)
-      setError('En uventet feil oppstod')
+      setError(err instanceof Error ? err.message : 'En uventet feil oppstod')
       setPreview(null)
     } finally {
       setUploading(false)
@@ -107,7 +142,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
           disabled={uploading}
           className="btn btn-secondary"
         >
-          🖼️ {preview ? 'Endre fra galleri' : 'Velg fra galleri'}
+          {uploading ? '⏳ Laster opp...' : '🖼️ Velg fra galleri'}
         </button>
 
         <button
@@ -116,7 +151,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
           disabled={uploading}
           className="btn btn-secondary"
         >
-          📷 Ta bilde
+          {uploading ? '⏳ Laster opp...' : '📷 Ta bilde'}
         </button>
       </div>
 
@@ -127,7 +162,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
       )}
 
       <small className="text-gray-500 mt-1 block">
-        Maks 5MB. Støtter JPEG, PNG, WebP og HEIC (iPhone).
+        Maks 5MB. iPhone-bilder (HEIC) konverteres automatisk.
       </small>
     </div>
   )

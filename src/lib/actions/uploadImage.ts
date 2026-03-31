@@ -22,23 +22,19 @@ export async function uploadImage(formData: FormData): Promise<UploadImageResult
 
   console.log('📤 Mottar fil:', file.name, file.type, file.size)
 
-  // Valider filtype - inkludert HEIC/HEIF
+  // Valider filtype - HEIC konverteres på klientsiden
   const allowedTypes = [
     'image/jpeg',
     'image/jpg', 
     'image/png', 
-    'image/webp',
-    'image/heic',
-    'image/heif',
-    'image/heic-sequence',
-    'image/heif-sequence'
+    'image/webp'
   ]
   
-  if (!allowedTypes.includes(file.type.toLowerCase()) && !file.name.toLowerCase().match(/\.(jpe?g|png|webp|heic|heif)$/)) {
+  if (!allowedTypes.includes(file.type.toLowerCase())) {
     console.error('❌ Ugyldig filtype:', file.type)
     return {
       success: false,
-      error: 'Kun JPEG, PNG, WebP og HEIC er tillatt'
+      error: 'Kun JPEG, PNG og WebP er tillatt (HEIC konverteres automatisk)'
     }
   }
 
@@ -52,13 +48,7 @@ export async function uploadImage(formData: FormData): Promise<UploadImageResult
 
   try {
     // Generer unikt filnavn
-    let fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg'
-    
-    // Konverter HEIC til JPG for kompatibilitet
-    if (fileExt === 'heic' || fileExt === 'heif') {
-      fileExt = 'jpg'
-    }
-    
+    const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg'
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
     const filePath = `batches/${fileName}`
 
@@ -70,7 +60,7 @@ export async function uploadImage(formData: FormData): Promise<UploadImageResult
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false,
-        contentType: file.type || 'image/jpeg'
+        contentType: file.type
       })
 
     if (uploadError) {
