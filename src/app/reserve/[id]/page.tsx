@@ -89,7 +89,7 @@ export default async function ReservePage({
                   </div>
                 </div>
                 <div className="text-right text-sm text-gray-600">
-                  <div className="font-semibold mb-1">📅 Henting:</div>
+                  <div className="font-semibold mb-1">📅 Henting innen:</div>
                   <div>{pickupDate}</div>
                 </div>
               </div>

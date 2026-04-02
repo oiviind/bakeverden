@@ -2,9 +2,12 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useCart } from '@/lib/contexts/CartContext'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { getTotalItems } = useCart()
+  const itemCount = getTotalItems()
 
   return (
     <>
@@ -19,20 +22,30 @@ export default function Header() {
             <Link href="/" className="header-link">
               Hjem
             </Link>
-            <Link href="/cart" className="header-link">
+            <Link href="/cart" className="header-link relative">
               🛒 Handlekurv
+              {itemCount > 0 && (
+                <span className="cart-notification-badge cart-badge-desktop">
+                  {itemCount}
+                </span>
+              )}
             </Link>
             <Link href="/admin" className="header-link header-link-admin">
               Admin
             </Link>
           </nav>
 
-          {/* Mobile: Hamburger only (CartIcon shows in menu) */}
+          {/* Mobile: Hamburger with badge */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="header-hamburger md:hidden"
+            className="header-hamburger md:hidden relative"
             aria-label="Toggle menu"
           >
+            {itemCount > 0 && (
+              <span className="cart-notification-badge cart-badge-mobile-hamburger">
+                {itemCount}
+              </span>
+            )}
             <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
             <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
             <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
@@ -60,7 +73,14 @@ export default function Header() {
               className="header-mobile-link"
               onClick={() => setIsMenuOpen(false)}
             >
-              🛒 Handlekurv
+              <span className="flex items-center">
+                🛒 Handlekurv
+                {itemCount > 0 && (
+                  <span className="cart-notification-badge cart-badge-mobile-menu">
+                    {itemCount}
+                  </span>
+                )}
+              </span>
             </Link>
             <div className="header-mobile-divider" />
             <Link 

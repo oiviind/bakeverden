@@ -10,7 +10,7 @@ export default function CartIcon() {
     <div className="relative inline-flex items-center">
       <span className="text-xl">🛒</span>
       {itemCount > 0 && (
-        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full min-w-[1.25rem] h-5 flex items-center justify-center px-1">
+        <span className="cart-notification-badge" style={{ top: '-0.5rem', right: '-0.5rem' }}>
           {itemCount}
         </span>
       )}

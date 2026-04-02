@@ -235,6 +235,61 @@ body {
   flex-shrink: 0;
 }
 
+/* Modal content styling */
+.modal-content {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+/* Modal thumbnail - 40x40px (10x10 for lite, men mye mindre enn før) */
+.modal-thumbnail {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 0 auto 1rem;
+  display: block;
+}
+/* Legg til etter .modal-thumbnail */
+
+/* Cart notification badge - rød sirkel med hvit border */
+.cart-notification-badge {
+  position: absolute;
+  background-color: #ef4444; /* rød bakgrunn */
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 9999px;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.375rem;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Desktop header badge positioning */
+.cart-badge-desktop {
+  top: -0.25rem;
+  right: -0.25rem;
+}
+
+/* Mobile hamburger badge positioning */
+.cart-badge-mobile-hamburger {
+  top: -0.25rem;
+  right: -0.25rem;
+  z-index: 10;
+}
+
+/* Mobile menu inline badge */
+.cart-badge-mobile-menu {
+  position: static;
+  display: inline-flex;
+  margin-left: 0.5rem;
+}
+
 /* Fjern ALL understreking på cards */
 .card,
 .card *,
@@ -495,6 +550,24 @@ body {
   transition: opacity 0.2s;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
+}
+/* Utility classes for modal */
+.max-h-\[50vh\] {
+  max-height: 50vh;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+/* Ensure badge is visible */
+.z-10 {
+  z-index: 10;
+}
+
+/* Shadow for badges */
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .header-link:hover {

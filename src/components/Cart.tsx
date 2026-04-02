@@ -29,19 +29,19 @@ export default function Cart() {
                 <img 
                   src={item.batch.image_url} 
                   alt={item.batch.title}
-                  className="cart-thumbnail"
+                  className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
                 />
               )}
               
-              <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 mb-1">
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-gray-900 mb-1 truncate">
                   {item.batch.title}
                 </h3>
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-sm text-gray-600 mb-3">
                   {item.batch.price},- per stk
                 </p>
                 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap">
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => updateQuantity(item.batch.id, item.quantity - 1)}
@@ -63,14 +63,14 @@ export default function Cart() {
                   
                   <button
                     onClick={() => removeItem(item.batch.id)}
-                    className="text-red-600 hover:text-red-700 text-sm"
+                    className="text-gray-600 hover:text-gray-800 text-sm"
                   >
                     🗑️ Fjern
                   </button>
                 </div>
               </div>
               
-              <div className="text-right">
+              <div className="text-right flex-shrink-0">
                 <div className="font-bold text-lg text-pink-600">
                   {item.batch.price * item.quantity},-
                 </div>
