@@ -69,7 +69,7 @@ export default function AddToCartModal({ batch, isOpen, onClose }: AddToCartModa
               <div className="flex items-center justify-center gap-3">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-lg text-xl font-bold"
+                  className="stepper-button stepper-minus"
                 >
                   −
                 </button>
@@ -82,7 +82,7 @@ export default function AddToCartModal({ batch, isOpen, onClose }: AddToCartModa
                 <button
                   onClick={() => setQuantity(Math.min(batch.remaining_quantity, quantity + 1))}
                   disabled={quantity >= batch.remaining_quantity}
-                  className="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-lg text-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="stepper-button stepper-plus"
                 >
                   +
                 </button>

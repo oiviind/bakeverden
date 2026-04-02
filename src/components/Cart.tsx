@@ -29,7 +29,7 @@ export default function Cart() {
                 <img 
                   src={item.batch.image_url} 
                   alt={item.batch.title}
-                  className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
+                  className="cart-item-thumbnail"
                 />
               )}
               
@@ -41,29 +41,27 @@ export default function Cart() {
                   {item.batch.price},- per stk
                 </p>
                 
-                <div className="flex items-center gap-3 flex-wrap">
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => updateQuantity(item.batch.id, item.quantity - 1)}
-                      className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded"
-                    >
-                      −
-                    </button>
-                    <span className="w-8 text-center font-semibold">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() => updateQuantity(item.batch.id, item.quantity + 1)}
-                      disabled={item.quantity >= item.batch.remaining_quantity}
-                      className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      +
-                    </button>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => updateQuantity(item.batch.id, item.quantity - 1)}
+                    className="stepper-button stepper-minus"
+                  >
+                    −
+                  </button>
+                  <span className="w-8 text-center font-semibold">
+                    {item.quantity}
+                  </span>
+                  <button
+                    onClick={() => updateQuantity(item.batch.id, item.quantity + 1)}
+                    disabled={item.quantity >= item.batch.remaining_quantity}
+                    className="stepper-button stepper-plus"
+                  >
+                    +
+                  </button>
                   
                   <button
                     onClick={() => removeItem(item.batch.id)}
-                    className="text-gray-600 hover:text-gray-800 text-sm"
+                    className="text-gray-600 hover:text-gray-800 text-sm ml-2"
                   >
                     🗑️ Fjern
                   </button>

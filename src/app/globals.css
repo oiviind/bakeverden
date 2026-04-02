@@ -183,9 +183,7 @@ body {
 }
 
 .text-gray-600 { 
-  color: #4b5563;
-  padding-bottom: 2rem;
-  padding-top: 0.5rem;
+  background-color: transparent;;
   text-align: center;
 }
 
@@ -226,12 +224,21 @@ body {
   transform: translateY(-2px);
 }
 
-/* Bilde for handlekurven - 10x10 px */
+/* Bilde for modal på hjemsiden - 10x10 px */
 .cart-thumbnail {
-  width: 80px;
-  height: 80px;
+  width: 10px;
+  height: 10px;
   object-fit: cover;
   border-radius: 8px;
+  flex-shrink: 0;
+}
+
+/* Handlekurv item bilde - unik styling */
+.cart-item-thumbnail {
+  width: 96px;  /* w-24 = 6rem = 96px */
+  height: 96px; /* h-24 = 6rem = 96px */
+  object-fit: cover;
+  border-radius: 0.5rem; /* rounded-lg */
   flex-shrink: 0;
 }
 
@@ -239,6 +246,8 @@ body {
 .modal-content {
   max-height: 50vh;
   overflow-y: auto;
+  text-align: center;
+  padding: 1rem;
 }
 
 /* Modal thumbnail - 40x40px (10x10 for lite, men mye mindre enn før) */
@@ -250,8 +259,49 @@ body {
   margin: 0 auto 1rem;
   display: block;
 }
-/* Legg til etter .modal-thumbnail */
 
+/* iOS/Android style stepper buttons */
+.stepper-button {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: 300;
+  color: #007aff;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.stepper-button:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.stepper-button:active:not(:disabled) {
+  background: #e5e7eb;
+  transform: scale(0.95);
+}
+
+.stepper-button:disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.stepper-minus {
+  font-weight: 400;
+}
+
+.stepper-plus {
+  font-weight: 400;
+}
 /* Cart notification badge - rød sirkel med hvit border */
 .cart-notification-badge {
   position: absolute;
@@ -279,7 +329,7 @@ body {
 /* Mobile hamburger badge positioning */
 .cart-badge-mobile-hamburger {
   top: -0.25rem;
-  right: -0.25rem;
+  right: 1rem;
   z-index: 10;
 }
 
