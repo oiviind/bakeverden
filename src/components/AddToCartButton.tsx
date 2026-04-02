@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useCart } from '@/lib/contexts/CartContext'
 import { useRouter } from 'next/navigation'
+import AddToCartModal from './AddToCartModal'
 import type { ProductBatch } from '@/types/database.types'
 
 interface AddToCartButtonProps {
@@ -10,55 +10,32 @@ interface AddToCartButtonProps {
 }
 
 export default function AddToCartButton({ batch }: AddToCartButtonProps) {
-  const { addItem } = useCart()
-  const [quantity, setQuantity] = useState(1)
-  const [added, setAdded] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
 
-  const handleAddToCart = () => {
-    addItem(batch, quantity)
-    setAdded(true)
-    setTimeout(() => setAdded(false), 2000)
-  }
-
-  const handleBuyNow = () => {
-    addItem(batch, quantity)
-    router.push('/cart')
-  }
-
   return (
-    <div className="space-y-4">
-      <div className="form-group">
-        <label className="form-label">Antall</label>
-        <input
-          type="number"
-          min="1"
-          max={batch.remaining_quantity}
-          value={quantity}
-          onChange={(e) => setQuantity(Math.min(Number(e.target.value), batch.remaining_quantity))}
-          className="form-input"
-        />
-        <p className="text-sm text-gray-500 mt-1">
-          Pris: {batch.price * quantity},-
-        </p>
-      </div>
-
-      <div className="flex gap-3">
+    <>
+      <div className="space-y-3">
         <button
-          onClick={handleAddToCart}
-          disabled={added}
-          className="flex-1 btn btn-secondary"
+          onClick={() => setIsModalOpen(true)}
+          className="btn btn-primary btn-block"
         >
-          {added ? '✅ Lagt til!' : '🛒 Legg i kurv'}
+          🛒 Legg i kurv
         </button>
 
         <button
-          onClick={handleBuyNow}
-          className="flex-1 btn btn-primary"
+          onClick={() => router.push('/cart')}
+          className="btn btn-secondary btn-block"
         >
-          Kjøp nå
+          Gå til handlekurv
         </button>
       </div>
-    </div>
+
+      <AddToCartModal
+        batch={batch}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
   )
 }
