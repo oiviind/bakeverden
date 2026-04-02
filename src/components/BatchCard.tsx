@@ -16,8 +16,6 @@ export default function BatchCard({ batch }: BatchCardProps) {
     minute: '2-digit'
   })
 
-  const allergens = batch.ingredients?.filter(i => i.allergen) || []
-
   return (
     <Link 
       href={`/reserve/${batch.id}`}
@@ -46,34 +44,6 @@ export default function BatchCard({ batch }: BatchCardProps) {
         {batch.description && (
           <p className="card-description">{batch.description}</p>
         )}
-
-        {/* Vis ingredienser */}
-        {batch.ingredients && batch.ingredients.length > 0 && (
-          <div className="mb-3">
-            <p className="text-xs text-gray-500 font-semibold mb-1">Ingredienser:</p>
-            <div className="flex flex-wrap gap-1">
-              {batch.ingredients.map(ingredient => (
-                <span 
-                  key={ingredient.id}
-                  className={`text-xs px-2 py-1 rounded-full ${
-                    ingredient.allergen 
-                      ? 'bg-red-100 text-red-700 font-semibold' 
-                      : 'bg-gray-100 text-gray-600'
-                  }`}
-                >
-                  {ingredient.name}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Allergen warning */}
-        {allergens.length > 0 && (
-          <div className="alert alert-warning text-xs mb-3">
-            ⚠️ Allergener: {allergens.map(a => a.name).join(', ')}
-          </div>
-        )}
         
         {batch.price && (
           <p className="text-2xl font-bold text-pink-600 mb-4">
@@ -92,7 +62,7 @@ export default function BatchCard({ batch }: BatchCardProps) {
         </div>
         
         <button className={`btn btn-block mt-4 ${isSoldOut ? 'btn-disabled' : 'btn-primary'}`}>
-          {isSoldOut ? 'Se detaljer' : 'Bestill'}
+          {isSoldOut ? 'Utsolgt' : 'Se detaljer og bestill'}
         </button>
       </div>
     </Link>

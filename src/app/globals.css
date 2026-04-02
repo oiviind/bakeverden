@@ -28,6 +28,17 @@
   padding: 0;
 }
 
+/* FJERN ALL UNDERSTREKING */
+a {
+  text-decoration: none;
+}
+
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+}
+
 html, body {
   height: 100%;
 }
@@ -110,7 +121,9 @@ body {
 .pb-4 { padding-bottom: 1rem; }
 
 .mt-4 { margin-top: 1rem; }
-.mb-3 { margin-bottom: 0.75rem; }
+.mb-3 { margin-bottom: 0.75rem; 
+        color: var(--text);
+}
 .ml-2 { margin-left: 0.5rem; }
 
 .space-y-3 > * + * { margin-top: 0.75rem; }
@@ -205,11 +218,21 @@ body {
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
   overflow: hidden;
+  text-decoration: none;
 }
 
 .card:hover {
   box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
+}
+
+/* Fjern ALL understreking på cards */
+.card,
+.card *,
+.card a,
+.card a:hover,
+.card a:focus {
+  text-decoration: none !important;
 }
 
 .card-image {
@@ -228,12 +251,22 @@ body {
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: var(--text);
+  text-decoration: none;
 }
 
 .card-description {
   color: var(--text-light);
   line-height: 1.6;
   margin-bottom: 1rem;
+  text-decoration: none;
+}
+
+.card-price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-decoration: none;
 }
 
 .card-meta {
@@ -243,6 +276,7 @@ body {
   font-size: 0.875rem;
   color: var(--text-light);
   margin-bottom: 1rem;
+  text-decoration: none;
 }
 
 /* ============================================
@@ -350,6 +384,7 @@ body {
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
+  color: var(--text);
 }
 
 .alert-success {
@@ -432,6 +467,7 @@ body {
 
 .header-logo:hover {
   opacity: 0.9;
+  text-decoration: none;
 }
 
 /* Desktop Navigation */
@@ -453,6 +489,7 @@ body {
 .header-link:hover {
   opacity: 0.8;
   background: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
 }
 
 .header-link-admin {
@@ -462,6 +499,7 @@ body {
 
 .header-link-admin:hover {
   background: rgba(255, 255, 255, 0.25);
+  text-decoration: none;
 }
 
 /* Hamburger Menu */
@@ -533,6 +571,7 @@ body {
 
 .header-mobile-link:hover {
   background: var(--background);
+  text-decoration: none;
 }
 
 .header-mobile-admin {
@@ -544,6 +583,7 @@ body {
 .header-mobile-admin:hover {
   opacity: 0.9;
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  text-decoration: none;
 }
 
 .header-mobile-divider {
@@ -633,7 +673,7 @@ body {
 
 .footer-links a:hover {
   opacity: 1;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .footer-social {
@@ -651,11 +691,13 @@ body {
   border-radius: 50%;
   color: white;
   transition: all 0.3s;
+  text-decoration: none;
 }
 
 .footer-social-link:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
+  text-decoration: none;
 }
 
 .footer-icon {

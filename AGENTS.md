@@ -18,3 +18,10 @@ Next.js 16.2.1 + React 19 + Supabase application for cake ordering system.
 - Use `capture="environment"` for mobile camera access
 - Show preview before upload
 - Example: [`ImageUpload.tsx`](src/components/admin/ImageUpload.tsx)
+
+### 8. Data Fetching with Relations
+- Use Supabase's nested select for relations
+- Example: `select('*, batch_ingredients(ingredients(*, allergens(*)))')`
+- Always handle null/undefined for optional relations
+- Use Array.from(new Map()) for deduplication
+- Example: [`reserve/[id]/page.tsx`](src/app/reserve/[id]/page.tsx)
