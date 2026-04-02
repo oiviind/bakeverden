@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase'
-import ReservationForm from '@/components/ReservationForm'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
+import Header from '@/components/Header'
+import AddToCartButton from '@/components/AddToCartButton'
 
 export default async function ReservePage({ 
   params 
@@ -49,22 +49,12 @@ export default async function ReservePage({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="container py-4">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="text-blue-600 hover:text-blue-700">
-              ← Tilbake
-            </Link>
-            <h1 className="text-2xl font-bold text-pink-600">Bestill kake</h1>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="container py-6">
         <div className="max-w-2xl mx-auto">
           {/* Kakeinformasjon */}
           <div className="card mb-6">
-            {/* BILDE - Samme styling som BatchCard */}
             {batch.image_url && (
               <div className="relative">
                 <img 
@@ -129,7 +119,7 @@ export default async function ReservePage({
                 </div>
               )}
 
-              {/* ALLERGENER - Egen seksjon */}
+              {/* ALLERGENER */}
               {allergens.length > 0 && (
                 <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-4">
                   <h3 className="font-semibold text-red-600 mb-3 flex items-center gap-2">
@@ -151,17 +141,17 @@ export default async function ReservePage({
             </div>
           </div>
 
-          {/* Bestillingsskjema */}
+          {/* Legg til i handlekurv */}
           <div className="card">
             <div className="card-content">
-              <h3 className="text-xl font-bold mb-4">Bestillingsinformasjon</h3>
+              <h3 className="text-xl font-bold mb-4">Legg til i handlekurv</h3>
               
               {isSoldOut ? (
                 <div className="alert alert-error">
                   <p className="font-semibold">Denne kaken er dessverre utsolgt</p>
                 </div>
               ) : (
-                <ReservationForm batch={batch} />
+                <AddToCartButton batch={batch} />
               )}
             </div>
           </div>
