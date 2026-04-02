@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { CartProvider } from "@/lib/contexts/CartContext";
 
 export const metadata: Metadata = {
   title: "Bakeverden - Hjemmelagde kaker",
-  description: "Bestill hjemmelagde kaker til enhver anledning",
+  description: "Bestill deilige hjemmelagde kaker",
 };
 
 export default function RootLayout({
@@ -16,13 +15,9 @@ export default function RootLayout({
   return (
     <html lang="nb">
       <body>
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <CartProvider>
+          {children}
+        </CartProvider>
       </body>
     </html>
   );

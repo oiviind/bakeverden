@@ -1,5 +1,6 @@
 import { getAvailableBatches } from '@/lib/actions/getBatches'
 import BatchCard from '@/components/BatchCard'
+import Header from '@/components/Header'
 
 export const revalidate = 0
 
@@ -7,7 +8,11 @@ export default async function Home() {
   const batches = await getAvailableBatches()
   
   return (
-      <main className="container">
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+
+      {/* MAIN CONTENT */}
+      <main className="container py-8">
         <section className="mb-8">
           <h2 className="text-3xl font-bold mb-2">Julebaksten 2026</h2>
           <p className="text-gray-600">
@@ -23,12 +28,13 @@ export default async function Home() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {batches.map(batch => (
               <BatchCard key={batch.id} batch={batch} />
             ))}
           </div>
         )}
       </main>
+    </div>
   )
 }

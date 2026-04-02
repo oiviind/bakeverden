@@ -25,3 +25,17 @@ Next.js 16.2.1 + React 19 + Supabase application for cake ordering system.
 - Always handle null/undefined for optional relations
 - Use Array.from(new Map()) for deduplication
 - Example: [`reserve/[id]/page.tsx`](src/app/reserve/[id]/page.tsx)
+
+### 9. Shopping Cart Pattern
+- ALL purchases go through shopping cart (no direct checkout)
+- Users must add items to cart before purchasing
+- Cart persists in localStorage
+- Use `createMultipleOrders` for all order creation
+- Validate quantities against remaining_quantity
+- Example: [`CartContext.tsx`](src/lib/contexts/CartContext.tsx), [`AddToCartButton.tsx`](src/components/AddToCartButton.tsx)
+
+### 10. Order Flow
+- Product detail page → Add to cart → Cart page → Checkout → Confirmation
+- Single order with multiple order_items
+- All orders created via `createMultipleOrders`
+- Example: [`checkout/page.tsx`](src/app/checkout/page.tsx), [`createMultipleOrders.ts`](src/lib/actions/createMultipleOrders.ts)

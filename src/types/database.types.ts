@@ -24,19 +24,28 @@ export interface BatchIngredient {
   ingredient?: Ingredient
 }
 
-// Type for batch med ingredienser
 export interface ProductBatchWithIngredients extends ProductBatch {
   batch_ingredients?: BatchIngredient[]
   ingredients?: Ingredient[]
 }
 
-export interface Reservation {
+export interface OrderItem {
   id: string
+  order_id: string
   batch_id: string
-  customer_name: string
-  customer_phone: string
-  customer_email?: string
   quantity: number
+  price_at_time: number
+  created_at: string
+  batch?: ProductBatch
+}
+
+export interface Order {
+  id: string
+  name: string
+  phone: string
+  email?: string
+  total_price: number
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
   created_at: string
+  order_items?: OrderItem[]
 }
