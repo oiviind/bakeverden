@@ -38,9 +38,4 @@ export async function updateOrderStatus(
     console.error('💥 Unexpected error:', err)
     return { success: false, error: 'Noe gikk galt' }
   }
-}-- I Supabase SQL Editor
-CREATE POLICY "Allow public to update orders"
-ON orders FOR UPDATE
-TO public
-USING (true)
-WITH CHECK (true);
+}
