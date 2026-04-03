@@ -2,6 +2,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Card, getButtonClassName } from '@/components/ui'
+import Header from '@/components/Header'
 
 export const revalidate = 0
 
@@ -45,18 +46,17 @@ export default async function StatisticsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="header sticky top-0 z-10">
+                <Header />
         <div className="container">
           <div className="flex justify-between items-center py-4">
-            <h1 className="text-xl font-bold text-white">
-              📊 Statistikk
-            </h1>
-            <Link href="/admin" className={getButtonClassName('ghost', 'sm')}>
+          <Link href="/admin" className={getButtonClassName('ghost', 'sm')}>
               ← Tilbake til admin
             </Link>
+            <h1>
+              📊 Statistikk
+            </h1>
           </div>
         </div>
-      </header>
 
       <main className="container py-6">
         <div className="max-w-4xl mx-auto">

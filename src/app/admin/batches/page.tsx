@@ -4,6 +4,7 @@ import Link from 'next/link'
 import BatchForm from '@/components/admin/BatchForm'
 import BatchListItem from '@/components/admin/BatchListItem'
 import { Card, getButtonClassName } from '@/components/ui'
+import Header from '@/components/Header'
 
 export const revalidate = 0
 
@@ -31,18 +32,14 @@ export default async function AdminBatchesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="header sticky top-0 z-10">
+              <Header />
         <div className="container">
           <div className="flex justify-between items-center py-4">
-            <h1 className="text-xl font-bold text-white">
-              👨‍🍳 Admin - Kaker
-            </h1>
-            <Link href="/admin" className={getButtonClassName('ghost', 'sm')}>
+          <Link href="/admin" className={getButtonClassName('ghost', 'sm')}>
               ← Bestillingsoversikt
             </Link>
           </div>
         </div>
-      </header>
 
       <main className="container py-6">
         <Card className="mb-6">
