@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import AddToCartModal from './AddToCartModal'
+import { Button } from '@/components/ui'
 import type { ProductBatch } from '@/types/database.types'
 
 interface AddToCartButtonProps {
@@ -16,19 +17,17 @@ export default function AddToCartButton({ batch }: AddToCartButtonProps) {
   return (
     <>
       <div className="space-y-3">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="btn btn-primary btn-block"
-        >
+        <Button onClick={() => setIsModalOpen(true)} fullWidth>
           🛒 Legg i kurv
-        </button>
+        </Button>
 
-        <button
+        <Button
+          variant="secondary"
+          fullWidth
           onClick={() => router.push('/cart')}
-          className="btn btn-secondary btn-block"
         >
           Gå til handlekurv
-        </button>
+        </Button>
       </div>
 
       <AddToCartModal

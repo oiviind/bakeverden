@@ -1,9 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 /* ============================================
-   ROOT VARIABLES
+   DESIGN TOKENS
+   Used by all CSS modules via var(--)
    ============================================ */
 :root {
   --primary: #4c8ca7;
@@ -20,37 +19,20 @@
 }
 
 /* ============================================
-   BASE STYLES
+   BASE
    ============================================ */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* FJERN ALL UNDERSTREKING */
-a {
-  text-decoration: none;
-}
-
-a:hover,
-a:focus,
-a:active {
-  text-decoration: none;
-}
-
-html, body {
-  height: 100%;
-}
+html, body { height: 100%; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--text);
   background-color: var(--background);
 }
 
+a, a:hover, a:focus, a:active { text-decoration: none; }
+
 /* ============================================
-   LAYOUT UTILITIES
+   LAYOUT
    ============================================ */
 .container {
   max-width: 1200px;
@@ -58,411 +40,37 @@ body {
   padding: 0 1rem;
 }
 
-.min-h-screen {
-  min-height: 100vh;
-}
-
-.flex {
-  display: flex;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.flex-1 {
-  flex: 1;
-}
-
-.flex-wrap {
-  flex-wrap: wrap;
-}
-
-.grid {
-  display: grid;
-  gap: 1rem;
-}
-
-.grid-cols-1 {
-  grid-template-columns: 1fr;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.items-start {
-  align-items: flex-start;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
 /* ============================================
-   SPACING UTILITIES
+   TYPOGRAPHY
    ============================================ */
-.gap-1 { gap: 0.25rem; }
-.gap-2 { gap: 0.5rem; }
-.gap-4 { gap: 1rem; }
-
-.py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
-.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-.py-8 { padding-top: 2rem; padding-bottom: 2rem; }
-
-.px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
-.px-4 { padding-left: 1rem; padding-right: 1rem; }
-
-.pb-4 { padding-bottom: 1rem; }
-
-.mt-4 { margin-top: 1rem; }
-.mb-3 { margin-bottom: 0.75rem; 
-        color: var(--text);
-}
-.ml-2 { margin-left: 0.5rem; }
-
-.space-y-3 > * + * { margin-top: 0.75rem; }
-.space-y-4 > * + * { margin-top: 1rem; }
-.space-y-6 > * + * { margin-top: 1.5rem; }
-
-/* ============================================
-   POSITIONING
-   ============================================ */
-.relative { position: relative; }
-.absolute { position: absolute; }
-.sticky { position: sticky; }
-.fixed { position: fixed; }
-
-.top-0 { top: 0; }
-.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-
-.z-10 { z-index: 10; }
-.z-40 { z-index: 40; }
-.z-50 { z-index: 50; }
-.z-60 { z-index: 60; }
-
-/* ============================================
-   BORDERS & RADIUS
-   ============================================ */
-.border { border: 1px solid var(--border); }
-.border-b { border-bottom: 1px solid var(--border); }
-
-.rounded-lg { border-radius: 0.5rem; }
-.rounded-full { border-radius: 9999px; }
-
-/* ============================================
-   BACKGROUNDS
-   ============================================ */
-.bg-white { background-color: white; }
-.bg-black { background-color: black; }
-.bg-gray-50 { background-color: #f9fafb; }
-.bg-gray-100 { background-color: #f3f4f6; }
-.bg-red-100 { background-color: #fee2e2; }
-
-.bg-opacity-40 { background-color: rgba(0, 0, 0, 0.4); }
-.bg-opacity-50 { background-color: rgba(0, 0, 0, 0.5); }
-
-.hover\:bg-gray-100:hover { background-color: #f3f4f6; }
-
-/* ============================================
-   TEXT STYLES
-   ============================================ */
-.text-center { text-align: center; }
-.text-sm { font-size: 0.875rem; }
-.text-lg { font-size: 1.125rem; }
-.text-3xl { 
-  font-size: 1.875rem;
-  text-align: center;
-  padding-top: 1rem;
-  padding-bottom: 0.2rem;
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
 }
 
-.text-gray-600 { 
-  background-color: transparent;;
-  text-align: center;
+@media (min-width: 640px) {
+  .page-title { font-size: 2rem; }
 }
 
-.text-gray-700 { color: #374151; }
-.text-red-700 { color: #b91c1c; }
-
-.font-semibold { font-weight: 600; }
-
-.opacity-60 { opacity: 0.6; }
-
-/* Fjern hover-effekt på utsolgte kort */
-.opacity-60:hover {
-  transform: none;
-}
-
-/* ============================================
-   DISPLAY
-   ============================================ */
-.block { display: block; }
-.overflow-x-auto { overflow-x: auto; }
-.overflow-y-auto { overflow-y: auto; }
-.max-h-60 { max-height: 15rem; }
-
-/* ============================================
-   CARD COMPONENTS
-   ============================================ */
-.card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  transition: all 0.3s ease;
-  overflow: hidden;
-  text-decoration: none;
-}
-
-.card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-}
-
-/* Bilde for modal på hjemsiden - 10x10 px */
-.cart-thumbnail {
-  width: 10px;
-  height: 10px;
-  object-fit: cover;
-  border-radius: 8px;
-  flex-shrink: 0;
-}
-
-/* Handlekurv item bilde - unik styling */
-.cart-item-thumbnail {
-  width: 96px;  /* w-24 = 6rem = 96px */
-  height: 96px; /* h-24 = 6rem = 96px */
-  object-fit: cover;
-  border-radius: 0.5rem; /* rounded-lg */
-  flex-shrink: 0;
-}
-
-/* Modal content styling */
-.modal-content {
-  max-height: 50vh;
-  overflow-y: auto;
-  text-align: center;
-  padding: 1rem;
-}
-
-/* Modal thumbnail - 40x40px (10x10 for lite, men mye mindre enn før) */
-.modal-thumbnail {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin: 0 auto 1rem;
-  display: block;
-}
-
-/* iOS/Android style stepper buttons */
-.stepper-button {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffffff;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 24px;
-  font-weight: 300;
-  color: #007aff;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.stepper-button:hover:not(:disabled) {
-  background: #f3f4f6;
-  border-color: #9ca3af;
-}
-
-.stepper-button:active:not(:disabled) {
-  background: #e5e7eb;
-  transform: scale(0.95);
-}
-
-.stepper-button:disabled {
-  color: #d1d5db;
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.stepper-minus {
-  font-weight: 400;
-}
-
-.stepper-plus {
-  font-weight: 400;
-}
-/* Cart notification badge - rød sirkel med hvit border */
-.cart-notification-badge {
-  position: absolute;
-  background-color: #ef4444; /* rød bakgrunn */
-  color: white;
-  font-size: 0.75rem;
-  font-weight: bold;
-  border-radius: 9999px;
-  min-width: 1.25rem;
-  height: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 0.375rem;
-  border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* Desktop header badge positioning */
-.cart-badge-desktop {
-  top: -0.25rem;
-  right: -0.25rem;
-}
-
-/* Mobile hamburger badge positioning */
-.cart-badge-mobile-hamburger {
-  top: -0.25rem;
-  right: 1rem;
-  z-index: 10;
-}
-
-/* Mobile menu inline badge */
-.cart-badge-mobile-menu {
-  position: static;
-  display: inline-flex;
-  margin-left: 0.5rem;
-}
-
-/* Fjern ALL understreking på cards */
-.card,
-.card *,
-.card a,
-.card a:hover,
-.card a:focus {
-  text-decoration: none !important;
-}
-
-.card-image {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  background: var(--secondary);
-}
-
-.card-content {
-  padding: 1.5rem;
-}
-
-.card-title {
+.section-heading {
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
   color: var(--text);
-  text-decoration: none;
+  line-height: 1.3;
 }
 
-.card-description {
-  color: var(--text-light);
-  line-height: 1.6;
-  margin-bottom: 1rem;
-  text-decoration: none;
-}
-
-.card-price {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--primary);
-  margin-bottom: 1rem;
-  text-decoration: none;
-}
-
-.card-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: var(--text-light);
-  margin-bottom: 1rem;
-  text-decoration: none;
-}
-
-/* ============================================
-   BUTTONS
-   ============================================ */
-.btn {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  text-align: center;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-  font-size: 1rem;
-  text-decoration: none;
-}
-
-.btn-primary {
-  background: var(--primary);
-  color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: var(--primary-dark);
-}
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  background: #6b7280;
-  color: white;
-  padding: 0.625rem 1.25rem;
-  border-radius: 0.5rem;
-  white-space: nowrap;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background: #4b5563;
-  transform: translateY(-1px);
-}
-
-.btn-secondary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-block {
-  display: block;
-  width: 100%;
-}
-
-.btn-disabled {
-  background: #9ca3af;
-  color: white;
-  cursor: default;
-}
-
-.btn-disabled:hover {
-  background: #9ca3af;
-  transform: none;
+@media (min-width: 640px) {
+  .section-heading { font-size: 1.75rem; }
 }
 
 /* ============================================
    FORM ELEMENTS
+   Used in checkout, BatchForm, ImageUpload
    ============================================ */
-.form-group {
-  margin-bottom: 1.5rem;
-}
+.form-group { margin-bottom: 1.5rem; }
 
 .form-label {
   display: block;
@@ -492,429 +100,39 @@ body {
 }
 
 /* ============================================
-   ALERTS & BADGES
+   STEPPER
+   Shared by Cart.tsx and AddToCartModal.tsx
    ============================================ */
-.alert {
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  color: var(--text);
-}
-
-.alert-success {
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid #10b981;
-}
-
-.alert-error {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #ef4444;
-}
-
-.badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.badge-success {
-  background-color: #10b981;
-  color: white;
-}
-
-.badge-warning {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.badge-error {
-  background-color: #ef4444;
-  color: white;
-}
-
-/* ============================================
-   LOADING SPINNER
-   ============================================ */
-.spinner {
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-  display: inline-block;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* ============================================
-   HEADER
-   ============================================ */
-.header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* ... resten av header-styles */
-
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-}
-
-.header-logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-
-.header-logo:hover {
-  opacity: 0.9;
-  text-decoration: none;
-}
-
-/* Desktop Navigation */
-.header-nav-desktop {
-  display: none;
-  gap: 2rem;
-  align-items: center;
-}
-
-.header-link {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity 0.2s;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-}
-/* Utility classes for modal */
-.max-h-\[50vh\] {
-  max-height: 50vh;
-}
-
-.overflow-y-auto {
-  overflow-y: auto;
-}
-
-/* Ensure badge is visible */
-.z-10 {
-  z-index: 10;
-}
-
-/* Shadow for badges */
-.shadow-md {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.header-link:hover {
-  opacity: 0.8;
-  background: rgba(255, 255, 255, 0.1);
-  text-decoration: none;
-}
-
-.header-link-admin {
-  background: rgba(255, 255, 255, 0.15);
-  font-weight: 600;
-}
-
-.header-link-admin:hover {
-  background: rgba(255, 255, 255, 0.25);
-  text-decoration: none;
-}
-
-/* Hamburger Menu */
-.header-hamburger {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 2rem;
-  height: 2rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 60;
-}
-
-.hamburger-line {
-  width: 2rem;
-  height: 0.25rem;
-  background: white;
-  border-radius: 10px;
-  transition: all 0.3s;
-  transform-origin: 1px;
-}
-
-.hamburger-line:first-child.open {
-  transform: rotate(45deg);
-}
-
-.hamburger-line:nth-child(2).open {
-  opacity: 0;
-  transform: translateX(20px);
-}
-
-.hamburger-line:last-child.open {
-  transform: rotate(-45deg);
-}
-
-/* Mobile Navigation */
-.header-nav-mobile {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 280px;
-  height: 100vh;
-  background: white;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-  padding: 5rem 2rem 2rem;
-  transform: translateX(100%);
-  transition: transform 0.3s ease-in-out;
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.header-nav-mobile.open {
-  transform: translateX(0);
-}
-
-.header-mobile-link {
-  color: var(--text);
-  text-decoration: none;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: background 0.2s;
-}
-
-.header-mobile-link:hover {
-  background: var(--background);
-  text-decoration: none;
-}
-
-.header-mobile-admin {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  color: white;
-  font-weight: 600;
-}
-
-.header-mobile-admin:hover {
-  opacity: 0.9;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  text-decoration: none;
-}
-
-.header-mobile-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 0.5rem 0;
-}
-
-/* Overlay */
-.header-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 40;
-  animation: fadeIn 0.3s;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* ============================================
-   FOOTER
-   ============================================ */
-.footer {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  color: white;
-  margin-top: 4rem;
-  padding: 3rem 0 1.5rem;
-}
-
-.footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.footer-section h3,
-.footer-section h4 {
-  margin-bottom: 1rem;
-}
-
-.footer-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.footer-heading {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-.footer-text {
-  font-size: 0.875rem;
-  opacity: 0.9;
-  line-height: 1.5;
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-links li {
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.footer-links a {
-  color: white;
-  text-decoration: none;
-  opacity: 0.9;
-  transition: opacity 0.2s;
-}
-
-.footer-links a:hover {
-  opacity: 1;
-  text-decoration: none;
-}
-
-.footer-social {
-  display: flex;
-  gap: 1rem;
-}
-
-.footer-social-link {
+.stepper-button {
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  color: white;
-  transition: all 0.3s;
-  text-decoration: none;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: 400;
+  color: #007aff;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.footer-social-link:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-  text-decoration: none;
+.stepper-button:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
 }
 
-.footer-icon {
-  width: 20px;
-  height: 20px;
+.stepper-button:active:not(:disabled) {
+  background: #e5e7eb;
+  transform: scale(0.95);
 }
 
-.footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  padding-top: 1.5rem;
-  text-align: center;
-  font-size: 0.875rem;
-  opacity: 0.8;
-}
-
-/* ============================================
-   TABLE STYLES
-   ============================================ */
-table {
-  border-collapse: collapse;
-}
-
-table th {
-  font-weight: 600;
-  color: var(--text);
-}
-
-table td {
-  color: var(--text-light);
-}
-
-/* ============================================
-   RESPONSIVE DESIGN
-   ============================================ */
-@media (min-width: 640px) {
-  .sm\:text-base { font-size: 1rem; }
-  .sm\:text-xl { font-size: 1.25rem; }
-  .sm\:text-2xl { font-size: 1.5rem; }
-  .sm\:text-3xl { font-size: 1.875rem; }
-  .sm\:flex-row { flex-direction: row; }
-  .sm\:flex-col { flex-direction: column; }
-  .sm\:justify-between { justify-content: space-between; }
-  .sm\:items-center { align-items: center; }
-  .sm\:items-start { align-items: flex-start; }
-  .sm\:text-right { text-align: right; }
-  .sm\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (min-width: 768px) {
-  .md\:grid-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .grid {
-    gap: 1.5rem;
-  }
-
-  .header-nav-desktop {
-    display: flex;
-  }
-
-  .header-hamburger {
-    display: none;
-  }
-
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  .footer {
-    padding: 2rem 0 1rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .lg\:grid-cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .footer-content {
-    grid-template-columns: 1fr;
-  }
+.stepper-button:disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.5;
 }

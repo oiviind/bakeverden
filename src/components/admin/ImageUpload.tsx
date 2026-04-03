@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { uploadImage } from '@/lib/actions/uploadImage'
+import { Button, Alert } from '@/components/ui'
 
 interface ImageUploadProps {
   onImageUploaded: (url: string) => void
@@ -125,10 +126,7 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
           />
           {uploading && (
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
-              <div className="text-white flex items-center gap-2">
-                <span className="spinner"></span>
-                <span>Laster opp...</span>
-              </div>
+              <p className="text-white text-sm">Laster opp...</p>
             </div>
           )}
         </div>
@@ -143,19 +141,19 @@ export default function ImageUpload({ onImageUploaded, currentImageUrl }: ImageU
         className="hidden"
       />
 
-      <button
+      <Button
         type="button"
+        variant="secondary"
         onClick={() => fileInputRef.current?.click()}
-        disabled={uploading}
-        className="btn btn-secondary"
+        loading={uploading}
       >
         {uploading ? '⏳ Laster opp...' : (preview ? '🔄 Endre bilde' : '📷 Velg bilde')}
-      </button>
+      </Button>
 
       {error && (
-        <div className="alert alert-error mt-2">
+        <Alert variant="error" className="mt-2">
           {error}
-        </div>
+        </Alert>
       )}
 
       <small className="text-gray-500 mt-1 block">

@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { createBatch } from '@/lib/actions/createBatch'
 import ImageUpload from './ImageUpload'
+import { Button, Alert } from '@/components/ui'
 import type { Ingredient } from '@/types/database.types'
 
 interface BatchFormProps {
@@ -18,7 +19,7 @@ export default function BatchForm({ ingredients }: BatchFormProps) {
   const [resetImage, setResetImage] = useState(0) // Counter for å tvinge reset
   const formRef = useRef<HTMLFormElement>(null)
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError(null)
@@ -56,15 +57,11 @@ export default function BatchForm({ ingredients }: BatchFormProps) {
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
       {success && (
-        <div className="alert alert-success">
-          ✅ Kaken ble opprettet!
-        </div>
+        <Alert variant="success">✅ Kaken ble opprettet!</Alert>
       )}
-      
+
       {error && (
-        <div className="alert alert-error">
-          {error}
-        </div>
+        <Alert variant="error">{error}</Alert>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -181,13 +178,9 @@ export default function BatchForm({ ingredients }: BatchFormProps) {
         </label>
       </div>
 
-      <button 
-        type="submit" 
-        disabled={loading}
-        className="btn btn-primary btn-block"
-      >
+      <Button type="submit" fullWidth loading={loading}>
         {loading ? 'Oppretter...' : 'Opprett kake'}
-      </button>
+      </Button>
     </form>
   )
 }

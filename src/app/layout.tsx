@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bakeverden - Hjemmelagde kaker",
+  title: "Kjerstis Bakeverden",
   description: "Bestill deilige hjemmelagde kaker",
 };
 

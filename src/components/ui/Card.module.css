@@ -1,0 +1,76 @@
+/* ============================================
+   CARD — src/components/ui/Card.module.css
+   Compound component: <Card>, <Card.Image>,
+   <Card.Content>, <Card.Title>, <Card.Description>,
+   <Card.Price>, <Card.Meta>
+   ============================================ */
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* Suppress hover lift for disabled/sold-out cards */
+.card.muted {
+  opacity: 0.6;
+}
+
+.card.muted:hover {
+  transform: none;
+  box-shadow: var(--shadow);
+}
+
+/* ---- Sub-components ---- */
+
+.image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  background: var(--secondary);
+  display: block;
+}
+
+.content {
+  padding: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.description {
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}

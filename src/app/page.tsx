@@ -1,34 +1,38 @@
 import { getAvailableBatches } from '@/lib/actions/getBatches'
 import BatchCard from '@/components/BatchCard'
 import Header from '@/components/Header'
+import { Card } from '@/components/ui'
 
 export const revalidate = 0
 
 export default async function Home() {
   const batches = await getAvailableBatches()
-  
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      {/* MAIN CONTENT */}
       <main className="container py-8">
         <section className="mb-8">
-          <h2 className="text-3xl font-bold mb-2">Julebaksten 2026</h2>
+          <h1 className="section-heading">Julebaksten 2026</h1>
           <p className="text-gray-600">
-            Småkaker and andre godsaker som er klare for bestilling til Julen 2026
+            Småkaker og andre godsaker klare for bestilling til jul 2026
           </p>
         </section>
-        
+
         {batches.length === 0 ? (
-          <div className="card card-content text-center">
-            <p className="text-gray-500">Ingen kaker tilgjengelig akkurat nå.</p>
-            <p className="text-sm text-gray-400 mt-2">
-              Sjekk tilbake senere eller følg meg på sosiale medier!
-            </p>
-          </div>
+          <Card>
+            <Card.Content>
+              <div className="text-center py-4">
+                <p className="text-gray-500">Ingen kaker tilgjengelig akkurat nå.</p>
+                <p className="text-sm text-gray-400 mt-2">
+                  Sjekk tilbake senere eller følg meg på sosiale medier!
+                </p>
+              </div>
+            </Card.Content>
+          </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
             {batches.map(batch => (
               <BatchCard key={batch.id} batch={batch} />
             ))}
