@@ -1,3 +1,4 @@
+// src/types/database.types.ts
 export interface ProductBatch {
   id: string
   title: string
@@ -45,7 +46,7 @@ export interface Order {
   phone: string
   email?: string
   total_price: number
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  status: 'pending' | 'ready' | 'delivered' | 'cancelled'
   created_at: string
   order_items?: OrderItem[]
 }

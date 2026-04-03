@@ -6,6 +6,30 @@
 - Always read the relevant files before modifying or referencing them. Treat your file state as potentially stale.
 - Ask before creating new files, with a brief rationale for why a new file is warranted vs. extending an existing one.
 
+# Efficiency & Scope Control (HIGH PRIORITY)
+- Prefer the simplest possible solution — not the most robust or scalable.
+- Solve only the explicitly requested task — do not expand scope.
+- Do not add improvements, optimizations, or refactors unless explicitly asked.
+- Avoid introducing abstractions, helpers, or new layers unless clearly necessary.
+- Assume this is a small-to-medium project unless told otherwise.
+- Modify as little code as possible to achieve the goal.
+
+# Output Constraints
+- Keep responses short and focused.
+- Avoid long explanations — only include reasoning when it is not obvious.
+- Do not provide multiple alternative solutions.
+- Do not include “best practices” or generic advice unless explicitly requested.
+- Prefer showing diffs or minimal code changes over full file rewrites.
+- Avoid repeating or summarizing information unnecessarily.
+
+# Self-Check (before responding)
+- Is this the simplest possible solution?
+- Did I change more than necessary?
+- Did I introduce anything not explicitly requested?
+- Is the response longer than needed?
+
+If yes: simplify before responding.
+
 # Code Style
 - Follow industry-standard conventions for TypeScript, React, and Next.js.
 - Comment where it aids navigation (section headers, non-obvious logic) — not to explain self-evident code.

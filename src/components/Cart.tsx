@@ -73,7 +73,7 @@ export default function Cart() {
               </div>
 
               <div className="text-right flex-shrink-0">
-                <div className="font-bold text-lg text-pink-600">
+                <div className="font-bold text-lg">
                   {item.batch.price * item.quantity},-
                 </div>
               </div>
@@ -86,7 +86,7 @@ export default function Cart() {
         <Card.Content>
           <div className="flex justify-between items-center text-xl font-bold mb-4">
             <span>Totalt ({getTotalItems()} stk):</span>
-            <span className="text-pink-600">{getTotalPrice()},-</span>
+            <span>{getTotalPrice()},-</span>
           </div>
 
           <Link href="/checkout" className={getButtonClassName('primary', 'md', true)}>

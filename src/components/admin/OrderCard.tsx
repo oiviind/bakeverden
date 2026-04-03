@@ -1,0 +1,166 @@
+'use client'
+
+import { useState } from 'react'
+import { updateOrderStatus } from '@/app/admin/actions' // Endre denne linjen
+import { Card, Badge, Button, Alert } from '@/components/ui'
+import type { Order } from '@/types/database.types'
+
+interface OrderCardProps {
+  order: Order & {
+    order_items?: Array<{
+      id: string
+      quantity: number
+      price_at_time: number
+      batch?: {
+        title: string
+        pickup_start: string
+        pickup_end: string
+      }
+    }>
+  }
+}
+
+export default function OrderCard({ order }: OrderCardProps) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function handleStatusChange(newStatus: 'pending' | 'ready' | 'delivered' | 'cancelled') {
+    setLoading(true)
+    setError(null)
+
+    const result = await updateOrderStatus(order.id, newStatus)
+
+    setLoading(false)
+
+    if (!result.success) {
+      setError(result.error || 'Noe gikk galt')
+    }
+  }
+
+  const statusConfig = {
+    pending: { label: 'Venter', variant: 'warning' as const, icon: '⏳' },
+    ready: { label: 'Klar for henting', variant: 'info' as const, icon: '✅' },
+    delivered: { label: 'Levert', variant: 'success' as const, icon: '📦' },
+    cancelled: { label: 'Kansellert', variant: 'error' as const, icon: '❌' }
+  }
+
+  const config = statusConfig[order.status]
+
+  return (
+    <Card>
+      <Card.Content>
+        {error && (
+          <Alert variant="error" className="mb-4">{error}</Alert>
+        )}
+
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h2 className="font-semibold text-lg">{order.name}</h2>
+            <p className="text-sm text-gray-600">📞 {order.phone}</p>
+            {order.email && (
+              <p className="text-sm text-gray-600">📧 {order.email}</p>
+            )}
+            <p className="text-xs text-gray-500 mt-1">
+              {new Date(order.created_at).toLocaleString('nb-NO', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}
+            </p>
+          </div>
+          <div className="text-right flex flex-col items-end gap-2">
+            <span className="text-xl font-bold text-pink-600">
+              {order.total_price},-
+            </span>
+            <Badge variant={config.variant}>
+              {config.icon} {config.label}
+            </Badge>
+          </div>
+        </div>
+
+        <div className="bg-gray-50 rounded-lg p-3 mb-4">
+          <h3 className="font-semibold text-sm mb-2">Produkter:</h3>
+          {order.order_items?.map((item) => (
+            <div key={item.id} className="flex justify-between text-sm py-1">
+              <span>
+                {item.batch?.title || 'Ukjent produkt'} × {item.quantity}
+              </span>
+              <span className="font-medium">
+                {item.price_at_time * item.quantity},-
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Status transition buttons */}
+        <div className="flex flex-col gap-2">
+          {order.status === 'pending' && (
+            <>
+              <Button
+                onClick={() => handleStatusChange('ready')}
+                loading={loading}
+                variant="primary"
+                fullWidth
+              >
+                ✅ Marker som klar for henting
+              </Button>
+              <Button
+                onClick={() => handleStatusChange('cancelled')}
+                loading={loading}
+                variant="danger"
+                fullWidth
+              >
+                ❌ Kanseller bestilling
+              </Button>
+            </>
+          )}
+
+          {order.status === 'ready' && (
+            <>
+              <Button
+                onClick={() => handleStatusChange('delivered')}
+                loading={loading}
+                variant="primary"
+                fullWidth
+              >
+                📦 Marker som levert
+              </Button>
+              <Button
+                onClick={() => handleStatusChange('pending')}
+                loading={loading}
+                variant="neutral"
+                fullWidth
+              >
+                ⏪ Tilbake til venter
+              </Button>
+            </>
+          )}
+
+          {order.status === 'delivered' && (
+            <Button
+              onClick={() => handleStatusChange('ready')}
+              loading={loading}
+              variant="neutral"
+              fullWidth
+            >
+              ⏪ Tilbake til klar for henting
+            </Button>
+          )}
+
+          {order.status === 'cancelled' && (
+            <Button
+              onClick={() => handleStatusChange('pending')}
+              loading={loading}
+              variant="neutral"
+              fullWidth
+            >
+              🔄 Reaktiver bestilling
+            </Button>
+          )}
+        </div>
+      </Card.Content>
+    </Card>
+  )
+}

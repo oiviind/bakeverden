@@ -1,12 +1,14 @@
-import { createClient } from '@/lib/supabase'
+// src/app/admin/page.tsx
+import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import Header from '@/components/Header'
-import { Card, Badge, Alert, getButtonClassName } from '@/components/ui'
+import OrderCard from '@/components/admin/OrderCard'
+import { Card, Alert, getButtonClassName } from '@/components/ui'
 
 export const revalidate = 0
 
 export default async function AdminPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: orders, error } = await supabase
     .from('orders')
@@ -14,6 +16,7 @@ export default async function AdminPage() {
       id,
       name,
       phone,
+      email,
       total_price,
       status,
       created_at,
@@ -42,76 +45,87 @@ export default async function AdminPage() {
     )
   }
 
+  // Group orders by status
+  const pendingOrders = orders?.filter(o => o.status === 'pending') || []
+  const readyOrders = orders?.filter(o => o.status === 'ready') || []
+  const deliveredOrders = orders?.filter(o => o.status === 'delivered') || []
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
       <main className="container py-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <h1 className="page-title" style={{ marginBottom: 0 }}>Admin Dashboard</h1>
-          <Link href="/admin/batches" className={getButtonClassName('primary')}>
-            Administrer kaker
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <Link href="/admin/statistics" className={getButtonClassName('secondary')}>
+              📊 Statistikk
+            </Link>
+            <Link href="/admin/batches" className={getButtonClassName('primary')}>
+              🍰 Administrer kaker
+            </Link>
+          </div>
         </div>
 
-        <p className="text-gray-600 mb-6">
-          Alle bestillinger ({orders?.length || 0})
-        </p>
+        {/* Pending Orders */}
+        <section className="mb-8">
+          <h2 className="section-heading mb-4">
+            Nye bestillinger ({pendingOrders.length})
+          </h2>
+          {pendingOrders.length === 0 ? (
+            <Card>
+              <Card.Content>
+                <p className="text-gray-500 text-center py-8">Ingen nye bestillinger</p>
+              </Card.Content>
+            </Card>
+          ) : (
+            <div className="space-y-4 md:space-y-6">
+              {pendingOrders.map((order: any) => (
+                <OrderCard key={order.id} order={order} />
+              ))}
+            </div>
+          )}
+        </section>
 
-        {!orders || orders.length === 0 ? (
-          <Card>
-            <Card.Content>
-              <p className="text-gray-500 text-center py-8">Ingen bestillinger ennå</p>
-            </Card.Content>
-          </Card>
-        ) : (
-          <div className="space-y-4 md:space-y-6">
-            {orders.map((order: any) => (
-              <Card key={order.id}>
-                <Card.Content>
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h2 className="font-semibold text-lg">{order.name}</h2>
-                      <p className="text-sm text-gray-600">📞 {order.phone}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {new Date(order.created_at).toLocaleString('nb-NO')}
-                      </p>
-                    </div>
-                    <div className="text-right flex flex-col items-end gap-2">
-                      <span className="text-xl font-bold text-pink-600">
-                        {order.total_price},-
-                      </span>
-                      <Badge
-                        variant={
-                          order.status === 'completed' ? 'success' :
-                          order.status === 'cancelled' ? 'error' :
-                          'warning'
-                        }
-                      >
-                        {order.status === 'pending' && 'Venter'}
-                        {order.status === 'confirmed' && 'Bekreftet'}
-                        {order.status === 'completed' && 'Fullført'}
-                        {order.status === 'cancelled' && 'Kansellert'}
-                      </Badge>
-                    </div>
-                  </div>
+        {/* Ready Orders */}
+        <section className="mb-8">
+          <h2 className="section-heading mb-4">
+            Klare for henting ({readyOrders.length})
+          </h2>
+          {readyOrders.length === 0 ? (
+            <Card>
+              <Card.Content>
+                <p className="text-gray-500 text-center py-8">Ingen bestillinger klare for henting</p>
+              </Card.Content>
+            </Card>
+          ) : (
+            <div className="space-y-4 md:space-y-6">
+              {readyOrders.map((order: any) => (
+                <OrderCard key={order.id} order={order} />
+              ))}
+            </div>
+          )}
+        </section>
 
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <h3 className="font-semibold text-sm mb-2">Produkter:</h3>
-                    {order.order_items?.map((item: any) => (
-                      <div key={item.id} className="flex justify-between text-sm py-1">
-                        <span>{item.batch?.title} × {item.quantity}</span>
-                        <span className="font-medium">
-                          {item.price_at_time * item.quantity},-
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </Card.Content>
-              </Card>
-            ))}
-          </div>
-        )}
+        {/* Delivered Orders - History */}
+        <section>
+          <h2 className="section-heading mb-4">
+            Historikk ({deliveredOrders.length})
+          </h2>
+          {deliveredOrders.length === 0 ? (
+            <Card>
+              <Card.Content>
+                <p className="text-gray-500 text-center py-8">Ingen leverte bestillinger</p>
+              </Card.Content>
+            </Card>
+          ) : (
+            <div className="space-y-4 md:space-y-6">
+              {deliveredOrders.map((order: any) => (
+                <OrderCard key={order.id} order={order} />
+              ))}
+            </div>
+          )}
+        </section>
       </main>
     </div>
   )

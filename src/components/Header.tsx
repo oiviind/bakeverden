@@ -15,7 +15,7 @@ export default function Header() {
       <header className={`${styles.header} sticky top-0 z-10`}>
         <div className={`container ${styles.headerContent}`}>
           <Link href="/" className={styles.logo}>
-            Bakeverden
+            Kjerstis Bakeverden
           </Link>
 
           {/* Desktop Navigation */}

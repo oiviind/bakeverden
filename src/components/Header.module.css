@@ -16,6 +16,7 @@
   font-weight: bold;
   color: white;
   transition: opacity 0.2s;
+  padding-left: 1rem;
 }
 
 .logo:hover {
