@@ -2,15 +2,16 @@ import { createClient } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Header from '@/components/Header'
 import AddToCartButton from '@/components/AddToCartButton'
+import { Card, Badge, Alert } from '@/components/ui'
 
-export default async function ReservePage({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
+export default async function ReservePage({
+  params
+}: {
+  params: Promise<{ id: string }>
 }) {
   const { id } = await params
   const supabase = createClient()
-  
+
   // Hent batch med ingredienser
   const { data: batch, error } = await supabase
     .from('product_batches')
@@ -54,13 +55,12 @@ export default async function ReservePage({
       <main className="container py-6">
         <div className="max-w-2xl mx-auto">
           {/* Kakeinformasjon */}
-          <div className="card mb-6">
+          <Card className="mb-6">
             {batch.image_url && (
               <div className="relative">
-                <img 
-                  src={batch.image_url} 
+                <Card.Image
+                  src={batch.image_url}
                   alt={batch.title}
-                  className="card-image"
                 />
                 {isSoldOut && (
                   <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
@@ -71,19 +71,17 @@ export default async function ReservePage({
                 )}
               </div>
             )}
-            
-            <div className="card-content">
+
+            <Card.Content>
               <h2 className="text-2xl font-bold mb-2">{batch.title}</h2>
-              
+
               {batch.description && (
-                <p className="text-gray-600 mb-4">{batch.description}</p>
+                <Card.Description className="mb-4">{batch.description}</Card.Description>
               )}
 
               <div className="flex items-center justify-between mb-4 pb-4 border-b">
                 <div>
-                  <div className="text-3xl font-bold text-pink-600">
-                    {batch.price},-
-                  </div>
+                  <Card.Price>{batch.price},-</Card.Price>
                   <div className="text-sm text-gray-600">
                     📦 {batch.remaining_quantity} av {batch.total_quantity} igjen
                   </div>
@@ -103,17 +101,13 @@ export default async function ReservePage({
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {ingredients.map((ing: any) => (
-                      <span 
+                      <Badge
                         key={ing.id}
-                        className={`px-3 py-1 rounded-full text-sm ${
-                          ing.allergen 
-                            ? 'bg-red-50 text-red-700 border border-red-200 font-medium' 
-                            : 'bg-gray-100 text-gray-700'
-                        }`}
+                        variant={ing.allergen ? 'error' : 'info'}
                       >
                         {ing.allergen && '⚠️ '}
                         {ing.name}
-                      </span>
+                      </Badge>
                     ))}
                   </div>
                 </div>
@@ -121,40 +115,39 @@ export default async function ReservePage({
 
               {/* ALLERGENER */}
               {allergens.length > 0 && (
-                <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-4">
-                  <h3 className="font-semibold text-red-600 mb-3 flex items-center gap-2">
-                    <span className="text-xl">⚠️</span>
-                    Inneholder allergener:
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {allergens.map((allergen: any) => (
-                      <span 
-                        key={allergen.id}
-                        className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-semibold"
-                      >
-                        {allergen.name}
-                      </span>
-                    ))}
+                <Alert variant="error" className="mb-4">
+                  <div>
+                    <h3 className="font-semibold flex items-center gap-2 mb-3">
+                      <span className="text-xl">⚠️</span>
+                      Inneholder allergener:
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {allergens.map((allergen: any) => (
+                        <Badge key={allergen.id} variant="error">
+                          {allergen.name}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </Alert>
               )}
-            </div>
-          </div>
+            </Card.Content>
+          </Card>
 
           {/* Legg til i handlekurv */}
-          <div className="card">
-            <div className="card-content">
+          <Card>
+            <Card.Content>
               <h3 className="text-xl font-bold mb-4">Legg til i handlekurv</h3>
-              
+
               {isSoldOut ? (
-                <div className="alert alert-error">
+                <Alert variant="error">
                   <p className="font-semibold">Denne kaken er dessverre utsolgt</p>
-                </div>
+                </Alert>
               ) : (
                 <AddToCartButton batch={batch} />
               )}
-            </div>
-          </div>
+            </Card.Content>
+          </Card>
         </div>
       </main>
     </div>

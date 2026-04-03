@@ -1,0 +1,38 @@
+/* ============================================
+   BADGE — src/components/ui/Badge.module.css
+   Inline status/label chip.
+   ============================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* ---- Variants ---- */
+
+.success {
+  background-color: var(--success);
+  color: white;
+}
+
+.warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.error {
+  background-color: var(--error);
+  color: white;
+}
+
+.info {
+  background-color: var(--secondary);
+  color: var(--primary-dark);
+}

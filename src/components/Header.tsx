@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useCart } from '@/lib/contexts/CartContext'
+import styles from './Header.module.css'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -11,26 +12,26 @@ export default function Header() {
 
   return (
     <>
-      <header className="header sticky top-0 z-10">
-        <div className="container header-content">
-          <Link href="/" className="header-logo">
+      <header className={`${styles.header} sticky top-0 z-10`}>
+        <div className={`container ${styles.headerContent}`}>
+          <Link href="/" className={styles.logo}>
             Bakeverden
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="header-nav-desktop">
-            <Link href="/" className="header-link">
+          <nav className={styles.navDesktop}>
+            <Link href="/" className={styles.navLink}>
               Hjem
             </Link>
-            <Link href="/cart" className="header-link relative">
+            <Link href="/cart" className={`${styles.navLink} relative`}>
               🛒 Handlekurv
               {itemCount > 0 && (
-                <span className="cart-notification-badge cart-badge-desktop">
+                <span className={`${styles.cartBadge} ${styles.cartBadgeDesktop}`}>
                   {itemCount}
                 </span>
               )}
             </Link>
-            <Link href="/admin" className="header-link header-link-admin">
+            <Link href="/admin" className={`${styles.navLink} ${styles.navLinkAdmin}`}>
               Admin
             </Link>
           </nav>
@@ -38,17 +39,17 @@ export default function Header() {
           {/* Mobile: Hamburger with badge */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="header-hamburger md:hidden relative"
+            className={`${styles.hamburger} relative`}
             aria-label="Toggle menu"
           >
             {itemCount > 0 && (
-              <span className="cart-notification-badge cart-badge-mobile-hamburger">
+              <span className={`${styles.cartBadge} ${styles.cartBadgeMobileHamburger}`}>
                 {itemCount}
               </span>
             )}
-            <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
-            <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
-            <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
+            <span className={`${styles.hamburgerLine} ${isMenuOpen ? 'open' : ''}`} />
+            <span className={`${styles.hamburgerLine} ${isMenuOpen ? 'open' : ''}`} />
+            <span className={`${styles.hamburgerLine} ${isMenuOpen ? 'open' : ''}`} />
           </button>
         </div>
       </header>
@@ -56,36 +57,36 @@ export default function Header() {
       {/* Mobile Navigation */}
       {isMenuOpen && (
         <>
-          <div 
-            className="header-overlay"
+          <div
+            className={styles.overlay}
             onClick={() => setIsMenuOpen(false)}
           />
-          <nav className={`header-nav-mobile ${isMenuOpen ? 'open' : ''}`}>
-            <Link 
-              href="/" 
-              className="header-mobile-link"
+          <nav className={`${styles.navMobile} ${isMenuOpen ? 'open' : ''}`}>
+            <Link
+              href="/"
+              className={styles.mobileLink}
               onClick={() => setIsMenuOpen(false)}
             >
               🏠 Hjem
             </Link>
-            <Link 
-              href="/cart" 
-              className="header-mobile-link"
+            <Link
+              href="/cart"
+              className={styles.mobileLink}
               onClick={() => setIsMenuOpen(false)}
             >
               <span className="flex items-center">
                 🛒 Handlekurv
                 {itemCount > 0 && (
-                  <span className="cart-notification-badge cart-badge-mobile-menu">
+                  <span className={`${styles.cartBadge} ${styles.cartBadgeMobileMenu}`}>
                     {itemCount}
                   </span>
                 )}
               </span>
             </Link>
-            <div className="header-mobile-divider" />
-            <Link 
-              href="/admin" 
-              className="header-mobile-link header-mobile-admin"
+            <div className={styles.mobileDivider} />
+            <Link
+              href="/admin"
+              className={`${styles.mobileLink} ${styles.mobileLinkAdmin}`}
               onClick={() => setIsMenuOpen(false)}
             >
               ⚙️ Admin

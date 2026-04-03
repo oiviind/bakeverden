@@ -1,0 +1,41 @@
+/* ============================================
+   ALERT — src/components/ui/Alert.module.css
+   Block-level feedback banners.
+   ============================================ */
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  border: 1px solid transparent;
+}
+
+/* ---- Variants ---- */
+
+.success {
+  background: #d1fae5;
+  color: #065f46;
+  border-color: var(--success);
+}
+
+.error {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: var(--error);
+}
+
+.warning {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #f59e0b;
+}
+
+.info {
+  background: var(--secondary);
+  color: var(--primary-dark);
+  border-color: var(--primary);
+}

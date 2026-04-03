@@ -1,0 +1,191 @@
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  transition: opacity 0.2s;
+}
+
+.logo:hover {
+  opacity: 0.9;
+}
+
+/* Desktop nav — hidden by default, shown at md breakpoint */
+.navDesktop {
+  display: none;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .navDesktop {
+    display: flex;
+  }
+}
+
+.navLink {
+  color: white;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.navLink:hover {
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.navLinkAdmin {
+  background: rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+}
+
+.navLinkAdmin:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Hamburger button — visible on mobile only */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 60;
+}
+
+@media (min-width: 768px) {
+  .hamburger {
+    display: none;
+  }
+}
+
+.hamburgerLine {
+  width: 2rem;
+  height: 0.25rem;
+  background: white;
+  border-radius: 10px;
+  transition: all 0.3s;
+  transform-origin: 1px;
+}
+
+/* :global(.open) targets the "open" class added dynamically in JSX */
+.hamburgerLine:first-child:global(.open) { transform: rotate(45deg); }
+.hamburgerLine:nth-child(2):global(.open) { opacity: 0; transform: translateX(20px); }
+.hamburgerLine:last-child:global(.open) { transform: rotate(-45deg); }
+
+/* Mobile slide-in nav */
+.navMobile {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 280px;
+  height: 100vh;
+  background: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  padding: 5rem 2rem 2rem;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.navMobile:global(.open) {
+  transform: translateX(0);
+}
+
+.mobileLink {
+  color: var(--text);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.mobileLink:hover {
+  background: var(--background);
+}
+
+.mobileLinkAdmin {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.mobileLinkAdmin:hover {
+  opacity: 0.9;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.mobileDivider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.5rem 0;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Cart notification badge */
+.cartBadge {
+  position: absolute;
+  background-color: var(--error);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 9999px;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.375rem;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.cartBadgeDesktop {
+  top: -0.25rem;
+  right: -0.25rem;
+}
+
+.cartBadgeMobileHamburger {
+  top: -0.25rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+.cartBadgeMobileMenu {
+  position: static;
+  display: inline-flex;
+  margin-left: 0.5rem;
+}
