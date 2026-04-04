@@ -133,7 +133,13 @@ export default function OrderCard({ order }: OrderCardProps) {
               {order.phone && (
                 <Button
                   as="a"
-                  href={`sms:${order.phone}?body=${encodeURIComponent('Din bestilling er nå klar for henting. MVH Kjersti')}`}
+                  href={(() => {
+                    const items = order.order_items
+                      ?.map(item => `${item.batch?.title || 'Ukjent'} x${item.quantity}`)
+                      .join('\n') ?? ''
+                    const body = `Din bestilling på følgende:\n${items}\n\nEr nå klar til levering!\n\nMed vennlig hilsen, Kjersti`
+                    return `sms:${order.phone}?body=${encodeURIComponent(body)}`
+                  })()}
                   variant="secondary"
                   fullWidth
                 >
