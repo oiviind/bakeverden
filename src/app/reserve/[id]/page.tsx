@@ -36,13 +36,16 @@ export default async function ReservePage({
 
   const isSoldOut = batch.remaining_quantity === 0
 
-  const pickupDate = new Date(batch.pickup_start).toLocaleDateString('nb-NO', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+  const fmtPickup = (iso: string) =>
+    new Date(iso).toLocaleDateString('nb-NO', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+  const pickupStart = fmtPickup(batch.pickup_start)
+  const pickupEnd = fmtPickup(batch.pickup_end)
 
   // Ekstraher ingredienser og allergener
   const ingredients = batch.batch_ingredients?.map((bi: any) => bi.ingredients).filter(Boolean) || []
@@ -87,8 +90,8 @@ export default async function ReservePage({
                   </div>
                 </div>
                 <div className="text-right text-sm text-gray-600">
-                  <div className="font-semibold mb-1">📅 Henting innen:</div>
-                  <div>{pickupDate}</div>
+                  <div className="font-semibold mb-1">📅 Levering mellom:</div>
+                  <div>{pickupStart} og {pickupEnd}</div>
                 </div>
               </div>
 
@@ -101,11 +104,7 @@ export default async function ReservePage({
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {ingredients.map((ing: any) => (
-                      <Badge
-                        key={ing.id}
-                        variant={ing.allergen ? 'error' : 'info'}
-                      >
-                        {ing.allergen && '⚠️ '}
+                      <Badge key={ing.id} variant="info">
                         {ing.name}
                       </Badge>
                     ))}
