@@ -23,7 +23,7 @@ export default async function EditBatchPage({ params }: { params: Promise<{ id: 
 
   if (!batch) notFound()
 
-  const selectedIngredientIds = [...new Set(batch.batch_ingredients?.map((bi: any) => bi.ingredient_id) ?? [])]
+  const selectedIngredientIds: string[] = [...new Set<string>(batch.batch_ingredients?.map((bi: any) => bi.ingredient_id as string) ?? [])]
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import OrderCard from '@/components/admin/OrderCard'
+import UpdatedToast from '@/components/admin/UpdatedToast'
 import { Card, Alert, getButtonClassName } from '@/components/ui'
 
 export const revalidate = 0
@@ -53,6 +54,7 @@ export default async function AdminPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <UpdatedToast />
       <Header />
 
       <main className="container py-6">
@@ -61,6 +63,9 @@ export default async function AdminPage() {
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Link href="/admin/statistics" className={getButtonClassName('secondary')}>
               📊 Statistikk
+            </Link>
+            <Link href="/admin/orders/new" className={getButtonClassName('secondary')}>
+              📝 Ny bestilling
             </Link>
             <Link href="/admin/batches" className={getButtonClassName('primary')}>
               🍰 Administrer kaker
