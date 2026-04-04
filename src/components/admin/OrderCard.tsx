@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { updateOrderStatus } from '@/app/admin/actions' // Endre denne linjen
+import { updateOrderStatus, sendReadyEmail } from '@/app/admin/actions'
 import { Card, Badge, Button, Alert } from '@/components/ui'
 import type { Order } from '@/types/database.types'
 
@@ -23,6 +23,17 @@ interface OrderCardProps {
 export default function OrderCard({ order }: OrderCardProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [emailSent, setEmailSent] = useState(false)
+
+  async function handleSendEmail() {
+    if (!order.email) return
+    setLoading(true)
+    setError(null)
+    const result = await sendReadyEmail(order.email)
+    setLoading(false)
+    if (result.success) setEmailSent(true)
+    else setError(result.error || 'Kunne ikke sende e-post')
+  }
 
   async function handleStatusChange(newStatus: 'pending' | 'ready' | 'delivered' | 'cancelled') {
     setLoading(true)
@@ -119,6 +130,16 @@ export default function OrderCard({ order }: OrderCardProps) {
 
           {order.status === 'ready' && (
             <>
+              {order.email && (
+                <Button
+                  onClick={handleSendEmail}
+                  loading={loading}
+                  variant="secondary"
+                  fullWidth
+                >
+                  {emailSent ? '✅ Varsling sendt' : '📧 Send E-post til kunde'}
+                </Button>
+              )}
               <Button
                 onClick={() => handleStatusChange('delivered')}
                 loading={loading}

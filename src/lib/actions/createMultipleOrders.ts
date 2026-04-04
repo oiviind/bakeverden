@@ -13,9 +13,10 @@ export async function createMultipleOrders(formData: FormData): Promise<CreateOr
   
   const name = formData.get('name') as string
   const phone = formData.get('phone') as string
+  const email = formData.get('email') as string
   const cartItemsJson = formData.get('cartItems') as string
-  
-  if (!name || !phone || !cartItemsJson) {
+
+  if (!name || !phone || !email || !cartItemsJson) {
     return {
       success: false,
       error: 'Mangler påkrevd informasjon'
@@ -70,6 +71,7 @@ export async function createMultipleOrders(formData: FormData): Promise<CreateOr
       .insert({
         name: name,
         phone: phone,
+        email: email,
         total_price: totalPrice,
         status: 'pending'
       })

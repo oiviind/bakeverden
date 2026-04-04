@@ -130,6 +130,17 @@ export default function CheckoutPage() {
                   />
                 </div>
 
+                <div className="form-group">
+                  <label className="form-label">E-post *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    className="form-input"
+                    placeholder="din@epost.no"
+                  />
+                </div>
+
                 <Button
                   type="submit"
                   fullWidth
