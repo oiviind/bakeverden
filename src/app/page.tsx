@@ -1,6 +1,7 @@
 import Header from '@/components/Header'
 import Image from 'next/image'
 import styles from './page.module.css'
+import JulebakstBanner from '@/components/JulebakstBanner'
 
 const cakes = [
   { src: '/specialcakes/bursdag1.png', title: 'Bursdagskake', description: 'Bestillingskake' },
@@ -41,6 +42,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <JulebakstBanner />
 
       {/* About section */}
       <section className={`${styles.aboutSection} py-16`}>
