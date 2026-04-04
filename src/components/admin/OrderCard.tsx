@@ -143,9 +143,9 @@ export default function OrderCard({ order }: OrderCardProps) {
                       fullWidth
                       onClick={async () => {
                         const items = order.order_items
-                          ?.map(item => `${item.batch?.title || 'Ukjent'} x${item.quantity}`)
+                          ?.map(item => `${item.batch?.title || 'Ukjent'} - x${item.quantity}`)
                           .join('\n') ?? ''
-                        const body = `Din bestilling på følgende:\n${items}\n\nEr nå klar til levering!\n\nMed vennlig hilsen, Kjersti`
+                        const body = `Din bestilling hos Kjerstis Bakeverden:\n${items}\n\nEr nå klar for henting!\nMed vennlig hilsen,\nKjersti`
                         window.location.href = `sms:${order.phone}?body=${encodeURIComponent(body)}`
                         const result = await markSmsSent(order.id)
                         if (result.success) setSmsSent(true)
