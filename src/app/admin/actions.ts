@@ -74,6 +74,21 @@ export async function sendReceiptEmail(orderId: string) {
   }
 }
 
+export async function markSmsSent(orderId: string) {
+  try {
+    const supabase = await createClient()
+    const { error } = await supabase
+      .from('orders')
+      .update({ sms_sent: true })
+      .eq('id', orderId)
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/admin')
+    return { success: true }
+  } catch {
+    return { success: false, error: 'Noe gikk galt' }
+  }
+}
+
 export async function sendReadyEmail(email: string) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
