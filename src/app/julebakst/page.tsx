@@ -14,9 +14,9 @@ export default async function Home() {
 
       <main className="container py-8">
         <section className="mb-8">
-          <h1 className="section-heading">Julebaksten 2026</h1>
+          <h1 className="section-heading">Julen 2026</h1>
           <p className="text-gray-600">
-            Småkaker og andre godsaker klare for bestilling til jul 2026
+            Småkaker og andre godsaker klare for bestilling til jul. Henting innen 18. Desember kl 16:00
           </p>
         </section>
 
