@@ -21,8 +21,8 @@ export default function PersonvernPage() {
                 <ul className="list-disc list-inside text-gray-600 space-y-1">
                   <li>Navn</li>
                   <li>Telefonnummer</li>
-                  <li>E-postadresse (valgfritt)</li>
-                  <li>Bestillingsinformasjon (produkter, antall, pris)</li>
+                  <li>E-postadresse</li>
+                  <li>Bestillingsinformasjon</li>
                 </ul>
               </section>
 
@@ -34,7 +34,7 @@ export default function PersonvernPage() {
                 <ul className="list-disc list-inside text-gray-600 space-y-1">
                   <li>Behandle og administrere bestillingen din</li>
                   <li>Sende ordrebekreftelse og kvittering</li>
-                  <li>Varsle deg via SMS når bestillingen er klar for henting</li>
+                  <li>Varsle deg via SMS/E-post når bestillingen er klar for henting</li>
                   <li>Kontakte deg ved spørsmål knyttet til bestillingen</li>
                 </ul>
               </section>
@@ -43,7 +43,6 @@ export default function PersonvernPage() {
                 <h2 className="section-heading mb-3">Hvor lagres dataene?</h2>
                 <p className="text-gray-600">
                   All informasjon lagres sikkert i Supabase — en moderne og sikker databasetjeneste.
-                  Vi lagrer ikke kortinformasjon eller betalingsdata.
                 </p>
               </section>
 
