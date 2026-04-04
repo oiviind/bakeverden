@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useCart } from '@/lib/contexts/CartContext'
 import { Button } from '@/components/ui'
 import styles from './AddToCartModal.module.css'
@@ -26,7 +27,7 @@ export default function AddToCartModal({ batch, isOpen, onClose }: AddToCartModa
 
   const totalPrice = batch.price * quantity
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
       onClick={onClose}
@@ -103,6 +104,7 @@ export default function AddToCartModal({ batch, isOpen, onClose }: AddToCartModa
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
