@@ -130,6 +130,16 @@ export default function OrderCard({ order }: OrderCardProps) {
 
           {order.status === 'ready' && (
             <>
+              {order.phone && (
+                <Button
+                  as="a"
+                  href={`sms:${order.phone}?body=${encodeURIComponent('Din bestilling er nå klar for henting. MVH Kjersti')}`}
+                  variant="secondary"
+                  fullWidth
+                >
+                  💬 Send SMS til kunde
+                </Button>
+              )}
               {order.email && (
                 <Button
                   onClick={handleSendEmail}
