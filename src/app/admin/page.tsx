@@ -19,6 +19,7 @@ export default async function AdminPage() {
       email,
       total_price,
       status,
+      sms_sent,
       created_at,
       order_items (
         id,

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { updateOrderStatus, sendReadyEmail } from '@/app/admin/actions'
+import { updateOrderStatus, sendReadyEmail, markSmsSent } from '@/app/admin/actions'
 import { Card, Badge, Button, Alert } from '@/components/ui'
 import type { Order } from '@/types/database.types'
 
@@ -24,6 +24,7 @@ export default function OrderCard({ order }: OrderCardProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [emailSent, setEmailSent] = useState(false)
+  const [smsSent, setSmsSent] = useState(order.sms_sent)
 
   async function handleSendEmail() {
     if (!order.email) return
@@ -131,20 +132,29 @@ export default function OrderCard({ order }: OrderCardProps) {
           {order.status === 'ready' && (
             <>
               {order.phone && (
-                <Button
-                  as="a"
-                  href={(() => {
-                    const items = order.order_items
-                      ?.map(item => `${item.batch?.title || 'Ukjent'} x${item.quantity}`)
-                      .join('\n') ?? ''
-                    const body = `Din bestilling på følgende:\n${items}\n\nEr nå klar til levering!\n\nMed vennlig hilsen, Kjersti`
-                    return `sms:${order.phone}?body=${encodeURIComponent(body)}`
-                  })()}
-                  variant="secondary"
-                  fullWidth
-                >
-                  💬 Send SMS til kunde
-                </Button>
+                <>
+                  {smsSent ? (
+                    <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                      ✅ SMS sendt til {order.phone}
+                    </div>
+                  ) : (
+                    <Button
+                      variant="secondary"
+                      fullWidth
+                      onClick={async () => {
+                        const items = order.order_items
+                          ?.map(item => `${item.batch?.title || 'Ukjent'} x${item.quantity}`)
+                          .join('\n') ?? ''
+                        const body = `Din bestilling på følgende:\n${items}\n\nEr nå klar til levering!\n\nMed vennlig hilsen, Kjersti`
+                        window.location.href = `sms:${order.phone}?body=${encodeURIComponent(body)}`
+                        const result = await markSmsSent(order.id)
+                        if (result.success) setSmsSent(true)
+                      }}
+                    >
+                      💬 Send SMS til kunde
+                    </Button>
+                  )}
+                </>
               )}
               {order.email && (
                 <Button
