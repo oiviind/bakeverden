@@ -80,9 +80,9 @@ export default function Home() {
       <section className="bg-white py-16">
         <div className="container">
           <h2 className="section-heading text-center mb-10">Mine kaker</h2>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
+          <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
             {cakes.map((cake) => (
-              <div key={cake.src} className="rounded-xl overflow-hidden" style={{ boxShadow: 'var(--shadow)' }}>
+              <div key={cake.src} className="min-w-[75vw] md:min-w-0 snap-start rounded-xl overflow-hidden flex-shrink-0 md:flex-shrink" style={{ boxShadow: 'var(--shadow)' }}>
                 <div className="aspect-square relative">
                   <Image
                     src={cake.src}

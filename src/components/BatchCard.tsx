@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import AddToCartModal from './AddToCartModal'
-import { Card, Button, getButtonClassName } from '@/components/ui'
+import { Card, Button } from '@/components/ui'
 import type { ProductBatch } from '@/types/database.types'
 
 interface BatchCardProps {
@@ -46,40 +46,38 @@ export default function BatchCard({ batch }: BatchCardProps) {
           </Link>
         )}
 
-        <Card.Content>
+        <Card.Content className="max-md:!p-2">
           <Link href={`/reserve/${batch.id}`}>
-            <Card.Title className="mb-2 hover:text-pink-600 transition-colors">
+            <Card.Title className="max-md:!text-sm max-md:!text-gray-800 mb-1 md:mb-2 hover:text-pink-600 transition-colors">
               {batch.title}
             </Card.Title>
           </Link>
 
           {batch.description && (
-            <Card.Description className="text-sm mb-4 line-clamp-2">
+            <Card.Description className="text-sm max-md:!text-gray-800 max-md:mb-1 mb-4 line-clamp-2">
               {batch.description}
             </Card.Description>
           )}
 
-          <div className="flex items-center justify-between mb-4">
-            <Card.Price>{batch.price},-</Card.Price>
-            <div className="text-sm text-gray-600">{batch.remaining_quantity} igjen</div>
+          <div className="flex items-center justify-between mb-4 max-md:mb-1">
+            <Card.Price className="md:block hidden">
+              {batch.price},-
+            </Card.Price>
+            <div className="text-sm text-gray-600 max-md:hidden">{batch.remaining_quantity} igjen</div>
           </div>
 
-          <div className="font-semibold mb-1">📅 Levering innen:</div>
-          <div className="mb-3 text-sm">{pickupEnd}</div>
+          <div className="font-semibold mb-1 max-md:font-normal max-md:text-sm max-md:text-gray-800">📅 Levering innen:</div>
+          <div className="mb-3 text-sm max-md:text-gray-800 max-md:mb-2">{pickupEnd}</div>
 
-          <div className="flex flex-col gap-3 mt-4">
+          <div className="flex flex-col gap-3 mt-4 max-md:gap-1 max-md:mt-2">
             {!isSoldOut && (
-              <Button onClick={() => setIsModalOpen(true)} fullWidth>
-                🛒 Legg i kurv
-              </Button>
+              <>
+                <div className="md:hidden text-[15px] text-gray-800">{batch.price},-</div>
+                <Button onClick={() => setIsModalOpen(true)} fullWidth>
+                  Kjøp
+                </Button>
+              </>
             )}
-
-            <Link
-              href={`/reserve/${batch.id}`}
-              className={getButtonClassName('secondary', 'md', true)}
-            >
-              Se detaljer
-            </Link>
           </div>
         </Card.Content>
       </Card>

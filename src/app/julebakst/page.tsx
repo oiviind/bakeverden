@@ -36,7 +36,7 @@ export default async function Home() {
             </Card.Content>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-3">
             {batches.map(batch => (
               <BatchCard key={batch.id} batch={batch} />
             ))}
