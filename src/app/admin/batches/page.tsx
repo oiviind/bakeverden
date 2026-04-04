@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import BatchForm from '@/components/admin/BatchForm'
 import BatchListItem from '@/components/admin/BatchListItem'
+import UpdatedToast from '@/components/admin/UpdatedToast'
 import { Card, getButtonClassName } from '@/components/ui'
 import Header from '@/components/Header'
 
@@ -32,6 +33,7 @@ export default async function AdminBatchesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <UpdatedToast />
               <Header />
         <div className="container">
           <div className="flex justify-between items-center py-4">

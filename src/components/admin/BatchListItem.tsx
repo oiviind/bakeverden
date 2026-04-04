@@ -2,8 +2,9 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { toggleBatchActive } from '@/lib/actions/toggleBatchActive'
-import { Card, Badge, Button, Alert } from '@/components/ui'
+import { Card, Badge, Button, Alert, getButtonClassName } from '@/components/ui'
 
 interface BatchListItemProps {
   batch: any
@@ -63,14 +64,22 @@ export default function BatchListItem({ batch }: BatchListItemProps) {
           <span className="ml-4">📦 {batch.remaining_quantity}/{batch.total_quantity}</span>
         </div>
 
-        <Button
-          onClick={handleToggle}
-          loading={loading}
-          variant={batch.is_active ? 'danger' : 'primary'}
-          fullWidth
-        >
-          {batch.is_active ? '🚫 Deaktiver kake' : '✅ Aktiver kake'}
-        </Button>
+        <div className="flex flex-col gap-2">
+          <Link
+            href={`/admin/batches/${batch.id}/edit`}
+            className={getButtonClassName('secondary', 'md', true)}
+          >
+            ✏️ Rediger
+          </Link>
+          <Button
+            onClick={handleToggle}
+            loading={loading}
+            variant={batch.is_active ? 'danger' : 'primary'}
+            fullWidth
+          >
+            {batch.is_active ? '🚫 Deaktiver kake' : '✅ Aktiver kake'}
+          </Button>
+        </div>
       </Card.Content>
     </Card>
   )
