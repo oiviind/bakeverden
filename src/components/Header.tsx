@@ -23,6 +23,9 @@ export default function Header() {
             <Link href="/" className={styles.navLink}>
               Hjem
             </Link>
+            <Link href="/julebakst" className={styles.navLink}>
+              Julebakst
+            </Link>
             <Link href="/cart" className={`${styles.navLink} relative`}>
               🛒 Handlekurv
               {itemCount > 0 && (
@@ -68,6 +71,13 @@ export default function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               🏠 Hjem
+            </Link>
+            <Link
+              href="/julebakst"
+              className={styles.mobileLink}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              🎄 Julebakst
             </Link>
             <Link
               href="/cart"
