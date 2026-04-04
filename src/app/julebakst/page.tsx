@@ -2,6 +2,7 @@ import { getAvailableBatches } from '@/lib/actions/getBatches'
 import BatchCard from '@/components/BatchCard'
 import Header from '@/components/Header'
 import { Card } from '@/components/ui'
+import MenyButton from './MenyButton'
 
 export const revalidate = 0
 
@@ -14,7 +15,10 @@ export default async function Home() {
 
       <main className="container py-8">
         <section className="mb-8">
-          <h1 className="section-heading">Julen 2026</h1>
+          <div className="flex justify-between items-start mb-2">
+            <h1 className="section-heading" style={{ marginBottom: 0 }}>Julen 2026</h1>
+            <MenyButton />
+          </div>
           <p className="text-gray-600">
             Småkaker og andre godsaker klare for bestilling til jul. Henting innen 18. Desember kl 16:00
           </p>

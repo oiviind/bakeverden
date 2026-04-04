@@ -15,13 +15,15 @@ export default function BatchCard({ batch }: BatchCardProps) {
 
   const isSoldOut = batch.remaining_quantity === 0
 
-  const pickupDate = new Date(batch.pickup_start).toLocaleDateString('nb-NO', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+  const fmtPickup = (iso: string) =>
+    new Date(iso).toLocaleDateString('nb-NO', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+  const pickupEnd = fmtPickup(batch.pickup_end)
 
   return (
     <>
@@ -62,8 +64,8 @@ export default function BatchCard({ batch }: BatchCardProps) {
             <div className="text-sm text-gray-600">{batch.remaining_quantity} igjen</div>
           </div>
 
-          <div className="font-semibold mb-1">Henting innen:</div>
-          <div className="mb-3">📅 {pickupDate}</div>
+          <div className="font-semibold mb-1">📅 Levering innen:</div>
+          <div className="mb-3 text-sm">{pickupEnd}</div>
 
           <div className="flex flex-col gap-3 mt-4">
             {!isSoldOut && (
