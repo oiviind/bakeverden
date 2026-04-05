@@ -30,19 +30,31 @@
 
 /* Mobile-compact overrides for BatchCard — applied via className on Card sub-components */
 
-.content {
+.card {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-bottom: 1rem;
+}
+
 .actions {
+  padding-top: 0.75rem;
+}
+
+.pickup {
   margin-top: auto;
 }
 
 @media (max-width: 767px) {
   .content {
     padding: 0.5rem;
+    padding-bottom: 1rem;
   }
 
   .title {
@@ -58,7 +70,8 @@
 
   .actions {
     gap: 0.25rem;
-    margin-top: 0.5rem;
+    margin-top: 0;
+    padding-top: 0.25rem;
   }
 
   .pickupLabel {
@@ -69,6 +82,6 @@
 
   .pickupDate {
     color: #1f2937;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
   }
 }
