@@ -31,6 +31,9 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
             <Link href="/julebakst" className={styles.navLink}>
               Julebakst
             </Link>
+            <Link href="/bestill" className={styles.navLink}>
+              Bestill kake
+            </Link>
             <Link href="/cart" className={`${styles.navLink} relative`}>
               🛒 Handlekurv
               {itemCount > 0 && (
@@ -90,6 +93,13 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
               onClick={() => setIsMenuOpen(false)}
             >
               🎄 Julebakst
+            </Link>
+            <Link
+              href="/bestill"
+              className={styles.mobileLink}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              🎂 Bestill kake
             </Link>
             <Link
               href="/cart"

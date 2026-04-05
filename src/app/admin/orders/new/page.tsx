@@ -17,15 +17,7 @@ export default async function NewAdminOrderPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header isLoggedIn={true} />
-      <div className="container">
-        <div className="flex justify-between items-center py-4">
-          <Link href="/admin" className={getButtonClassName('ghost', 'sm')}>
-            ← Bestillingsoversikt
-          </Link>
-        </div>
-      </div>
-
-      <main className="container py-6">
+      <main className="container pt-4 pb-6">
         <div className="max-w-2xl mx-auto">
           <Card>
             <Card.Content>

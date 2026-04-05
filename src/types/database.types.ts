@@ -40,6 +40,19 @@ export interface OrderItem {
   batch?: ProductBatch
 }
 
+export interface CakeRequest {
+  id: string
+  occasion: string
+  num_people: number | null
+  desired_date: string | null
+  description: string
+  name: string
+  email: string
+  phone: string | null
+  status: 'ny' | 'kontaktet' | 'avtalt' | 'avslått'
+  created_at: string
+}
+
 export interface Order {
   id: string
   name: string

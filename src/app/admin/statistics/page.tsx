@@ -1,7 +1,6 @@
 // src/app/admin/statistics/page.tsx
 import { createClient } from '@/lib/supabase/server'
-import Link from 'next/link'
-import { Card, getButtonClassName } from '@/components/ui'
+import { Card } from '@/components/ui'
 import Header from '@/components/Header'
 
 export const revalidate = 0
@@ -62,17 +61,9 @@ export default async function StatisticsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header isLoggedIn={true} />
-      <div className="container">
-        <div className="flex justify-between items-center py-4">
-          <Link href="/admin" className={getButtonClassName('ghost', 'sm')}>
-            ← Tilbake til admin
-          </Link>
-          <h1>📊 Statistikk</h1>
-        </div>
-      </div>
-
-      <main className="container py-6">
+      <main className="container pt-4 pb-6">
         <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl font-bold mb-6">📊 Statistikk</h1>
           {/* Cake statistics */}
           <section className="mb-8">
             <h2 className="section-heading mb-4">Antall kaker</h2>
