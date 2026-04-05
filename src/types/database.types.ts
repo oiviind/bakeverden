@@ -5,6 +5,8 @@ export interface ProductBatch {
   description?: string
   image_url?: string
   price: number
+  original_price?: number | null
+  discount_percent?: number | null
   pickup_start: string
   pickup_end: string
   total_quantity: number

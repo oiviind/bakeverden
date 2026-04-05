@@ -19,6 +19,9 @@ export async function updateBatch(batchId: string, formData: FormData): Promise<
   const pickup_end = formData.get('pickup_end') as string
   const total_quantity = Number(formData.get('total_quantity')) || 999999
   const is_active = formData.get('is_active') === 'on'
+  const discount_percent = Number(formData.get('discount_percent')) || null
+  const original_price = discount_percent ? price : null
+  const final_price = discount_percent ? Math.round(price * (1 - discount_percent / 100)) : price
   const ingredientIds: string[] = [...new Set<string>(JSON.parse((formData.get('ingredients') as string) || '[]'))]
 
   if (!title || !price || !pickup_start || !pickup_end) {
@@ -28,7 +31,7 @@ export async function updateBatch(batchId: string, formData: FormData): Promise<
   try {
     const { error: batchError } = await supabase
       .from('product_batches')
-      .update({ title, description: description || null, image_url: image_url || null, price, pickup_start, pickup_end, total_quantity, remaining_quantity: total_quantity, is_active })
+      .update({ title, description: description || null, image_url: image_url || null, price: final_price, original_price, discount_percent, pickup_start, pickup_end, total_quantity, remaining_quantity: total_quantity, is_active })
       .eq('id', batchId)
 
     if (batchError) return { success: false, error: 'Kunne ikke oppdatere kake: ' + batchError.message }

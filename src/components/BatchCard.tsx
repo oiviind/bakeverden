@@ -44,6 +44,9 @@ export default function BatchCard({ batch }: BatchCardProps) {
                   </span>
                 </div>
               )}
+              {!!batch.discount_percent && (
+                <span className={styles.discountBadge}>-{batch.discount_percent}%</span>
+              )}
               {isLowStock && (
                 <span className={styles.lowStockBadge}>Få igjen!</span>
               )}
@@ -65,9 +68,16 @@ export default function BatchCard({ batch }: BatchCardProps) {
           )}
 
           <div className="flex items-center justify-between mb-4">
-            <Card.Price className="md:block hidden">
-              {batch.price},-
-            </Card.Price>
+            <div className="md:block hidden">
+              {!!batch.discount_percent ? (
+                <div>
+                  <span className="text-sm text-gray-400 line-through mr-1">{batch.original_price},-</span>
+                  <span className="text-2xl font-bold text-red-500">{batch.price},-</span>
+                </div>
+              ) : (
+                <Card.Price>{batch.price},-</Card.Price>
+              )}
+            </div>
             {batch.total_quantity < 999999 && (
               <div className="text-sm text-gray-600 max-md:hidden">{batch.remaining_quantity} igjen</div>
             )}
@@ -76,10 +86,19 @@ export default function BatchCard({ batch }: BatchCardProps) {
           <div className={`${styles.pickupLabel} font-semibold mb-1`}>📅 Levering innen:</div>
           <div className={`${styles.pickupDate} mb-3 text-sm`}>{pickupEnd}</div>
 
-          <div className={`${styles.actions} flex flex-col gap-3 mt-4`}>
+          <div className={`${styles.actions} flex flex-col gap-3`}>
             {!isSoldOut && (
               <>
-                <div className="md:hidden text-[15px] text-gray-800">{batch.price},-</div>
+                <div className="md:hidden text-[15px]">
+                  {!!batch.discount_percent ? (
+                    <>
+                      <span className="text-gray-400 line-through mr-1">{batch.original_price},-</span>
+                      <span className="text-red-500 font-bold">{batch.price},-</span>
+                    </>
+                  ) : (
+                    <span className="text-gray-800">{batch.price},-</span>
+                  )}
+                </div>
                 <Button onClick={() => setIsModalOpen(true)} fullWidth>
                   Kjøp
                 </Button>

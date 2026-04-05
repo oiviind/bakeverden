@@ -82,17 +82,24 @@ export default async function ReservePage({
                 <Card.Description className="mb-4">{batch.description}</Card.Description>
               )}
 
-              <div className="flex items-center justify-between mb-4 pb-4 border-b">
-                <div>
-                  <Card.Price>{batch.price},-</Card.Price>
-                  <div className="text-sm text-gray-600">
-                    {batch.total_quantity < 999999 ? `📦 ${batch.remaining_quantity} av ${batch.total_quantity} igjen` : ''}
+              <div className="mb-4 pb-4 border-b text-sm text-gray-600">
+                <div className="font-semibold mb-1">📅 Levering mellom:</div>
+                <div>{pickupStart} og {pickupEnd}</div>
+                {batch.total_quantity < 999999 && (
+                  <div className="mt-1">📦 {batch.remaining_quantity} av {batch.total_quantity} igjen</div>
+                )}
+              </div>
+
+              <div className="mb-4 pb-4 border-b">
+                {!!batch.discount_percent ? (
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl font-bold text-red-500">{batch.price},-</span>
+                    <span className="text-gray-400 line-through">{batch.original_price},-</span>
+                    <span className="text-sm font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full">-{batch.discount_percent}%</span>
                   </div>
-                </div>
-                <div className="text-right text-sm text-gray-600">
-                  <div className="font-semibold mb-1">📅 Levering mellom:</div>
-                  <div>{pickupStart} og {pickupEnd}</div>
-                </div>
+                ) : (
+                  <Card.Price>{batch.price},-</Card.Price>
+                )}
               </div>
 
               {/* INGREDIENSER */}

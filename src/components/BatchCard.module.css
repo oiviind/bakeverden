@@ -1,3 +1,16 @@
+.discountBadge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #ef4444;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  z-index: 1;
+}
+
 .lowStockBadge {
   position: absolute;
   top: 0.5rem;
@@ -11,7 +24,21 @@
   z-index: 1;
 }
 
+.discountBadge + .lowStockBadge {
+  top: 2rem;
+}
+
 /* Mobile-compact overrides for BatchCard — applied via className on Card sub-components */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.actions {
+  margin-top: auto;
+}
 
 @media (max-width: 767px) {
   .content {
