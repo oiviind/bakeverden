@@ -16,7 +16,7 @@ export default async function NewAdminOrderPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <Header isLoggedIn={true} />
       <div className="container">
         <div className="flex justify-between items-center py-4">
           <Link href="/admin" className={getButtonClassName('ghost', 'sm')}>

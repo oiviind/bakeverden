@@ -3,9 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useCart } from '@/lib/contexts/CartContext'
+import { logoutAction } from '@/app/admin/login/actions'
 import styles from './Header.module.css'
 
-export default function Header() {
+interface HeaderProps {
+  isLoggedIn?: boolean
+}
+
+export default function Header({ isLoggedIn = false }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { getTotalItems } = useCart()
   const itemCount = getTotalItems()
@@ -34,6 +39,13 @@ export default function Header() {
                 </span>
               )}
             </Link>
+            {isLoggedIn && (
+              <form action={logoutAction}>
+                <button type="submit" className={styles.navLink}>
+                  🚪 Logg ut
+                </button>
+              </form>
+            )}
             <Link href="/admin" className={`${styles.navLink} ${styles.navLinkAdmin}`}>
               Admin
             </Link>
@@ -101,6 +113,13 @@ export default function Header() {
             >
               ⚙️ Admin
             </Link>
+            {isLoggedIn && (
+              <form action={logoutAction}>
+                <button type="submit" className={`${styles.mobileLink} w-full text-left`}>
+                  🚪 Logg ut
+                </button>
+              </form>
+            )}
           </nav>
         </>
       )}

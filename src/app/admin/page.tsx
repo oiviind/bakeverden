@@ -39,7 +39,7 @@ export default async function AdminPage() {
     console.error('Error fetching orders:', error)
     return (
       <div className="min-h-screen bg-gray-50">
-        <Header />
+        <Header isLoggedIn={true} />
         <div className="container mt-8">
           <Alert variant="error">Feil ved lasting: {error.message}</Alert>
         </div>
@@ -55,7 +55,7 @@ export default async function AdminPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <UpdatedToast />
-      <Header />
+      <Header isLoggedIn={true} />
 
       <main className="container py-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
