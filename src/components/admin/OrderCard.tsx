@@ -71,31 +71,29 @@ export default function OrderCard({ order }: OrderCardProps) {
           <Alert variant="error" className="mb-4">{error}</Alert>
         )}
 
-        <div className="flex justify-between items-start mb-4">
-          <div>
+        <div className="mb-4">
+          <div className="flex justify-between items-start gap-2 mb-1">
             <h2 className="font-semibold text-lg">{order.name}</h2>
-            <p className="text-sm text-gray-600">📞 {order.phone}</p>
-            {order.email && (
-              <p className="text-sm text-gray-600">📧 {order.email}</p>
-            )}
-            <p className="text-xs text-gray-500 mt-1">
-              {new Date(order.created_at).toLocaleString('nb-NO', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
-            </p>
-          </div>
-          <div className="text-right flex flex-col items-end gap-2">
-            <span className="text-xl font-bold text-pink-600">
-              {order.total_price},-
-            </span>
             <Badge variant={config.variant}>
               {config.icon} {config.label}
             </Badge>
           </div>
+          <p className="text-sm text-gray-600">📞 {order.phone}</p>
+          {order.email && (
+            <p className="text-sm text-gray-600 flex items-start gap-1">
+              <span className="shrink-0">📧</span>
+              <span>{order.email}</span>
+            </p>
+          )}
+          <p className="text-xs text-gray-500 mt-1">
+            {new Date(order.created_at).toLocaleString('nb-NO', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </p>
         </div>
 
         <div className="bg-gray-50 rounded-lg p-3 mb-4">
@@ -110,6 +108,10 @@ export default function OrderCard({ order }: OrderCardProps) {
               </span>
             </div>
           ))}
+          <div className="border-t border-gray-200 mt-2 pt-2 flex justify-between text-sm font-semibold">
+            <span>Totalpris</span>
+            <span>{order.total_price},-</span>
+          </div>
         </div>
 
         {/* Status transition buttons */}
