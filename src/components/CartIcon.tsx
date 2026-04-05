@@ -1,6 +1,7 @@
 'use client'
 
 import { useCart } from '@/lib/contexts/CartContext'
+import styles from './CartIcon.module.css'
 
 export default function CartIcon() {
   const { getTotalItems } = useCart()
@@ -10,7 +11,7 @@ export default function CartIcon() {
     <div className="relative inline-flex items-center">
       <span className="text-xl">🛒</span>
       {itemCount > 0 && (
-        <span className="cart-notification-badge" style={{ top: '-0.5rem', right: '-0.5rem' }}>
+        <span className={`cart-notification-badge ${styles.badge}`}>
           {itemCount}
         </span>
       )}

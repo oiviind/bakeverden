@@ -53,12 +53,12 @@
 }
 
 .secondary {
-  background: #6b7280;
+  background: var(--btn-secondary);
   color: white;
 }
 
 .secondary:hover:not(:disabled) {
-  background: #4b5563;
+  background: var(--btn-secondary-hover);
   transform: translateY(-1px);
 }
 

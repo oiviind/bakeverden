@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import AddToCartModal from './AddToCartModal'
 import { Card, Button } from '@/components/ui'
+import styles from './BatchCard.module.css'
 import type { ProductBatch } from '@/types/database.types'
 
 interface BatchCardProps {
@@ -46,20 +47,20 @@ export default function BatchCard({ batch }: BatchCardProps) {
           </Link>
         )}
 
-        <Card.Content className="max-md:!p-2">
+        <Card.Content className={styles.content}>
           <Link href={`/reserve/${batch.id}`}>
-            <Card.Title className="max-md:!text-sm max-md:!text-gray-800 mb-1 md:mb-2 hover:text-pink-600 transition-colors">
+            <Card.Title className={`${styles.title} mb-1 md:mb-2 hover:text-pink-600 transition-colors`}>
               {batch.title}
             </Card.Title>
           </Link>
 
           {batch.description && (
-            <Card.Description className="text-sm max-md:!text-gray-800 max-md:mb-1 mb-4 line-clamp-2">
+            <Card.Description className={`${styles.description} text-sm mb-4 line-clamp-2`}>
               {batch.description}
             </Card.Description>
           )}
 
-          <div className="flex items-center justify-between mb-4 max-md:mb-1">
+          <div className="flex items-center justify-between mb-4">
             <Card.Price className="md:block hidden">
               {batch.price},-
             </Card.Price>
@@ -68,10 +69,10 @@ export default function BatchCard({ batch }: BatchCardProps) {
             )}
           </div>
 
-          <div className="font-semibold mb-1 max-md:font-normal max-md:text-sm max-md:text-gray-800">📅 Levering innen:</div>
-          <div className="mb-3 text-sm max-md:text-gray-800 max-md:mb-2">{pickupEnd}</div>
+          <div className={`${styles.pickupLabel} font-semibold mb-1`}>📅 Levering innen:</div>
+          <div className={`${styles.pickupDate} mb-3 text-sm`}>{pickupEnd}</div>
 
-          <div className="flex flex-col gap-3 mt-4 max-md:gap-1 max-md:mt-2">
+          <div className={`${styles.actions} flex flex-col gap-3 mt-4`}>
             {!isSoldOut && (
               <>
                 <div className="md:hidden text-[15px] text-gray-800">{batch.price},-</div>

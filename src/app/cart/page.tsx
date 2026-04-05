@@ -1,6 +1,5 @@
 import Cart from '@/components/Cart'
 import Header from '@/components/Header'
-import Styles from './CartPage.module.css'
 
 export default function CartPage() {
   return (

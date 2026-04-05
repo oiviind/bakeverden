@@ -1,0 +1,34 @@
+/* Mobile-compact overrides for BatchCard — applied via className on Card sub-components */
+
+@media (max-width: 767px) {
+  .content {
+    padding: 0.5rem;
+  }
+
+  .title {
+    font-size: 0.875rem;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+  }
+
+  .description {
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+  }
+
+  .actions {
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+  }
+
+  .pickupLabel {
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: #1f2937;
+  }
+
+  .pickupDate {
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+  }
+}

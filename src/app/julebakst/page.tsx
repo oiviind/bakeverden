@@ -12,9 +12,9 @@ export default async function Home() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="container" style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
+      <main className="container py-4">
         <section className="mb-4">
-          <h1 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '0.25rem', paddingTop: '0.25rem' }}>
+          <h1 className="text-lg font-medium mb-1 pt-1">
             Julen 2026
           </h1>
           <p className="text-gray-600 text-sm">

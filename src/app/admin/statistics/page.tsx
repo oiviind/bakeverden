@@ -90,7 +90,7 @@ export default async function StatisticsPage() {
                 <Card.Content>
                   <div className="text-center">
                     <p className="text-sm text-gray-600 mb-2">Klare for henting</p>
-                    <p className="text-4xl font-bold" style={{ color: 'var(--primary)' }}>
+                    <p className="text-4xl font-bold text-primary">
                       {stats.totalReady}
                     </p>
                   </div>
@@ -125,7 +125,7 @@ export default async function StatisticsPage() {
                 <Card.Content>
                   <div className="text-center">
                     <p className="text-sm text-gray-600 mb-2">Forventet (klare)</p>
-                    <p className="text-4xl font-bold" style={{ color: 'var(--primary)' }}>
+                    <p className="text-4xl font-bold text-primary">
                       {stats.revenueReady},-
                     </p>
                   </div>
