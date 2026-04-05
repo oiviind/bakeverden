@@ -14,19 +14,20 @@ export default function Home() {
     <div className="min-h-screen">
       <Header />
 
-      {/* Hero — same gradient as header for seamless visual blend */}
-      <section className={`${styles.hero} py-6 md:py-24`}>
+      {/* Welcome info */}
+      <section id="main-content" className={styles.welcomeSection}>
         <div className="container">
-          <div className="flex flex-row items-center gap-4 md:gap-10">
-            <div className="flex-1 text-white">
-              <h1 className="text-xl md:text-5xl font-bold mb-2 md:mb-4 leading-snug">
-                Hjemmelaget med kjærlighet og de beste ingrediensene
-              </h1>
-              <p className={`${styles.heroSubtext} text-sm md:text-lg md:mb-8`}>
-                Små og store kaker bakt fra bunnen — klare for bestilling
-              </p>
-            </div>
-          </div>
+          <h2 className={styles.welcomeTitle}>Velkommen til min nye nettbutikk 💛</h2>
+          <p className={styles.welcomeText}>
+            Her kan du enkelt bestille hjemmelagde kaker laget med kjærlighet og gode råvarer. Enten du ønsker en spesialbestilt kake til en anledning, eller vil sikre deg dine favoritter blant årets julekaker, finner du det her.
+          </p>
+          <ul className={styles.welcomeList}>
+            <li>Trykk på «Bestill kake» for å velge dato og sende inn en forespørsel</li>
+            <li>Julekaker kan bestilles direkte fra menyen</li>
+          </ul>
+          <p className={styles.welcomeText}>
+            Ønsker du litt inspirasjon, kan du bla gjennom bildegalleriet nederst på siden og se noe av det jeg har laget tidligere.
+          </p>
         </div>
       </section>
 
@@ -39,7 +40,7 @@ export default function Home() {
             <div className="flex-1">
               <h2 className="section-heading mb-4">Om bakeren</h2>
               <p className={`${styles.aboutText} text-lg mb-6`}>
-                Begynte med baking som terapi, og det har utviklet seg
+                Jeg begynte med baking som terapi, og det har utviklet seg
                 til en lidenskap for å lage gode kaker som bringer glede til andre.
                 Hver kake er laget med omhu og de beste ingrediensene,
                 og jeg liker å prøve meg på nye utfordringer.
@@ -52,7 +53,7 @@ export default function Home() {
               <div className="w-full max-w-sm aspect-square rounded-2xl overflow-hidden relative shadow-xl">
                 <Image
                   src="/Bakeren.JPG"
-                  alt="Kjerstis Bakeverden"
+                  alt="Kjersti ved markedsstanden med hjemmelagde kaker"
                   fill
                   sizes="(max-width: 768px) 100vw, 384px"
                   className="object-cover"

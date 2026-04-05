@@ -46,7 +46,7 @@ export default function JulebakstBanner() {
 
       {/* Content */}
       <div className={`container ${styles.julebakstContent} ${visible ? styles.visible : ''}`}>
-        <h2 className={styles.julebakstTitle}>Julebaksten er i gang 🎄</h2>
+        <h2 className="section-heading mb-3">Julebaksten er i gang 🎄</h2>
         <p className={styles.julebakstText}>
           Bestill i god tid før jul!
         </p>
