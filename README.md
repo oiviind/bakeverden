@@ -20,6 +20,34 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Eksterne koblinger
+
+### 1. Supabase (database + fillagring)
+
+To klienter:
+- `src/lib/supabase/server.ts` — brukes i server actions, leser cookies for auth
+- `src/lib/supabase.ts` — brukes i browser, kun read-operasjoner
+
+Tabeller: `orders`, `order_items`, `product_batches`, `batch_ingredients`, `ingredients`, `gallery_images`, `cake_requests`
+
+Storage bucket: `product-images` — bilder lastes opp via `uploadImage()` i `src/lib/actions/uploadImage.ts`
+
+### 2. Resend (e-post)
+
+Kun brukt i `src/app/admin/actions.ts`:
+- `sendReceiptEmail()` — kvittering til kunde
+- `sendReadyEmail()` — varsel om at ordre er klar for henting
+
+Fra-adresse: `noreply@kjerstisbakeverden.com`. Ingen HTML-templates, kun plain text.
+
+### 3. Admin-auth (egenutviklet)
+
+Ingen auth-bibliotek. `src/proxy.ts` (middleware) sjekker en HTTP-only cookie `admin_auth` mot `ADMIN_COOKIE_SECRET` på alle `/admin/*`-ruter. Login setter cookien, logout sletter den.
+
+### 4. Cloudflare
+
+Selve Next.js-appen er hostet gjennom Vercel, og Cloudflare sitter foran som proxy.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
