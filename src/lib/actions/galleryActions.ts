@@ -13,11 +13,11 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
   return data || []
 }
 
-export async function addGalleryImage(imageUrl: string, category: string) {
+export async function addGalleryImage(imageUrl: string, category: string, title?: string) {
   const supabase = createClient()
   const { error } = await supabase
     .from('gallery_images')
-    .insert({ image_url: imageUrl, category })
+    .insert({ image_url: imageUrl, category, title: title || null })
   if (error) return { success: false, error: error.message }
   revalidatePath('/galleri')
   revalidatePath('/admin/galleri')

@@ -57,6 +57,7 @@ export interface GalleryImage {
   id: string
   image_url: string
   category: string
+  title?: string
   created_at: string
 }
 

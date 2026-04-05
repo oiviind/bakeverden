@@ -13,69 +13,80 @@ const CATEGORIES = [
   { value: 'annet', label: 'Annet' },
 ]
 
-export default function GalleryClient({ images }: { images: GalleryImage[] }) {
-  const [activeTab, setActiveTab] = useState('all')
-  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null)
+const ALL_TABS = [
+  { value: 'alle', label: 'Alle' },
+  ...CATEGORIES,
+]
 
-  const filtered = activeTab === 'all' ? images : images.filter(img => img.category === activeTab)
+function ScrollGrid({ images, onOpen }: { images: GalleryImage[]; onOpen: (url: string) => void }) {
+  const chunks: GalleryImage[][] = []
+  for (let i = 0; i < images.length; i += 4) chunks.push(images.slice(i, i + 4))
+  return (
+    <div className={styles.scrollContainer}>
+      {chunks.map((chunk, ci) => (
+        <div key={ci} className={styles.chunkGrid}>
+          {chunk.map(img => (
+            <div key={img.id} className={styles.imageWrapper}>
+              <img src={img.image_url} alt={img.category} className={styles.thumbnail} onClick={() => onOpen(img.image_url)} />
+              {img.title && <span className={styles.categoryBadge}>{img.title}</span>}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default function GalleryClient({ images }: { images: GalleryImage[] }) {
+  const [activeTab, setActiveTab] = useState('alle')
+  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null)
 
   return (
     <div>
-      <div className={styles.tabs}>
-        <button
-          className={`${styles.tab} ${activeTab === 'all' ? styles.tabActive : ''}`}
-          onClick={() => setActiveTab('all')}
-        >
-          Alle
-        </button>
-        {CATEGORIES.map(cat => (
-          <button
-            key={cat.value}
-            className={`${styles.tab} ${activeTab === cat.value ? styles.tabActive : ''}`}
-            onClick={() => setActiveTab(cat.value)}
-          >
-            {cat.label}
-          </button>
-        ))}
+      <div className="flex overflow-x-auto mb-6 border-b border-gray-200 scrollbar-none">
+        {ALL_TABS.map(tab => {
+          const count = tab.value === 'alle' ? images.length : images.filter(img => img.category === tab.value).length
+          return (
+            <button
+              key={tab.value}
+              onClick={() => setActiveTab(tab.value)}
+              className={[
+                'flex-shrink-0 px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors whitespace-nowrap',
+                activeTab === tab.value
+                  ? 'border-[var(--primary)] text-[var(--primary)]'
+                  : 'border-transparent text-gray-500 hover:text-gray-700',
+              ].join(' ')}
+            >
+              {tab.label} ({count})
+            </button>
+          )
+        })}
       </div>
 
-      {activeTab === 'all' ? (
+      {activeTab === 'alle' ? (
         CATEGORIES
           .filter(cat => images.some(img => img.category === cat.value))
           .map(cat => (
             <div key={cat.value} className={styles.categorySection}>
               <h2 className={styles.categoryTitle}>{cat.label}</h2>
-              <div className={styles.scrollRow}>
-                {images
-                  .filter(img => img.category === cat.value)
-                  .map(img => (
-                    <img
-                      key={img.id}
-                      src={img.image_url}
-                      alt={cat.label}
-                      className={`${styles.scrollImage} ${styles.clickable}`}
-                      onClick={() => setLightboxUrl(img.image_url)}
-                    />
-                  ))}
-              </div>
+              <ScrollGrid images={images.filter(img => img.category === cat.value)} onOpen={setLightboxUrl} />
             </div>
           ))
       ) : (
-        <div className={styles.grid}>
-          {filtered.map(img => (
-            <img
-              key={img.id}
-              src={img.image_url}
-              alt={activeTab}
-              className={`${styles.gridImage} ${styles.clickable}`}
-              onClick={() => setLightboxUrl(img.image_url)}
-            />
-          ))}
-        </div>
-      )}
-
-      {filtered.length === 0 && (
-        <p className="text-gray-500 text-center py-12">Ingen bilder her ennå.</p>
+        (() => {
+          const filtered = images.filter(img => img.category === activeTab)
+          if (filtered.length === 0) return <p className="text-gray-500 text-center py-12">Ingen bilder her ennå.</p>
+          return (
+            <div className={styles.verticalGrid}>
+              {filtered.map(img => (
+                <div key={img.id} className={styles.imageWrapper}>
+                  <img src={img.image_url} alt={img.category} className={styles.thumbnail} onClick={() => setLightboxUrl(img.image_url)} />
+                  {img.title && <span className={styles.categoryBadge}>{img.title}</span>}
+                </div>
+              ))}
+            </div>
+          )
+        })()
       )}
 
       {lightboxUrl && (
