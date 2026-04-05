@@ -17,11 +17,11 @@ export async function updateBatch(batchId: string, formData: FormData): Promise<
   const price = Number(formData.get('price'))
   const pickup_start = formData.get('pickup_start') as string
   const pickup_end = formData.get('pickup_end') as string
-  const total_quantity = Number(formData.get('total_quantity'))
+  const total_quantity = Number(formData.get('total_quantity')) || 999999
   const is_active = formData.get('is_active') === 'on'
   const ingredientIds: string[] = [...new Set<string>(JSON.parse((formData.get('ingredients') as string) || '[]'))]
 
-  if (!title || !price || !pickup_start || !pickup_end || !total_quantity) {
+  if (!title || !price || !pickup_start || !pickup_end) {
     return { success: false, error: 'Vennligst fyll ut alle påkrevde felter' }
   }
 

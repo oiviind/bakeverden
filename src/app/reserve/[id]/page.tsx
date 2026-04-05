@@ -86,7 +86,7 @@ export default async function ReservePage({
                 <div>
                   <Card.Price>{batch.price},-</Card.Price>
                   <div className="text-sm text-gray-600">
-                    📦 {batch.remaining_quantity} av {batch.total_quantity} igjen
+                    {batch.total_quantity < 999999 ? `📦 ${batch.remaining_quantity} av ${batch.total_quantity} igjen` : ''}
                   </div>
                 </div>
                 <div className="text-right text-sm text-gray-600">

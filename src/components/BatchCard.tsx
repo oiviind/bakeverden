@@ -63,7 +63,9 @@ export default function BatchCard({ batch }: BatchCardProps) {
             <Card.Price className="md:block hidden">
               {batch.price},-
             </Card.Price>
-            <div className="text-sm text-gray-600 max-md:hidden">{batch.remaining_quantity} igjen</div>
+            {batch.total_quantity < 999999 && (
+              <div className="text-sm text-gray-600 max-md:hidden">{batch.remaining_quantity} igjen</div>
+            )}
           </div>
 
           <div className="font-semibold mb-1 max-md:font-normal max-md:text-sm max-md:text-gray-800">📅 Levering innen:</div>

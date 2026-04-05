@@ -61,7 +61,9 @@ export default function BatchListItem({ batch }: BatchListItemProps) {
 
         <div className="text-sm text-gray-600 mb-4">
           <span>💰 {batch.price},-</span>
-          <span className="ml-4">📦 {batch.remaining_quantity}/{batch.total_quantity}</span>
+          {batch.total_quantity < 999999 && (
+            <span className="ml-4">📦 {batch.remaining_quantity}/{batch.total_quantity}</span>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">

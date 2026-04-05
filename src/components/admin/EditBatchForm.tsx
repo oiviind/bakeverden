@@ -121,14 +121,14 @@ export default function EditBatchForm({ batch, ingredients, selectedIngredientId
       </div>
 
       <div className="form-group">
-        <label className="form-label">Totalt antall *</label>
+        <label className="form-label">Totalt antall</label>
         <input
           type="number"
           name="total_quantity"
-          required
           min="1"
-          defaultValue={batch.total_quantity}
+          defaultValue={batch.total_quantity ?? ''}
           className="form-input"
+          placeholder="La stå tomt for ubegrenset"
         />
       </div>
 

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { updateOrderStatus, sendReadyEmail, markSmsSent } from '@/app/admin/actions'
 import { Card, Badge, Button, Alert } from '@/components/ui'
 import type { Order } from '@/types/database.types'
@@ -24,6 +25,7 @@ export default function OrderCard({ order }: OrderCardProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [emailSent, setEmailSent] = useState(false)
+  const [confirmCancel, setConfirmCancel] = useState(false)
   const [smsSent, setSmsSent] = useState(order.sms_sent)
 
   async function handleSendEmail() {
@@ -119,13 +121,56 @@ export default function OrderCard({ order }: OrderCardProps) {
                 ✅ Marker som klar for henting
               </Button>
               <Button
-                onClick={() => handleStatusChange('cancelled')}
-                loading={loading}
+                onClick={() => setConfirmCancel(true)}
                 variant="danger"
                 fullWidth
               >
                 ❌ Kanseller bestilling
               </Button>
+
+              {confirmCancel && createPortal(
+                <div
+                  className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+                  onClick={() => setConfirmCancel(false)}
+                >
+                  <div
+                    className="bg-white rounded-lg shadow-xl max-w-sm w-full p-6"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <div className="flex justify-between items-start mb-4">
+                      <h3 className="font-bold text-lg">Kanseller bestilling</h3>
+                      <button
+                        onClick={() => setConfirmCancel(false)}
+                        className="text-gray-400 hover:text-gray-600 text-2xl leading-none -mt-1 ml-2"
+                        aria-label="Lukk"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <p className="text-gray-600 mb-6">
+                      Er du sikker på at du vil kansellere bestillingen til <strong>{order.name}</strong>?
+                    </p>
+                    <div className="flex gap-3">
+                      <Button
+                        onClick={() => { setConfirmCancel(false); handleStatusChange('cancelled') }}
+                        loading={loading}
+                        variant="danger"
+                        fullWidth
+                      >
+                        Kanseller
+                      </Button>
+                      <Button
+                        onClick={() => setConfirmCancel(false)}
+                        variant="neutral"
+                        fullWidth
+                      >
+                        Avbryt
+                      </Button>
+                    </div>
+                  </div>
+                </div>,
+                document.body
+              )}
             </>
           )}
 

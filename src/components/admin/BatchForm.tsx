@@ -128,14 +128,13 @@ export default function BatchForm({ ingredients }: BatchFormProps) {
       </div>
 
       <div className="form-group">
-        <label className="form-label">Totalt antall *</label>
-        <input 
-          type="number" 
+        <label className="form-label">Totalt antall</label>
+        <input
+          type="number"
           name="total_quantity"
-          required 
           min="1"
           className="form-input"
-          placeholder="10"
+          placeholder="La stå tomt for ubegrenset"
         />
       </div>
 
