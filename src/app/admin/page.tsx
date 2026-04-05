@@ -58,10 +58,13 @@ export default async function AdminPage() {
       <UpdatedToast />
       <Header isLoggedIn={true} />
 
-      <main className="container py-6">
+      <main className="container pt-4 pb-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <h1 className="page-title" style={{ marginBottom: 0 }}>Admin Dashboard</h1>
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <Link href="/admin/requests" className={getButtonClassName('secondary')}>
+              🎂 Forespørsler
+            </Link>
             <Link href="/admin/statistics" className={getButtonClassName('secondary')}>
               📊 Statistikk
             </Link>
