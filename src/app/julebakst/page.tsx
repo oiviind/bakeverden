@@ -2,7 +2,6 @@ import { getAvailableBatches } from '@/lib/actions/getBatches'
 import BatchCard from '@/components/BatchCard'
 import Header from '@/components/Header'
 import { Card } from '@/components/ui'
-import MenyButton from './MenyButton'
 
 export const revalidate = 0
 
@@ -13,13 +12,12 @@ export default async function Home() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="container py-8">
-        <section className="mb-8">
-          <div className="flex justify-between items-start mb-2">
-            <h1 className="section-heading" style={{ marginBottom: 0 }}>Julen 2026</h1>
-            <MenyButton />
-          </div>
-          <p className="text-gray-600">
+      <main className="container" style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
+        <section className="mb-4">
+          <h1 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '0.25rem', paddingTop: '0.25rem' }}>
+            Julen 2026
+          </h1>
+          <p className="text-gray-600 text-sm">
             Småkaker og andre godsaker klare for bestilling til jul. Henting innen 18. Desember kl 16:00
           </p>
         </section>
