@@ -71,7 +71,7 @@ export default async function AdminPage() {
             <Link href="/admin/orders/new" className={getButtonClassName('secondary')}>
               📝 Ny bestilling
             </Link>
-            <Link href="/admin/batches" className={getButtonClassName('primary')}>
+            <Link href="/admin/batches" className={getButtonClassName('secondary')}>
               🍰 Administrer kaker
             </Link>
           </div>

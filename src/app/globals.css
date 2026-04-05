@@ -4,19 +4,24 @@
    DESIGN TOKENS
    Used by all CSS modules via var(--)
    ============================================ */
-:root {
-  --primary: #4c8ca7;
-  --primary-dark: #0e0054;
-  --secondary: #f3e8ff;
-  --background: #fafafa;
-  --text: #1f2937;
-  --text-light: #6b7280;
-  --border: #e5e7eb;
-  --success: #10b981;
-  --error: #ef4444;
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
+   :root {
+    --primary: #000335;        /* varm terracotta (signaturfarge) */
+    --primary-dark: #7c2d12;   /* dyp bakst/brun */
+  
+    --secondary: #fef3e7;      /* krem / lys bakst-tone */
+    --background: #fffaf5;     /* varm hvit (ikke klinisk) */
+  
+    --text: #2a2a2a;           /* litt mykere enn ren svart */
+    --text-light: #6b7280;
+  
+    --border: #f1e5d9;         /* varm border i stedet for grå */
+  
+    --success: #10b981;
+    --error: #ef4444;
+  
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+  }
 
 /* ============================================
    BASE

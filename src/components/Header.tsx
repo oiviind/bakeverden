@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useCart } from '@/lib/contexts/CartContext'
 import { logoutAction } from '@/app/admin/login/actions'
 import styles from './Header.module.css'
@@ -20,6 +21,7 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
       <header className={`${styles.header} sticky top-0 z-10`}>
         <div className={`container ${styles.headerContent}`}>
           <Link href="/" className={styles.logo}>
+            <Image src="/logo.png" alt="" width={32} height={32} className={styles.logoImage} priority />
             Kjerstis Bakeverden
           </Link>
 

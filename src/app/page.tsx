@@ -26,19 +26,6 @@ export default function Home() {
                 Små og store kaker bakt fra bunnen — klare for bestilling
               </p>
             </div>
-            {/* Logo */}
-            <div className="w-32 h-32 flex-shrink-0 md:flex-1 md:w-full md:h-auto md:flex md:justify-center">
-              <div className="w-full h-full md:h-auto md:max-w-sm md:aspect-square rounded-2xl overflow-hidden relative">
-                <Image
-                  src="/logo.png"
-                  alt="Kjerstis Bakeverden"
-                  fill
-                  sizes="(max-width: 768px) 128px, 384px"
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </div>
           </div>
         </div>
       </section>
