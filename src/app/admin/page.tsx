@@ -74,6 +74,9 @@ export default async function AdminPage() {
             <Link href="/admin/batches" className={getButtonClassName('secondary')}>
               🍰 Administrer kaker
             </Link>
+            <Link href="/admin/galleri" className={getButtonClassName('secondary')}>
+              🖼️ Galleri
+            </Link>
           </div>
         </div>
 

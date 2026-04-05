@@ -53,6 +53,13 @@ export interface CakeRequest {
   created_at: string
 }
 
+export interface GalleryImage {
+  id: string
+  image_url: string
+  category: string
+  created_at: string
+}
+
 export interface Order {
   id: string
   name: string
