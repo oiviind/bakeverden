@@ -128,19 +128,28 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
               </span>
             </Link>
             <div className={styles.mobileDivider} />
-            <Link
-              href="/admin"
-              className={`${styles.mobileLink} ${styles.mobileLinkAdmin}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              ⚙️ Admin
-            </Link>
-            {isLoggedIn && (
-              <form action={logoutAction}>
-                <button type="submit" className={`${styles.mobileLink} w-full text-left`}>
-                  🚪 Logg ut
-                </button>
-              </form>
+            {isLoggedIn ? (
+              <>
+                <span className={styles.mobileSectionLabel}>Admin-valg</span>
+                <Link href="/admin" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>⚙️ Bestillinger</Link>
+                <Link href="/admin/requests" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>🎂 Forespørsler</Link>
+                <Link href="/admin/statistics" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>📊 Statistikk</Link>
+                <Link href="/admin/orders/new" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>📝 Ny bestilling</Link>
+                <Link href="/admin/batches" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>🍰 Administrer kaker</Link>
+                <Link href="/admin/galleri" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>🖼️ Galleri</Link>
+                <div className={styles.mobileDivider} />
+                <form action={logoutAction}>
+                  <button type="submit" className={`${styles.mobileLink} w-full text-left`}>🚪 Logg ut</button>
+                </form>
+              </>
+            ) : (
+              <Link
+                href="/admin"
+                className={`${styles.mobileLink} ${styles.mobileLinkAdmin}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                ⚙️ Admin
+              </Link>
             )}
           </nav>
         </>

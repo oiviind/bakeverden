@@ -1,10 +1,9 @@
 // src/app/admin/page.tsx
 import { createClient } from '@/lib/supabase/server'
-import Link from 'next/link'
 import Header from '@/components/Header'
 import OrderTabs from '@/components/admin/OrderTabs'
 import UpdatedToast from '@/components/admin/UpdatedToast'
-import { Alert, getButtonClassName } from '@/components/ui'
+import { Alert } from '@/components/ui'
 
 export const revalidate = 0
 
@@ -59,25 +58,8 @@ export default async function AdminPage() {
       <Header isLoggedIn={true} />
 
       <main className="container pt-4 pb-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h1 className="page-title" style={{ marginBottom: 0 }}>Admin Dashboard</h1>
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <Link href="/admin/requests" className={getButtonClassName('secondary')}>
-              🎂 Forespørsler
-            </Link>
-            <Link href="/admin/statistics" className={getButtonClassName('secondary')}>
-              📊 Statistikk
-            </Link>
-            <Link href="/admin/orders/new" className={getButtonClassName('secondary')}>
-              📝 Ny bestilling
-            </Link>
-            <Link href="/admin/batches" className={getButtonClassName('secondary')}>
-              🍰 Administrer kaker
-            </Link>
-            <Link href="/admin/galleri" className={getButtonClassName('secondary')}>
-              🖼️ Galleri
-            </Link>
-          </div>
+        <div className="mb-6">
+          <h1 className="page-title">Admin Dashboard</h1>
         </div>
 
         <OrderTabs

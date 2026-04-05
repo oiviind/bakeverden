@@ -31,17 +31,8 @@
   border-radius: 5px;
 }
 
-/* Desktop nav — hidden by default, shown at md breakpoint */
 .navDesktop {
   display: none;
-  gap: 2rem;
-  align-items: center;
-}
-
-@media (min-width: 768px) {
-  .navDesktop {
-    display: flex;
-  }
 }
 
 .navLink {
@@ -81,11 +72,6 @@
   margin-right: 1rem;
 }
 
-@media (min-width: 768px) {
-  .hamburger {
-    display: none;
-  }
-}
 
 .hamburgerLine {
   width: 2rem;
@@ -117,6 +103,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  overflow-y: auto;
 }
 
 .navMobile:global(.open) {
@@ -150,6 +137,15 @@
   height: 1px;
   background: var(--border);
   margin: 0.5rem 0;
+}
+
+.mobileSectionLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-light);
+  padding: 0.5rem 1rem 0.25rem;
 }
 
 .overlay {
