@@ -48,6 +48,7 @@ export interface Order {
   total_price: number
   status: 'pending' | 'ready' | 'delivered' | 'cancelled'
   sms_sent: boolean
+  email_sent: boolean
   created_at: string
   order_items?: OrderItem[]
 }

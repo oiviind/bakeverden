@@ -60,10 +60,10 @@ export async function sendReceiptEmail(orderId: string) {
 
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { error: emailError } = await resend.emails.send({
-      from: 'Kjerstis Bakeverden <noreply@bakeverden.no>',
+      from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
       to: order.email,
       subject: 'Kvittering fra Kjerstis Bakeverden',
-      text: `Hei ${order.name},\n\nTakk for din bestilling!\n\n${itemLines}\n\nTotalt: ${order.total_price} kr\n\nBetaling ved henting.\nLyngvegen 11, 2833 Raufoss`,
+      text: `Hei ${order.name},\nTusen takk for din bestilling!\n\n${itemLines}\n\nTotalt: ${order.total_price} kr\n\nDu vil bli kontaktet igjen når din bestilling er klar!\nBetaling ved henting.\nLyngvegen 11, 2833 Raufoss\n\nMed vennlig hilsen,\nKjersti`,
     })
 
     if (emailError) return { success: false, error: emailError.message }
@@ -71,6 +71,21 @@ export async function sendReceiptEmail(orderId: string) {
   } catch (err) {
     console.error('Receipt email error:', err)
     return { success: false, error: 'Kunne ikke sende e-post' }
+  }
+}
+
+export async function markEmailSent(orderId: string) {
+  try {
+    const supabase = await createClient()
+    const { error } = await supabase
+      .from('orders')
+      .update({ email_sent: true })
+      .eq('id', orderId)
+    if (error) return { success: false, error: error.message }
+    revalidatePath('/admin')
+    return { success: true }
+  } catch {
+    return { success: false, error: 'Noe gikk galt' }
   }
 }
 
@@ -89,14 +104,18 @@ export async function markSmsSent(orderId: string) {
   }
 }
 
-export async function sendReadyEmail(email: string) {
+export async function sendReadyEmail(email: string, orderItems?: Array<{ quantity: number; batch?: { title: string } | null }>) {
   try {
+    const itemLines = orderItems
+      ?.map(item => `- ${item.batch?.title ?? 'Ukjent'} x${item.quantity}`)
+      .join('\n') ?? ''
+
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { error } = await resend.emails.send({
-      from: 'Kjerstis Bakeverden <noreply@bakeverden.no>',
+      from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
       to: email,
-      subject: 'Dine kaker er klar for henting',
-      text: 'Dine kaker kan hentes i Lyngvegen 11, 2833 Raufoss',
+      subject: 'Dine kaker er klare for henting 🎂',
+      text: `Hei!\n\nBestillingen din er nå klar for henting 🎉\nDu har bestilt:\n${itemLines}\n\n📍 Hentes på:\nLyngvegen 11\n2833 Raufoss\n\nTa kontakt dersom du trenger et annet tidspunkt.\n– Kjersti`,
     })
     if (error) return { success: false, error: error.message }
     return { success: true }
