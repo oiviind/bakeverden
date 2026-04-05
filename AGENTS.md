@@ -52,6 +52,7 @@ import { Button, Card, Badge, Alert } from '@/components/ui'
 - Design tokens (colors, shadows, spacing) come from CSS variables in `globals.css :root`. Never hardcode values that duplicate them.
 - Do not add ad-hoc `style={{}}` or Tailwind utilities to primitives — extend the component's module instead.
 - When building new pages, prefer `ui/` primitives over raw HTML elements with global classes.
+- **Never use inline `style={{}}` on any JSX element.** All styles belong in the component's `.module.css` file. This applies everywhere — pages, components, and primitives alike.
 
 ### Available Primitives
 

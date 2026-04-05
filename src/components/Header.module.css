@@ -12,6 +12,9 @@
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 1.5rem;
   font-weight: bold;
   color: white;
@@ -21,6 +24,11 @@
 
 .logo:hover {
   opacity: 0.9;
+}
+
+.logoImage {
+  object-fit: contain;
+  border-radius: 5px;
 }
 
 /* Desktop nav — hidden by default, shown at md breakpoint */

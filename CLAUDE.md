@@ -35,6 +35,7 @@ If yes: simplify before responding.
 - Comment where it aids navigation (section headers, non-obvious logic) — not to explain self-evident code.
 - Use CSS variables from `globals.css` (`:root`) as design tokens — never hardcode colors or shadows that duplicate them.
 - All reusable UI primitives go in `src/components/ui/` and use CSS Modules for style isolation.
+- **Never use inline `style={{}}` on JSX elements.** All styles must go in the component's CSS Module (`.module.css`). Use Tailwind utility classes only for layout/spacing that isn't already covered by the module.
 
 # Mobile-First Design
 - Always design and build for mobile first, then scale up with responsive modifiers (`md:`, `lg:`).
