@@ -55,7 +55,7 @@ export default function Footer() {
 
         <div className={styles.bottom}>
           <p>© {currentYear} Kjerstis Bakeverden. Alle rettigheter reservert.</p>
-          <p className="text-xs text-gray-400 mt-1">Laget med ❤️ av Øivind Pettersen</p>
+          <p>Laget med ❤️ av Øivind Pettersen</p>
         </div>
       </div>
     </footer>
