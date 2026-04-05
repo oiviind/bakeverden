@@ -2,6 +2,9 @@ import Header from '@/components/Header'
 import Image from 'next/image'
 import styles from './page.module.css'
 import JulebakstBanner from '@/components/JulebakstBanner'
+import Link from 'next/link'
+import { Card } from '@/components/ui'
+import { getPopularBatches } from '@/lib/actions/getPopularBatches'
 
 const cakes = [
   { src: '/specialcakes/bursdag1.png', title: 'Bursdagskake', description: 'Bestillingskake' },
@@ -9,7 +12,9 @@ const cakes = [
   { src: '/specialcakes/rabbitcake.png', title: 'Kaninkake', description: 'Bestillingskake' },
 ]
 
-export default function Home() {
+export default async function Home() {
+  const popularBatches = await getPopularBatches()
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -65,10 +70,34 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Most popular */}
+      {popularBatches.length > 0 && (
+        <section className={`${styles.aboutSection} py-16`}>
+          <div className="container">
+            <h2 className="section-heading mb-10">Populære kaker nå 🔥</h2>
+            <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
+              {popularBatches.map(batch => (
+                <Link key={batch.id} href={`/reserve/${batch.id}`} className={styles.popularCardWrapper}>
+                  <Card className={styles.popularCard}>
+                    {batch.image_url && (
+                      <Card.Image src={batch.image_url} alt={batch.title} />
+                    )}
+                    <Card.Content className={styles.popularCardContent}>
+                      <Card.Title className={styles.popularCardTitle}>{batch.title}</Card.Title>
+                      <Card.Description className={styles.popularCardDescription}>{batch.description ?? '\u00A0'}</Card.Description>
+                    </Card.Content>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Cake showcase */}
       <section className="bg-white py-16">
         <div className="container">
-          <h2 className="section-heading text-center mb-10">En smakebit</h2>
+          <h2 className="section-heading text-center mb-10">En smakebit 😋</h2>
           <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
             {cakes.map((cake) => (
               <div key={cake.src} className={`${styles.cakeCard} min-w-[75vw] md:min-w-0 snap-start rounded-xl overflow-hidden flex-shrink-0 md:flex-shrink`}>

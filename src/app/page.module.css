@@ -1,3 +1,38 @@
+.popularCardWrapper {
+  width: calc(50vw - 1.5rem);
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .popularCardWrapper {
+    width: auto;
+    flex-shrink: 1;
+  }
+}
+
+.popularCard {
+  flex: 1;
+}
+
+.popularCardTitle {
+  font-size: 0.875rem !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.popularCardContent {
+  padding: 0.5rem !important;
+}
+
+.popularCardDescription {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .introSection {
   background: var(--background);
   padding: 2.5rem 0 2rem;
