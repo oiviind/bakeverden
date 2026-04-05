@@ -27,7 +27,7 @@ export default async function EditBatchPage({ params }: { params: Promise<{ id: 
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <Header isLoggedIn={true} />
       <div className="container">
         <div className="flex justify-between items-center py-4">
           <Link href="/admin/batches" className={getButtonClassName('ghost', 'sm')}>
