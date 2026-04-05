@@ -15,6 +15,7 @@ const CATEGORIES = [
 
 export default function GalleryClient({ images }: { images: GalleryImage[] }) {
   const [activeTab, setActiveTab] = useState('all')
+  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null)
 
   const filtered = activeTab === 'all' ? images : images.filter(img => img.category === activeTab)
 
@@ -52,7 +53,8 @@ export default function GalleryClient({ images }: { images: GalleryImage[] }) {
                       key={img.id}
                       src={img.image_url}
                       alt={cat.label}
-                      className={styles.scrollImage}
+                      className={`${styles.scrollImage} ${styles.clickable}`}
+                      onClick={() => setLightboxUrl(img.image_url)}
                     />
                   ))}
               </div>
@@ -65,7 +67,8 @@ export default function GalleryClient({ images }: { images: GalleryImage[] }) {
               key={img.id}
               src={img.image_url}
               alt={activeTab}
-              className={styles.gridImage}
+              className={`${styles.gridImage} ${styles.clickable}`}
+              onClick={() => setLightboxUrl(img.image_url)}
             />
           ))}
         </div>
@@ -73,6 +76,18 @@ export default function GalleryClient({ images }: { images: GalleryImage[] }) {
 
       {filtered.length === 0 && (
         <p className="text-gray-500 text-center py-12">Ingen bilder her ennå.</p>
+      )}
+
+      {lightboxUrl && (
+        <div className={styles.lightbox} onClick={() => setLightboxUrl(null)}>
+          <button className={styles.lightboxClose} aria-label="Lukk">✕</button>
+          <img
+            src={lightboxUrl}
+            alt=""
+            className={styles.lightboxImage}
+            onClick={e => e.stopPropagation()}
+          />
+        </div>
       )}
     </div>
   )
