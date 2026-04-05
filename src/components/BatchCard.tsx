@@ -15,6 +15,7 @@ export default function BatchCard({ batch }: BatchCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const isSoldOut = batch.remaining_quantity === 0
+  const isLowStock = !isSoldOut && batch.remaining_quantity <= 10 && batch.total_quantity < 999999
 
   const fmtPickup = (iso: string) =>
     new Date(iso).toLocaleDateString('nb-NO', {
@@ -42,6 +43,9 @@ export default function BatchCard({ batch }: BatchCardProps) {
                     UTSOLGT
                   </span>
                 </div>
+              )}
+              {isLowStock && (
+                <span className={styles.lowStockBadge}>Få igjen!</span>
               )}
             </div>
           </Link>

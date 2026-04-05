@@ -28,7 +28,7 @@ export async function updateBatch(batchId: string, formData: FormData): Promise<
   try {
     const { error: batchError } = await supabase
       .from('product_batches')
-      .update({ title, description: description || null, image_url: image_url || null, price, pickup_start, pickup_end, total_quantity, is_active })
+      .update({ title, description: description || null, image_url: image_url || null, price, pickup_start, pickup_end, total_quantity, remaining_quantity: total_quantity, is_active })
       .eq('id', batchId)
 
     if (batchError) return { success: false, error: 'Kunne ikke oppdatere kake: ' + batchError.message }

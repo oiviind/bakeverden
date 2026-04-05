@@ -1,3 +1,16 @@
+.lowStockBadge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #f97316;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  z-index: 1;
+}
+
 /* Mobile-compact overrides for BatchCard — applied via className on Card sub-components */
 
 @media (max-width: 767px) {
