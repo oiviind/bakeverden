@@ -7,6 +7,7 @@ import type { GalleryImage } from '@/types/database.types'
 const CATEGORIES = [
   { value: 'dåp', label: 'Dåp' },
   { value: 'bursdag', label: 'Bursdag' },
+  { value: 'barnebursdag', label: 'Barnebursdag' },
   { value: 'bryllup', label: 'Bryllup' },
   { value: 'konfirmasjon', label: 'Konfirmasjon' },
   { value: 'gjærbakst', label: 'Gjærbakst' },
