@@ -16,7 +16,7 @@ export default function VilkarPage() {
               <section className="mb-8">
                 <h2 className="section-heading mb-3">Bestilling</h2>
                 <p className="text-gray-600">
-                  Når du legger inn en bestilling, regnes dette som bindende. Vi begynner å
+                  Når du legger inn en bestilling, regnes dette som bindende. Jeg begynner å
                   planlegge og tilberede din ordre basert på den informasjonen du oppgir.
                   Vennligst dobbeltsjekk bestillingen din før du sender den inn.
                 </p>
@@ -33,11 +33,11 @@ export default function VilkarPage() {
               <section className="mb-8">
                 <h2 className="section-heading mb-3">Allergener</h2>
                 <p className="text-gray-600 mb-3">
-                  Det er kundens ansvar å sette seg inn i ingrediensene og eventuelle alergener i produktene før bestilling. Vi anbefaler å kontakte oss dersom du har spesielle allergier eller
+                  Det er kundens ansvar å sette seg inn i ingrediensene og eventuelle alergener i produktene før bestilling. Jeg anbefaler å kontakte meg dersom du har spesielle allergier eller
                   matintoleranser før bestilling. Vær oppmerksom på følgende:
                 </p>
                 <ul className="list-disc list-inside text-gray-600 space-y-1">
-                  <li>Vi kan ikke garantere et allergenfritt produksjonsmiljø</li>
+                  <li>Jeg kan ikke garantere et allergenfritt produksjonsmiljø</li>
                   <li>Produkter kan inneholde spor av nøtter, gluten, melk, egg og andre allergener</li>
                   <li>Ingredienslister er tilgjengelige på produktsidene</li>
                 </ul>

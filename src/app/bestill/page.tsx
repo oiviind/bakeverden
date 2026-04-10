@@ -10,7 +10,7 @@ export default function BestillPage() {
         <div className="max-w-lg mx-auto">
           <h1 className="page-title">Bestill kake</h1>
           <p className="text-gray-600 text-sm mb-6">
-            Fyll ut skjemaet så tar vi kontakt for å avtale detaljer og pris.
+            Fyll ut skjemaet så tar jeg kontakt for å avtale detaljer og pris.
           </p>
 
           <Alert variant="info" className="mb-6">

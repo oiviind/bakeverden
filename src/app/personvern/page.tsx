@@ -72,7 +72,7 @@ export default function PersonvernPage() {
                   <a href="tel:+4745477878" className="text-blue-600 underline">
                     454 77 878
                   </a>{' '}
-                  så hjelper vi deg.
+                  så hjelper jeg deg.
                 </p>
               </section>
             </Card.Content>

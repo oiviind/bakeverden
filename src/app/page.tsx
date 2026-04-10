@@ -5,15 +5,17 @@ import JulebakstBanner from '@/components/JulebakstBanner'
 import Link from 'next/link'
 import { Card } from '@/components/ui'
 import { getPopularBatches } from '@/lib/actions/getPopularBatches'
-
-const cakes = [
-  { src: '/specialcakes/bursdag1.png', title: 'Bursdagskake', description: 'Bestillingskake' },
-  { src: '/specialcakes/lioncake.png', title: 'Løvekake', description: 'Bestillingskake' },
-  { src: '/specialcakes/rabbitcake.png', title: 'Kaninkake', description: 'Bestillingskake' },
-]
+import { getGalleryImages } from '@/lib/actions/galleryActions'
 
 export default async function Home() {
-  const popularBatches = await getPopularBatches()
+  const [popularBatches, allGalleryImages] = await Promise.all([
+    getPopularBatches(),
+    getGalleryImages(),
+  ])
+
+  const showcaseImages = allGalleryImages
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3)
 
   return (
     <div className="min-h-screen">
@@ -24,14 +26,15 @@ export default async function Home() {
         <div className="container">
           <h2 className={styles.welcomeTitle}>Velkommen til min nye nettbutikk 💛</h2>
           <p className={styles.welcomeText}>
-            Her kan du enkelt bestille hjemmelagde kaker laget med kjærlighet og gode råvarer. Enten du ønsker en spesialbestilt kake til en anledning, eller vil sikre deg dine favoritter blant årets julekaker, finner du det her.
+            Dette er et stort og spennende steg for meg, og en måte å gjøre det enklere for deg å bestille kaker på. Med denne løsningen får du bedre oversikt, samtidig som jeg kan følge opp hver bestilling på en trygg og god måte.
           </p>
           <ul className={styles.welcomeList}>
-            <li>Trykk på «Bestill kake» for å velge dato og sende inn en forespørsel</li>
+            <li>Bestill kake ved å velge dato og sende inn en forespørsel</li>
             <li>Julekaker kan bestilles direkte fra menyen</li>
+            <li>Se galleriet for inspirasjon og eksempler på kaker jeg har laget</li>
           </ul>
           <p className={styles.welcomeText}>
-            Ønsker du litt inspirasjon, kan du bla gjennom bildegalleriet nederst på siden og se noe av det jeg har laget tidligere.
+            Jeg gleder meg til å bake for deg! 🎂
           </p>
         </div>
       </section>
@@ -43,7 +46,7 @@ export default async function Home() {
         <div className="container">
           <div className="flex flex-col md:flex-row items-center gap-10">
             <div className="flex-1">
-              <h2 className="section-heading mb-4">Om bakeren</h2>
+              <h2 className="section-heading mb-4">Om meg</h2>
               <p className={`${styles.aboutText} text-lg mb-6`}>
                 Jeg begynte med baking som terapi, og det har utviklet seg
                 til en lidenskap for å lage gode kaker som bringer glede til andre.
@@ -99,21 +102,23 @@ export default async function Home() {
         <div className="container">
           <h2 className="section-heading text-center mb-10">En smakebit 😋</h2>
           <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
-            {cakes.map((cake) => (
-              <div key={cake.src} className={`${styles.cakeCard} min-w-[75vw] md:min-w-0 snap-start rounded-xl overflow-hidden flex-shrink-0 md:flex-shrink`}>
+            {showcaseImages.map((img, i) => (
+              <div key={img.id} className={`${styles.cakeCard} min-w-[75vw] md:min-w-0 snap-start rounded-xl overflow-hidden flex-shrink-0 md:flex-shrink`}>
                 <div className="aspect-square relative">
                   <Image
-                    src={cake.src}
-                    alt={cake.title}
+                    src={img.image_url}
+                    alt={img.title ?? img.category}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover"
+                    priority={i === 0}
                   />
                 </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-lg">{cake.title}</h3>
-                  <p className="text-sm text-gray-500">{cake.description}</p>
-                </div>
+                {img.title && (
+                  <div className="p-4">
+                    <h3 className="font-semibold text-lg">{img.title}</h3>
+                  </div>
+                )}
               </div>
             ))}
           </div>

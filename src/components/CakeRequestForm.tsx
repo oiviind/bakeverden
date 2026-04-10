@@ -33,7 +33,7 @@ export default function CakeRequestForm() {
     return (
       <Alert variant="success">
         <p className="font-semibold text-lg mb-1">Takk for forespørselen!</p>
-        <p>Vi tar kontakt med deg så snart som mulig for å avtale detaljer og pris.</p>
+        <p>Jeg tar kontakt med deg så snart som mulig for å avtale detaljer og pris.</p>
       </Alert>
     )
   }
