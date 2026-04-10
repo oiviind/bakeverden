@@ -5,7 +5,7 @@
    Used by all CSS modules via var(--)
    ============================================ */
    :root {
-    --primary: #000335;        /* varm terracotta (signaturfarge) */
+    --primary: #d97757;        /* varm terracotta (signaturfarge) */
     --primary-dark: #7c2d12;   /* dyp bakst/brun */
   
     --secondary: #fef3e7;      /* krem / lys bakst-tone */
@@ -17,7 +17,7 @@
     --border: #f1e5d9;         /* varm border i stedet for grå */
   
     --success: #10b981;
-    --error: #ef4444;
+    --error: #dc2626;   /* red-600: white on this → 4.83:1 (WCAG AA) */
 
     --btn-secondary: #6b7280;
     --btn-secondary-hover: #4b5563;

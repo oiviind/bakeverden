@@ -44,7 +44,7 @@
 
 /* ---- Variants ---- */
 .primary {
-  background: var(--primary);
+  background: #b85c36;   /* darkened terracotta: white → 4.6:1 (WCAG AA) */
   color: white;
 }
 
@@ -78,7 +78,7 @@
 }
 
 .danger:hover:not(:disabled) {
-  background: #dc2626;
+  background: #b91c1c;
 }
 
 /* Neutral — cancel / tertiary actions */

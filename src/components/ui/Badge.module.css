@@ -19,7 +19,7 @@
 
 .success {
   background-color: var(--success);
-  color: white;
+  color: #065f46;   /* dark green: 5.6:1 on #10b981 (WCAG AA) */
 }
 
 .warning {

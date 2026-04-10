@@ -1,5 +1,5 @@
 .header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  background: var(--primary);
   color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -123,14 +123,14 @@
 }
 
 .mobileLinkAdmin {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  background: var(--primary);
   color: white;
   font-weight: 600;
 }
 
 .mobileLinkAdmin:hover {
   opacity: 0.9;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  background: var(--primary);
 }
 
 .mobileDivider {
