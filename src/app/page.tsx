@@ -6,11 +6,13 @@ import Link from 'next/link'
 import { Card } from '@/components/ui'
 import { getPopularBatches } from '@/lib/actions/getPopularBatches'
 import { getGalleryImages } from '@/lib/actions/galleryActions'
+import { getAvailableBatches } from '@/lib/actions/getBatches'
 
 export default async function Home() {
-  const [popularBatches, allGalleryImages] = await Promise.all([
+  const [popularBatches, allGalleryImages, availableBatches] = await Promise.all([
     getPopularBatches(),
     getGalleryImages(),
+    getAvailableBatches(),
   ])
 
   const showcaseImages = allGalleryImages
@@ -39,7 +41,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <JulebakstBanner />
+      {availableBatches.length > 0 && <JulebakstBanner />}
 
       {/* About section */}
       <section className={`${styles.aboutSection} py-16`}>
@@ -74,7 +76,7 @@ export default async function Home() {
       </section>
 
       {/* Most popular */}
-      {popularBatches.length > 0 && (
+      {availableBatches.length > 0 && popularBatches.length > 0 && (
         <section className={`${styles.aboutSection} py-16`}>
           <div className="container">
             <h2 className="section-heading mb-10">Populære kaker nå 🔥</h2>
