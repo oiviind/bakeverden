@@ -11,7 +11,7 @@ export default async function GalleriPage() {
     <div className="min-h-screen">
       <Header />
       <main className="container py-8">
-        <h1 className="section-heading mb-6">Bildegalleri</h1>
+        <h1 className="page-title">Bildegalleri</h1>
         <GalleryClient images={images} />
       </main>
     </div>

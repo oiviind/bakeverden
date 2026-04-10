@@ -14,12 +14,7 @@ export default async function Home() {
 
       <main className="container py-4">
         <section className="mb-4">
-          <h1 className="text-lg font-medium mb-1 pt-1">
-            Julen 2026
-          </h1>
-          <p className="text-gray-600 text-sm">
-            Småkaker og andre godsaker klare for bestilling til jul. Henting innen 18. Desember kl 16:00
-          </p>
+        <h1 className="page-title">Julen 2026</h1>
         </section>
 
         {batches.length === 0 ? (
