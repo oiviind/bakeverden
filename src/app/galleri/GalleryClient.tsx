@@ -11,6 +11,7 @@ const CATEGORIES = [
   { value: 'bryllup', label: 'Bryllup' },
   { value: 'konfirmasjon', label: 'Konfirmasjon' },
   { value: 'gjærbakst', label: 'Gjærbakst' },
+  { value: 'cupcakes', label: 'Cupcakes' },
   { value: 'annet', label: 'Annet' },
 ]
 
