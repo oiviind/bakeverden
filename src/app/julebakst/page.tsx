@@ -23,7 +23,7 @@ export default async function Home() {
               <div className="text-center py-4">
                 <p className="text-gray-500">Ingen kaker tilgjengelig akkurat nå.</p>
                 <p className="text-sm text-gray-400 mt-2">
-                  Sjekk tilbake senere eller følg meg på sosiale medier!
+                  Kom tilbake senere eller følg meg på sosiale medier! Dette kommer nærmere jul.
                 </p>
               </div>
             </Card.Content>
