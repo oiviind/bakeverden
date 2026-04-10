@@ -79,7 +79,7 @@ export default function CakeRequestForm() {
           required
           rows={4}
           className="form-input"
-          placeholder="Fortell gjerne om ønsker for smak, design, størrelse, allergier osv."
+          placeholder="Fortell gjerne om ønsker for smak, design, størrelse, allergier, budsjett osv."
         />
       </div>
 

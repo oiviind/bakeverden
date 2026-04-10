@@ -121,7 +121,7 @@ export default function OrderCard({ order }: OrderCardProps) {
               <Button
                 onClick={() => handleStatusChange('ready')}
                 loading={loading}
-                variant="primary"
+                variant="success-light"
                 fullWidth
               >
                 ✅ Marker som klar for henting
@@ -228,7 +228,7 @@ export default function OrderCard({ order }: OrderCardProps) {
               <Button
                 onClick={() => handleStatusChange('delivered')}
                 loading={loading}
-                variant="primary"
+                variant="success-light"
                 fullWidth
               >
                 📦 Marker som levert

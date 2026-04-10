@@ -81,6 +81,16 @@
   background: #b91c1c;
 }
 
+/* Success light — positive/confirm actions */
+.success-light {
+  background: #10b981;
+  color: white;
+}
+
+.success-light:hover:not(:disabled) {
+  background: #bbf7d0;
+}
+
 /* Neutral — cancel / tertiary actions */
 .neutral {
   background: #f3f4f6;

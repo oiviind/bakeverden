@@ -1,6 +1,6 @@
 import styles from './Button.module.css'
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'neutral'
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'neutral' | 'success-light' 
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

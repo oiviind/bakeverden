@@ -16,6 +16,8 @@
   
     --border: #f1e5d9;         /* varm border i stedet for grå */
   
+    --success-light: #10b981;   /* grønn-100: white on this → 15.8:1 (WCAG AAA) */
+
     --success: #10b981;
     --error: #dc2626;   /* red-600: white on this → 4.83:1 (WCAG AA) */
 
