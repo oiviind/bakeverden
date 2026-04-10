@@ -1,6 +1,9 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function submitCakeRequest(formData: FormData) {
   const occasion = formData.get('occasion') as string
@@ -28,6 +31,24 @@ export async function submitCakeRequest(formData: FormData) {
     })
 
     if (error) return { success: false, error: error.message }
+
+    await resend.emails.send({
+      from: 'Bakeverden <noreply@kjerstisolberg.no>',
+      to: 'oivindpettersen94@gmail.com',
+      subject: `Ny kakeforespørsel fra ${name}`,
+      text: [
+        `Ny kakeforespørsel fra ${name}`,
+        `E-post: ${email}`,
+        phone ? `Telefon: ${phone}` : null,
+        `Anledning: ${occasion}`,
+        num_people ? `Antall personer: ${num_people}` : null,
+        desired_date ? `Ønsket dato: ${desired_date}` : null,
+        ``,
+        `Beskrivelse:`,
+        description,
+      ].filter(Boolean).join('\n'),
+    })
+
     return { success: true }
   } catch (err) {
     console.error('submitCakeRequest error:', err)
