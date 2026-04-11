@@ -33,8 +33,8 @@ export async function submitCakeRequest(formData: FormData) {
     if (error) return { success: false, error: error.message }
 
     await resend.emails.send({
-      from: 'Bakeverden <noreply@kjerstisbakeverden.com>',
-      to: 'kjerstiringelien@hotmail.com',
+      from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
+      to: 'kjerstisbakeverden@gmail.com',
       subject: `Ny kakeforespørsel fra ${name}`,
       text: [
         `Ny kakeforespørsel fra ${name}`,

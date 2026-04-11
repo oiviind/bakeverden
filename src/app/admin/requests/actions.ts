@@ -1,13 +1,13 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
 export async function updateRequestStatus(
   id: string,
   status: 'ny' | 'kontaktet' | 'avtalt' | 'avslått'
 ) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase
     .from('cake_requests')
     .update({ status })

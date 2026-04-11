@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import type { GalleryImage } from '@/types/database.types'
 
@@ -14,7 +15,7 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
 }
 
 export async function addGalleryImage(imageUrl: string, category: string, title?: string) {
-  const supabase = createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase
     .from('gallery_images')
     .insert({ image_url: imageUrl, category, title: title || null })
@@ -25,7 +26,7 @@ export async function addGalleryImage(imageUrl: string, category: string, title?
 }
 
 export async function deleteGalleryImage(id: string) {
-  const supabase = createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase
     .from('gallery_images')
     .delete()

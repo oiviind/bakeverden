@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import Header from '@/components/Header'
 import RequestCard from '@/components/admin/RequestCard'
 import { getButtonClassName } from '@/components/ui'
@@ -7,7 +7,7 @@ import Link from 'next/link'
 export const revalidate = 0
 
 export default async function AdminRequestsPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data: requests } = await supabase
     .from('cake_requests')
     .select('*')
