@@ -65,8 +65,8 @@ export default function PersonvernPage() {
                 </ul>
                 <p className="text-gray-600 mt-4">
                   Ta kontakt på{' '}
-                  <a href="mailto:kjerstiringelien@hotmail.com" className="text-blue-600 underline">
-                    kjerstiringelien@hotmail.com
+                  <a href="mailto:kjerstisbakeverden@gmail.com" className="text-blue-600 underline">
+                  kjerstisbakeverden@gmail.com
                   </a>{' '}
                   eller ring{' '}
                   <a href="tel:+4745477878" className="text-blue-600 underline">

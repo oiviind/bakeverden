@@ -11,7 +11,7 @@ export default function Footer() {
           <div>
             <h4 className={styles.heading}>Kontakt</h4>
             <ul className={styles.links}>
-              <li>📧 <a href="mailto:kjerstiringelien@hotmail.com">kjerstiringelien@hotmail.com</a></li>
+              <li>📧 <a href="mailto:kjerstisbakeverden@gmail.com">kjerstisbakeverden@gmail.com</a></li>
               <li>📞 <a href="tel:+4745477878">+47 454 77 878</a></li>
             </ul>
           </div>

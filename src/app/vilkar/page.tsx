@@ -56,8 +56,8 @@ export default function VilkarPage() {
                 <h2 className="section-heading mb-3">Kontakt</h2>
                 <p className="text-gray-600">
                   Har du spørsmål om en bestilling eller disse vilkårene? Ta kontakt på{' '}
-                  <a href="mailto:kjerstiringelien@hotmail.com" className="text-blue-600 underline">
-                    kjerstiringelien@hotmail.com
+                  <a href="mailto:kjerstisbakeverden@gmail.com" className="text-blue-600 underline">
+                  kjerstisbakeverden@gmail.com
                   </a>{' '}
                   eller ring{' '}
                   <a href="tel:+4745477878" className="text-blue-600 underline">
