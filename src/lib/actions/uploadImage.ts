@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 interface UploadImageResult {
   success: boolean
@@ -16,7 +16,7 @@ interface UploadImageParams {
 
 export async function uploadImage(params: UploadImageParams): Promise<UploadImageResult> {
   const { base64Data, fileName, mimeType } = params
-  const supabase = createClient()
+  const supabase = createAdminClient()
   
   console.log('📤 Mottar fil:', fileName, mimeType, 'size:', base64Data.length)
 
