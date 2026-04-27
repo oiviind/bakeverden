@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'hzjrnlrqwzbmkngvfoul.supabase.co',
       },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '54321',
+      },
     ],
   },
   experimental: {

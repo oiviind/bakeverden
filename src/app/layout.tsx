@@ -15,8 +15,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://kjerstisbakeverden.com'),
   title: "Kjerstis Bakeverden",
   description: "Bestill deilige hjemmelagde kaker",
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
+  openGraph: {
+    title: "Kjerstis Bakeverden",
+    description: "Enklere og oversiktlig bestilling av hjemmelagde kaker",
+    images: ['/logo.png'],
+  },
 };
 
 export default function RootLayout({
