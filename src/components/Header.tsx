@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useCart } from '@/lib/contexts/CartContext'
 import { logoutAction } from '@/app/admin/login/actions'
+import { getButtonClassName } from '@/components/ui'
 import styles from './Header.module.css'
 
 interface HeaderProps {
@@ -21,7 +22,7 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
       <header className={`${styles.header} sticky top-0 z-10`}>
         <div className={`container ${styles.headerContent}`}>
           <Link href="/" className={styles.logo}>
-            <Image src="/logo.png" alt="" width={32} height={32} className={styles.logoImage} priority />
+            <Image src="/logo.png" alt="" width={46} height={46} className={styles.logoImage} priority />
             Kjerstis Bakeverden
           </Link>
 
@@ -33,7 +34,7 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
             <Link href="/julebakst" className={styles.navLink}>
               Julebakst
             </Link>
-            <Link href="/bestill" className={styles.navLink}>
+            <Link href="/bestill" className={`${getButtonClassName('primary')} ${styles.navCta}`}>
               Bestill kake
             </Link>
             <Link href="/galleri" className={styles.navLink}>

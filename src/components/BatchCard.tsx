@@ -25,7 +25,7 @@ export default function BatchCard({ batch }: BatchCardProps) {
       hour: '2-digit',
       minute: '2-digit',
     })
-  const pickupEnd = fmtPickup(batch.pickup_end)
+  const pickupEnd = batch.pickup_end ? fmtPickup(batch.pickup_end) : null
 
   return (
     <>
@@ -83,10 +83,12 @@ export default function BatchCard({ batch }: BatchCardProps) {
             )}
           </div>
 
-          <div className={styles.pickup}>
-            <div className={`${styles.pickupLabel} font-semibold mb-1`}>📅 Levering innen:</div>
-            <div className={`${styles.pickupDate} text-sm`}>{pickupEnd}</div>
-          </div>
+          {pickupEnd && (
+            <div className={styles.pickup}>
+              <div className={`${styles.pickupLabel} font-semibold mb-1`}>📅 Levering innen:</div>
+              <div className={`${styles.pickupDate} text-sm`}>{pickupEnd}</div>
+            </div>
+          )}
 
           <div className={`${styles.actions} flex flex-col gap-3`}>
             {!isSoldOut && (

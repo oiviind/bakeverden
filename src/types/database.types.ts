@@ -7,8 +7,8 @@ export interface ProductBatch {
   price: number
   original_price?: number | null
   discount_percent?: number | null
-  pickup_start: string
-  pickup_end: string
+  pickup_start?: string | null
+  pickup_end?: string | null
   total_quantity: number
   remaining_quantity: number
   is_active: boolean
