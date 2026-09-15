@@ -107,21 +107,19 @@ export default function BatchForm({ ingredients }: BatchFormProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="form-group">
-          <label className="form-label">Henting starter *</label>
-          <input 
-            type="datetime-local" 
+          <label className="form-label">Henting starter</label>
+          <input
+            type="datetime-local"
             name="pickup_start"
-            required 
             className="form-input"
           />
         </div>
 
         <div className="form-group">
-          <label className="form-label">Henting slutter *</label>
-          <input 
-            type="datetime-local" 
+          <label className="form-label">Henting slutter</label>
+          <input
+            type="datetime-local"
             name="pickup_end"
-            required 
             className="form-input"
           />
         </div>

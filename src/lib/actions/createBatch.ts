@@ -27,7 +27,7 @@ export async function createBatch(formData: FormData): Promise<CreateBatchResult
   console.log('Creating batch:', { title, price, total_quantity, ingredientIds })
 
   // Validering
-  if (!title || !price || !pickup_start || !pickup_end) {
+  if (!title || !price) {
     return {
       success: false,
       error: 'Vennligst fyll ut alle påkrevde felter'
@@ -43,8 +43,8 @@ export async function createBatch(formData: FormData): Promise<CreateBatchResult
         description: description || null,
         image_url: image_url || null,
         price,
-        pickup_start,
-        pickup_end,
+        pickup_start: pickup_start || null,
+        pickup_end: pickup_end || null,
         total_quantity,
         remaining_quantity: total_quantity,
         is_active
