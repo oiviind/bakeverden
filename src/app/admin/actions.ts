@@ -107,18 +107,23 @@ export async function markSmsSent(orderId: string) {
   }
 }
 
-export async function sendReadyEmail(email: string, orderItems?: Array<{ quantity: number; batch?: { title: string } | null }>) {
+export async function sendReadyEmail(
+  email: string,
+  orderItems?: Array<{ quantity: number; price_at_time: number; batch?: { title: string } | null }>,
+  totalPrice?: number
+) {
   try {
     const itemLines = orderItems
-      ?.map(item => `- ${item.batch?.title ?? 'Ukjent'} x${item.quantity}`)
+      ?.map(item => `- ${item.batch?.title ?? 'Ukjent'}: ${item.quantity} stk × ${item.price_at_time} kr`)
       .join('\n') ?? ''
+    const total = totalPrice ?? orderItems?.reduce((sum, item) => sum + item.quantity * item.price_at_time, 0) ?? 0
 
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { error } = await resend.emails.send({
       from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
       to: email,
       subject: 'Dine kaker er klare for henting 🎂',
-      text: `Hei!\n\nBestillingen din er nå klar for henting 🎉\nDu har bestilt:\n${itemLines}\n\n📍 Hentes på:\nLyngvegen 11\n2833 Raufoss\n\nTa kontakt dersom du trenger et annet tidspunkt.\n– Kjersti`,
+      text: `Hei!\n\nBestillingen din er nå klar for henting 🎉\n\nKvittering:\n${itemLines}\n------------------------\nTotalt: ${total} kr\nBetaling ved henting.\n\n📍 Hentes på:\nLyngvegen 11\n2833 Raufoss\n\nTa kontakt dersom du trenger et annet tidspunkt.\n– Kjersti`,
     })
     if (error) return { success: false, error: error.message }
     return { success: true }
