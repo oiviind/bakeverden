@@ -59,10 +59,6 @@
   background: var(--color-accent-tint);
 }
 
-.navCta {
-  padding: 10px 22px;
-}
-
 /* Hamburger button — visible on mobile only */
 .hamburger {
   display: flex;

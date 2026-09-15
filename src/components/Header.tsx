@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useCart } from '@/lib/contexts/CartContext'
 import { logoutAction } from '@/app/admin/login/actions'
-import { getButtonClassName } from '@/components/ui'
 import styles from './Header.module.css'
 
 interface HeaderProps {
@@ -34,7 +33,7 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
             <Link href="/julebakst" className={styles.navLink}>
               Julebakst
             </Link>
-            <Link href="/bestill" className={`${getButtonClassName('primary')} ${styles.navCta}`}>
+            <Link href="/bestill" className={styles.navLink}>
               Bestill kake
             </Link>
             <Link href="/galleri" className={styles.navLink}>
