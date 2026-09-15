@@ -30,6 +30,22 @@ export const metadata: Metadata = {
   },
 };
 
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  name: "Kjerstis Bakeverden",
+  image: "https://kjerstisbakeverden.com/logo.png",
+  url: "https://kjerstisbakeverden.com",
+  telephone: "+4745477878",
+  email: "kjerstisbakeverden@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Raufoss",
+    addressRegion: "Vestre Toten",
+    addressCountry: "NO",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,6 +54,10 @@ export default function RootLayout({
   return (
     <html lang="nb" className={`${caprasimo.variable} ${figtree.variable}`}>
       <body className="antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
         <CartProvider>
           {children}
           <Footer />

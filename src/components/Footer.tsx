@@ -47,6 +47,7 @@ export default function Footer() {
           <div>
             <h4 className={styles.heading}>Informasjon</h4>
             <ul className={styles.links}>
+              <li>📍 Raufoss, Vestre Toten</li>
               <li><Link href="/personvern">Personvern</Link></li>
               <li><Link href="/vilkar">Vilkår og betingelser</Link></li>
             </ul>
