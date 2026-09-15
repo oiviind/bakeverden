@@ -64,7 +64,7 @@ export async function sendReceiptEmail(orderId: string) {
       from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
       to: order.email,
       subject: 'Kvittering fra Kjerstis Bakeverden',
-      text: `Hei ${order.name},\nTusen takk for din bestilling!\n\n${itemLines}\n\nTotalt: ${order.total_price} kr\n\nDu vil bli kontaktet igjen når din bestilling er klar!\nBetaling ved henting.\nLyngvegen 11, 2833 Raufoss\n\nMed vennlig hilsen,\nKjersti`,
+      text: `Hei ${order.name},\nTusen takk for din bestilling!\n\n${itemLines}\n\nTotalt: ${order.total_price} kr\n\nDu vil bli kontaktet igjen når din bestilling er klar!\nBetaling ved henting.\n\n📍 Hentes på:\nLyngvegen 11, 2833 Raufoss\nSe i kart: https://www.google.com/maps/search/?api=1&query=Lyngvegen+11,+2833+Raufoss\n\nMed vennlig hilsen,\nKjersti`,
     })
 
     if (emailError) return { success: false, error: emailError.message }
@@ -123,7 +123,7 @@ export async function sendReadyEmail(
       from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
       to: email,
       subject: 'Dine kaker er klare for henting 🎂',
-      text: `Hei!\n\nBestillingen din er nå klar for henting 🎉\n\nKvittering:\n${itemLines}\n------------------------\nTotalt: ${total} kr\nBetaling ved henting.\n\n📍 Hentes på:\nLyngvegen 11\n2833 Raufoss\n\nTa kontakt dersom du trenger et annet tidspunkt.\n– Kjersti`,
+      text: `Hei!\n\nBestillingen din er nå klar for henting 🎉\n\nKvittering:\n${itemLines}\n------------------------\nTotalt: ${total} kr\nBetaling ved henting.\n\n📍 Hentes på:\nLyngvegen 11, 2833 Raufoss\nSe i kart: https://www.google.com/maps/search/?api=1&query=Lyngvegen+11,+2833+Raufoss\n\nTa kontakt dersom du trenger et annet tidspunkt.\n– Kjersti`,
     })
     if (error) return { success: false, error: error.message }
     return { success: true }

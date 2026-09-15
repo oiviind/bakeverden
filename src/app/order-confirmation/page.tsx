@@ -69,6 +69,19 @@ export default async function OrderConfirmationPage({
                 </div>
               )}
 
+              <div className="text-left bg-gray-50 rounded-lg p-4 mb-6">
+                <h2 className="font-semibold mb-1">📍 Hentes på</h2>
+                <p className="text-sm text-gray-700">Lyngvegen 11, 2833 Raufoss</p>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Lyngvegen+11,+2833+Raufoss"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 underline"
+                >
+                  Vis i kart
+                </a>
+              </div>
+
               <div className="flex flex-col gap-3">
                 {orderId && hasEmail && (
                   <SendReceiptButton orderId={orderId} />
