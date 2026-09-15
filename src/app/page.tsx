@@ -114,14 +114,14 @@ export default async function Home() {
               <span className={`${styles.stepNumber} ${styles.stepAccent}`}>1</span>
               <h3 className={styles.stepTitle}>Velg dato</h3>
               <p className={styles.stepText}>
-                Finn dagen du trenger kaken, så ser du med en gang om den er ledig.
+                Velg hvilken dato du ønsker å få kaken din. Jeg har begrenset kapasitet, så vær tidlig ute. 
               </p>
             </div>
             <div>
               <span className={`${styles.stepNumber} ${styles.stepAccent2}`}>2</span>
               <h3 className={styles.stepTitle}>Send forespørsel</h3>
               <p className={styles.stepText}>
-                Fortell meg om anledningen, antall porsjoner og eventuelle allergier.
+                Fortell meg om anledningen, antall personer og eventuelle allergier.
               </p>
             </div>
             <div>
