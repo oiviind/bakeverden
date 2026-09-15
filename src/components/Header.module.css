@@ -158,14 +158,6 @@
   margin: 0.5rem 0;
 }
 
-.mobileSectionLabel {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-light);
-  padding: 0.5rem 1rem 0.25rem;
-}
 
 .overlay {
   position: fixed;

@@ -55,7 +55,7 @@ export default async function ReservePage({
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="container py-6">
+      <main className="container py-8 md:py-12">
         <div className="max-w-2xl mx-auto">
           {/* Kakeinformasjon */}
           <Card className="mb-6">

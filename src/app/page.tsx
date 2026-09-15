@@ -20,20 +20,24 @@ export default async function Home() {
 
   const heroSection = (
     <section id="main-content" className={styles.hero}>
-      <div className={`container ${styles.heroCopy}`}>
-        <span className={`${styles.tag} ${styles.tagAccent2}`}>Hjemmelaget av meg</span>
-        <h1 className={styles.heroTitle}>Kaker til dagene som betyr noe</h1>
-        <p className={styles.heroText}>
-          Velg dato, send en forespørsel, og jeg følger opp bestillingen din personlig.
-          Alt bakes av meg, på mitt eget kjøkken.
-        </p>
-        <div className={styles.heroActions}>
-          <Link href="/bestill" className={getButtonClassName('primary', 'lg')}>
-            Bestill kake
-          </Link>
-          <Link href="/galleri" className={getButtonClassName('secondary', 'lg')}>
-            Se galleriet
-          </Link>
+      <div className="container">
+        <div className={styles.heroRow}>
+          <div className={styles.heroCopy}>
+            <span className={`${styles.tag} ${styles.tagAccent2}`}>Hjemmelaget av meg</span>
+            <h1 className={styles.heroTitle}>Kaker til dagene som betyr noe</h1>
+            <p className={styles.heroText}>
+              Velg dato, send en forespørsel, og jeg følger opp bestillingen din personlig.
+              Alt bakes av meg, på mitt eget kjøkken.
+            </p>
+          </div>
+          <div className={styles.heroActions}>
+            <Link href="/bestill" className={getButtonClassName('primary', 'lg')}>
+              Bestill kake
+            </Link>
+            <Link href="/galleri" className={getButtonClassName('secondary', 'lg')}>
+              Se galleriet
+            </Link>
+          </div>
         </div>
       </div>
     </section>

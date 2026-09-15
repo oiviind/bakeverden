@@ -34,6 +34,7 @@ export async function updateOrderStatus(
     console.log('✅ Order updated successfully:', data[0])
     
     revalidatePath('/admin')
+    revalidatePath('/admin/bestillinger')
     return { success: true }
   } catch (err) {
     console.error('💥 Unexpected error:', err)
@@ -83,6 +84,7 @@ export async function markEmailSent(orderId: string) {
       .eq('id', orderId)
     if (error) return { success: false, error: error.message }
     revalidatePath('/admin')
+    revalidatePath('/admin/bestillinger')
     return { success: true }
   } catch {
     return { success: false, error: 'Noe gikk galt' }
@@ -98,6 +100,7 @@ export async function markSmsSent(orderId: string) {
       .eq('id', orderId)
     if (error) return { success: false, error: error.message }
     revalidatePath('/admin')
+    revalidatePath('/admin/bestillinger')
     return { success: true }
   } catch {
     return { success: false, error: 'Noe gikk galt' }

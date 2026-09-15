@@ -35,9 +35,16 @@
   padding: clamp(24px, 4vw, 56px) 0 clamp(32px, 5vw, 64px);
 }
 
+.heroRow {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
 .heroCopy {
-  min-width: 0;
-  max-width: 720px;
+  flex: 1 1 320px;
+  min-width: min(320px, 100%);
 }
 
 .heroTitle {
@@ -51,7 +58,7 @@
   font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
   line-height: 1.6;
   max-width: 46ch;
-  margin: 0 0 1.5rem;
+  margin: 0;
   color: var(--text);
 }
 
@@ -59,13 +66,15 @@
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+  flex: 0 0 auto;
 }
 
 /* ============================================
    Julebakst grid
    ============================================ */
 .julebakst {
-  padding: clamp(24px, 4vw, 48px) 0 clamp(40px, 6vw, 88px);
+  background: var(--secondary);
+  padding: clamp(24px, 4vw, 56px) 0;
 }
 
 .julebakstHeader {

@@ -89,7 +89,8 @@ a, a:hover, a:focus, a:active { text-decoration: none; }
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 /* ============================================
    TYPOGRAPHY
