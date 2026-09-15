@@ -64,7 +64,7 @@ export default async function AdminPage() {
     await Promise.all([
       supabase
         .from('orders')
-        .select('id, status, created_at, order_items(batch:product_batches(pickup_start))'),
+        .select('id, status, created_at'),
       adminSupabase.from('cake_requests').select('id, status, created_at'),
       supabase.from('product_batches').select('id', { count: 'exact', head: true }),
       supabase
@@ -89,15 +89,7 @@ export default async function AdminPage() {
   const requests = requestsRes.data || []
 
   const pendingOrders = orders.filter(o => o.status === 'pending')
-  const todayStr = new Date().toISOString().slice(0, 10)
-  const readyTodayOrders = orders.filter(
-    o =>
-      o.status === 'ready' &&
-      o.order_items?.some(i => {
-        const batch = Array.isArray(i.batch) ? i.batch[0] : i.batch
-        return batch?.pickup_start?.slice(0, 10) === todayStr
-      })
-  )
+  const readyOrders = orders.filter(o => o.status === 'ready')
   const weekOrders = orders.filter(o => new Date(o.created_at) >= startOfWeek())
 
   const unansweredRequests = requests.filter(r => r.status === 'ny')
@@ -112,7 +104,7 @@ export default async function AdminPage() {
   const galleryCount = galleryRes.count ?? 0
 
   const waitingCount = pendingOrders.length
-  const pickupTodayCount = readyTodayOrders.length
+  const readyCount = readyOrders.length
 
   const cards = [
     {
@@ -121,8 +113,8 @@ export default async function AdminPage() {
       title: 'Bestillinger',
       tag: waitingCount > 0 ? `${waitingCount} nye` : null,
       meta:
-        pickupTodayCount > 0
-          ? `${pickupTodayCount} klar${pickupTodayCount === 1 ? '' : 'e'} for henting`
+        readyCount > 0
+          ? `${readyCount} klar${readyCount === 1 ? '' : 'e'} for henting`
           : 'Ingen klare for henting',
       iconVariant: 'A' as const,
     },
@@ -184,7 +176,7 @@ export default async function AdminPage() {
           <h1 className={`page-title ${styles.greetingTitle}`}>{greetingWord()}, Kjersti</h1>
           <p className={styles.greetingSubtitle}>
             {waitingCount} bestilling{waitingCount === 1 ? '' : 'er'} venter på svar, og{' '}
-            {pickupTodayCount} kake{pickupTodayCount === 1 ? '' : 'r'} er klar for henting.
+            {readyCount} kake{readyCount === 1 ? '' : 'r'} er klar for henting.
           </p>
         </div>
 
