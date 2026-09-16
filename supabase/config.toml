@@ -226,6 +226,15 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
+# Magic link / OTP login: same template for new (confirmation) and existing (magic_link) users
+[auth.email.template.magic_link]
+subject = "Logg inn hos Kjerstis Bakeverden"
+content_path = "./supabase/templates/magic_link.html"
+
+[auth.email.template.confirmation]
+subject = "Logg inn hos Kjerstis Bakeverden"
+content_path = "./supabase/templates/magic_link.html"
+
 # Uncomment to customize email template
 # [auth.email.template.invite]
 # subject = "You have been invited"

@@ -4,11 +4,13 @@ import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Alert, Button } from '@/components/ui'
 
-type Status = 'idle' | 'loading' | 'sent' | 'error'
+type Status = 'idle' | 'loading' | 'sent' | 'verifying' | 'error'
 
 export default function LoginForm({ callbackFailed }: { callbackFailed: boolean }) {
   const [supabase] = useState(() => createClient())
   const [email, setEmail] = useState('')
+  const [code, setCode] = useState('')
+  const [codeError, setCodeError] = useState(false)
   const [status, setStatus] = useState<Status>(callbackFailed ? 'error' : 'idle')
   const [errorMessage, setErrorMessage] = useState(
     callbackFailed ? 'Innloggingslenken er ugyldig eller utløpt. Prøv igjen.' : ''
@@ -45,11 +47,50 @@ export default function LoginForm({ callbackFailed }: { callbackFailed: boolean 
     }
   }
 
-  if (status === 'sent') {
+  const handleCodeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus('verifying')
+    setCodeError(false)
+
+    const { error } = await supabase.auth.verifyOtp({ email, token: code.trim(), type: 'email' })
+
+    if (error) {
+      setCodeError(true)
+      setStatus('sent')
+      return
+    }
+    // Full navigation so server components see the new session cookie
+    window.location.assign('/konto')
+  }
+
+  if (status === 'sent' || status === 'verifying') {
     return (
-      <Alert variant="success">
-        Sjekk e-posten din. Vi har sendt deg en lenke for å logge inn.
-      </Alert>
+      <div className="flex flex-col gap-4">
+        <Alert variant="success">
+          Sjekk e-posten din. Skriv inn koden fra e-posten, eller klikk på lenken.
+        </Alert>
+        {codeError && <Alert variant="error">Feil eller utløpt kode. Prøv igjen.</Alert>}
+
+        <form onSubmit={handleCodeSubmit} className="flex flex-col gap-4">
+          <div className="form-group">
+            <label htmlFor="code" className="form-label">Engangskode</label>
+            <input
+              id="code"
+              type="text"
+              name="code"
+              required
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              className="form-input"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+          </div>
+          <Button type="submit" fullWidth loading={status === 'verifying'}>
+            Logg inn
+          </Button>
+        </form>
+      </div>
     )
   }
 
