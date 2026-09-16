@@ -23,7 +23,6 @@ export default async function Home() {
       <div className="container">
         <div className={styles.heroRow}>
           <div className={styles.heroCopy}>
-            <span className={`${styles.tag} ${styles.tagAccent2}`}>Hjemmelaget av meg</span>
             <h1 className={styles.heroTitle}>Kaker til dagene som betyr noe</h1>
             <p className={styles.heroText}>
               Velg dato, send en forespørsel, og jeg følger opp bestillingen din personlig.
@@ -80,19 +79,30 @@ export default async function Home() {
   const julebakstSection = julebakstActive && (
     <section id="julebakst" className={styles.julebakst}>
       <div className="container">
-        <div className={styles.julebakstHeader}>
-          <div>
-            <span className={`${styles.tag} ${styles.tagAccent}`}>Julesalget er åpent</span>
-            <h2 className={styles.sectionTitle}>Julebakst</h2>
-            <p className={styles.julebakstIntro}>
-              Legg kakene du ønsker i kurven og send inn bestillingen. Du får beskjed
-              på e-post eller SMS når de er klare til henting, og henteadressen får du
-              etter at bestillingen er sendt.
-            </p>
+        <div className={styles.julebanner} aria-label="Julesalg">
+          {/* Snølag — posisjon og timing per fnugg ligger i CSS-modulen */}
+          <div className={styles.julebannerSno} aria-hidden="true">
+            {Array.from({ length: 14 }, (_, i) => (
+              <span key={i} />
+            ))}
           </div>
-          <Link href="/julebakst" className={getButtonClassName('primary', 'lg')}>
-            Se hele julemenyen
-          </Link>
+
+          <div className={styles.julebannerInnhold}>
+            <div className={styles.julebannerCopy}>
+              <h2 className={styles.julebannerTittel}>
+                <span className={styles.stig2}>Julebakst</span>
+              </h2>
+              <p className={`${styles.julebannerTekst} ${styles.stig4}`}>
+                Legg kakene du ønsker i kurven og send inn bestillingen. Du får beskjed
+                på e-post eller SMS når de er klare til henting, og henteadressen får du
+                etter at bestillingen er sendt.
+              </p>
+            </div>
+            <span className={`${styles.julebannerKnapp} ${styles.stig5}`}>
+              <Link href="/julebakst">Se julemenyen</Link>
+              <span className={styles.julebannerGlimt} aria-hidden="true" />
+            </span>
+          </div>
         </div>
       </div>
     </section>
