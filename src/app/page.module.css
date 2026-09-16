@@ -307,13 +307,47 @@
   color: var(--primary-dark);
 }
 
+.galleryMarquee {
+  overflow: hidden;
+  padding: 0.5rem 0 1rem;
+}
+
+.galleryTrack {
+  display: flex;
+  width: max-content;
+  animation: galleryScroll 60s linear infinite;
+}
+
+.galleryMarquee:hover .galleryTrack {
+  animation-play-state: paused;
+}
+
+/* Sporet inneholder listen to ganger, så -50 % gir en sømløs loop */
+@keyframes galleryScroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Margin i stedet for gap, så begge halvdelene blir nøyaktig like brede */
 .galleryItem {
-  margin: 0;
+  flex: 0 0 auto;
+  width: min(60vw, 300px);
+  margin: 0 1rem 0 0;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow);
   background: white;
-  scroll-snap-align: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galleryMarquee {
+    overflow-x: auto;
+  }
+
+  .galleryTrack {
+    animation: none;
+  }
 }
 
 .galleryImageWrap {

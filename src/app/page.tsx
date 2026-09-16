@@ -14,7 +14,7 @@ export default async function Home() {
 
   const showcaseImages = allGalleryImages
     .sort(() => Math.random() - 0.5)
-    .slice(0, 3)
+    .slice(0, 10)
 
   const julebakstActive = availableBatches.length > 0
 
@@ -153,27 +153,33 @@ export default async function Home() {
             <h2 className={styles.sectionTitle}>En smakebit 😋</h2>
             <Link href="/galleri" className={styles.galleryLink}>Se hele galleriet</Link>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
-            {showcaseImages.map((img, i) => (
-              <figure
-                key={img.id}
-                className={`${styles.galleryItem} min-w-[75vw] md:min-w-0 snap-start flex-shrink-0 md:flex-shrink`}
-              >
-                <div className={styles.galleryImageWrap}>
-                  <Image
-                    src={img.image_url}
-                    alt={img.title ?? img.category}
-                    fill
-                    sizes="(max-width: 768px) 75vw, 33vw"
-                    className={styles.galleryImage}
-                    priority={i === 0}
-                  />
-                </div>
-                {img.title && (
-                  <figcaption className={styles.galleryCaption}>{img.title}</figcaption>
-                )}
-              </figure>
-            ))}
+        </div>
+        {/* Uendelig karusell — listen rendres to ganger så animasjonen kan loope sømløst */}
+        <div className={styles.galleryMarquee}>
+          <div className={styles.galleryTrack}>
+            {[...showcaseImages, ...showcaseImages].map((img, i) => {
+              const isCopy = i >= showcaseImages.length
+              return (
+                <figure
+                  key={`${img.id}-${i}`}
+                  className={styles.galleryItem}
+                  aria-hidden={isCopy || undefined}
+                >
+                  <div className={styles.galleryImageWrap}>
+                    <Image
+                      src={img.image_url}
+                      alt={isCopy ? '' : (img.title ?? img.category)}
+                      fill
+                      sizes="(max-width: 768px) 60vw, 300px"
+                      className={styles.galleryImage}
+                    />
+                  </div>
+                  {img.title && (
+                    <figcaption className={styles.galleryCaption}>{img.title}</figcaption>
+                  )}
+                </figure>
+              )
+            })}
           </div>
         </div>
       </section>
