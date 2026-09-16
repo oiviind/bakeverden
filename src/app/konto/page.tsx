@@ -34,6 +34,35 @@ export default async function AccountPage() {
   const fmtDate = (iso: string) =>
     new Date(iso).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })
 
+  const activeOrders = (orders ?? []).filter((o) => o.status !== 'delivered')
+  const pastOrders = (orders ?? []).filter((o) => o.status === 'delivered')
+
+  const renderOrder = (order: NonNullable<typeof orders>[number]) => {
+    const status = STATUS_LABELS[order.status] ?? { label: order.status, variant: 'info' as const }
+    return (
+      <Card key={order.id}>
+        <Card.Content>
+          <div className="flex justify-between items-center mb-3">
+            <Card.Meta>{fmtDate(order.created_at)}</Card.Meta>
+            <Badge variant={status.variant}>{status.label}</Badge>
+          </div>
+          <ul className="space-y-1 mb-3">
+            {order.order_items.map((item, i) => {
+              const batch = Array.isArray(item.batch) ? (item.batch[0] ?? null) : item.batch
+              return (
+                <li key={i} className="flex justify-between text-sm">
+                  <span>{item.quantity} × {batch?.title ?? 'Ukjent'}</span>
+                  <span>{item.quantity * item.price_at_time} kr</span>
+                </li>
+              )
+            })}
+          </ul>
+          <Card.Price>Totalt: {order.total_price} kr</Card.Price>
+        </Card.Content>
+      </Card>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -51,33 +80,30 @@ export default async function AccountPage() {
               </Card.Content>
             </Card>
           ) : (
-            <div className="space-y-4 md:space-y-6">
-              {orders.map((order) => {
-                const status = STATUS_LABELS[order.status] ?? { label: order.status, variant: 'info' as const }
-                return (
-                  <Card key={order.id}>
-                    <Card.Content>
-                      <div className="flex justify-between items-center mb-3">
-                        <Card.Meta>{fmtDate(order.created_at)}</Card.Meta>
-                        <Badge variant={status.variant}>{status.label}</Badge>
-                      </div>
-                      <ul className="space-y-1 mb-3">
-                        {order.order_items.map((item, i) => {
-                          const batch = Array.isArray(item.batch) ? (item.batch[0] ?? null) : item.batch
-                          return (
-                            <li key={i} className="flex justify-between text-sm">
-                              <span>{item.quantity} × {batch?.title ?? 'Ukjent'}</span>
-                              <span>{item.quantity * item.price_at_time} kr</span>
-                            </li>
-                          )
-                        })}
-                      </ul>
-                      <Card.Price>Totalt: {order.total_price} kr</Card.Price>
-                    </Card.Content>
-                  </Card>
-                )
-              })}
-            </div>
+            <>
+              {activeOrders.length === 0 ? (
+                <p className="text-sm">Du har ingen aktive bestillinger.</p>
+              ) : (
+                <div className="space-y-4 md:space-y-6">{activeOrders.map(renderOrder)}</div>
+              )}
+
+              {pastOrders.length > 0 && (
+                <details className="group mt-8">
+                  <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-3 border-b border-[var(--border)] py-3 [&::-webkit-details-marker]:hidden">
+                    <span className="section-heading">Tidligere bestillinger ({pastOrders.length})</span>
+                    <svg
+                      className="h-5 w-5 shrink-0 text-[var(--text-light)] transition-transform group-open:rotate-180"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                    </svg>
+                  </summary>
+                  <div className="space-y-4 md:space-y-6 mt-4">{pastOrders.map(renderOrder)}</div>
+                </details>
+              )}
+            </>
           )}
         </div>
       </main>
