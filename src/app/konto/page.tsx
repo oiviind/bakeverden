@@ -31,6 +31,9 @@ export default async function AccountPage() {
     .select('id, status, total_price, created_at, order_items(quantity, price_at_time, batch:product_batches(title))')
     .order('created_at', { ascending: false })
 
+  // Set by Google OAuth; absent for email OTP logins
+  const avatarUrl: string | undefined = user.user_metadata?.avatar_url ?? user.user_metadata?.picture
+
   const fmtDate = (iso: string) =>
     new Date(iso).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })
 
@@ -68,8 +71,20 @@ export default async function AccountPage() {
       <Header />
       <main className="container py-8 md:py-12">
         <div className="max-w-2xl mx-auto">
-          <h1 className="section-heading mb-2">Min konto</h1>
-          <p className="text-sm mb-6">{user.email}</p>
+          <div className="flex items-center gap-4 mb-6">
+            {avatarUrl && (
+              <img
+                src={avatarUrl}
+                alt=""
+                referrerPolicy="no-referrer"
+                className="h-14 w-14 shrink-0 rounded-full object-cover"
+              />
+            )}
+            <div>
+              <h1 className="section-heading mb-2">Min konto</h1>
+              <p className="text-sm">{user.email}</p>
+            </div>
+          </div>
 
           <h2 className="section-heading mb-4">Mine bestillinger</h2>
 
