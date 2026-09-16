@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import Header from '@/components/Header'
 import { Card, Badge } from '@/components/ui'
 
@@ -14,6 +15,15 @@ export default async function AccountPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/logg-inn')
+
+  // Claim guest orders placed with the same (verified) email
+  if (user.email) {
+    await createAdminClient()
+      .from('orders')
+      .update({ user_id: user.id })
+      .is('user_id', null)
+      .ilike('email', user.email.replace(/[\\%_]/g, '\\$&'))
+  }
 
   // RLS restricts rows to user_id = auth.uid()
   const { data: orders } = await supabase

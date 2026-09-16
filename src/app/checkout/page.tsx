@@ -2,7 +2,9 @@
 
 import { useCart } from '@/lib/contexts/CartContext'
 import { createMultipleOrders } from '@/lib/actions/createMultipleOrders'
-import { useState } from 'react'
+import { useAuth } from '@/lib/contexts/AuthContext'
+import { createClient } from '@/lib/supabase/client'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Header from '@/components/Header'
@@ -10,9 +12,26 @@ import { Card, Button, Alert, getButtonClassName } from '@/components/ui'
 
 export default function CheckoutPage() {
   const { items, getTotalPrice, getTotalItems, clearCart } = useCart()
+  const { user } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [lastPhone, setLastPhone] = useState('')
   const router = useRouter()
+
+  // Prefill phone from the user's latest order (RLS limits to own orders)
+  useEffect(() => {
+    if (!user) return
+    createClient()
+      .from('orders')
+      .select('phone')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => setLastPhone(data?.phone ?? ''))
+  }, [user])
+
+  // Google provides full_name/name in user_metadata
+  const defaultName = user?.user_metadata?.full_name ?? user?.user_metadata?.name ?? ''
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -107,7 +126,8 @@ export default function CheckoutPage() {
                 </Alert>
               )}
 
-              <form onSubmit={handleSubmit}>
+              {/* key remounts inputs so defaultValues apply once auth/phone load */}
+              <form key={`${user?.id ?? 'anon'}-${lastPhone}`} onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label className="form-label">Navn *</label>
                   <input
@@ -116,6 +136,7 @@ export default function CheckoutPage() {
                     required
                     className="form-input"
                     placeholder="Ditt fulle navn"
+                    defaultValue={defaultName}
                   />
                 </div>
 
@@ -127,19 +148,24 @@ export default function CheckoutPage() {
                     required
                     className="form-input"
                     placeholder="12345678"
+                    defaultValue={lastPhone}
                   />
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label">E-post *</label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    className="form-input"
-                    placeholder="din@epost.no"
-                  />
-                </div>
+                {user ? (
+                  <p className="form-group text-sm text-gray-600">Bestiller som {user.email}</p>
+                ) : (
+                  <div className="form-group">
+                    <label className="form-label">E-post *</label>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      className="form-input"
+                      placeholder="din@epost.no"
+                    />
+                  </div>
+                )}
 
                 <Button
                   type="submit"

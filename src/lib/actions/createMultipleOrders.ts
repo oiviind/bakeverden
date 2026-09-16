@@ -14,7 +14,7 @@ export async function createMultipleOrders(formData: FormData): Promise<CreateOr
 
   const name = formData.get('name') as string
   const phone = formData.get('phone') as string
-  const email = formData.get('email') as string
+  const email = user?.email ?? (formData.get('email') as string)
   const cartItemsJson = formData.get('cartItems') as string
 
   if (!name || !phone || !email || !cartItemsJson) {
