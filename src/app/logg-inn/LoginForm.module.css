@@ -1,0 +1,37 @@
+/* Google sign-in button — follows Google's branding guidelines (light theme, pill).
+   Colors are Google-mandated, so they are intentionally not design tokens.
+   https://developers.google.com/identity/branding-guidelines */
+.googleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  background: #ffffff;
+  border: 1px solid #747775;
+  border-radius: 999px;
+  color: #1f1f1f;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.googleBtn:hover {
+  background: #f8f9fa;
+}
+
+.googleBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.googleLogo {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
