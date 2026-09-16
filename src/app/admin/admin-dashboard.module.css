@@ -44,6 +44,9 @@
   min-height: 180px;
   color: inherit;
   outline: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 .card:focus-visible {
@@ -52,6 +55,8 @@
 
 .cardAccent {
   background: var(--color-accent-2-tint);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .iconDisc {
