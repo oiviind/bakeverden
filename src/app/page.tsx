@@ -48,7 +48,7 @@ export default async function Home() {
       <div className="container">
         <div className="flex flex-col md:flex-row items-center gap-10">
           <div className="flex-1 w-full flex justify-center">
-            <div className="washed w-full max-w-sm aspect-square rounded-full overflow-hidden relative shadow-xl">
+            <div className="w-full max-w-sm aspect-square rounded-full overflow-hidden relative shadow-xl">
               <Image
                 src="/Bakeren.JPG"
                 alt="Kjersti ved markedsstanden med hjemmelagde kaker"
@@ -154,7 +154,7 @@ export default async function Home() {
                     alt={img.title ?? img.category}
                     fill
                     sizes="(max-width: 768px) 75vw, 33vw"
-                    className={`washed ${styles.galleryImage}`}
+                    className={styles.galleryImage}
                     priority={i === 0}
                   />
                 </div>

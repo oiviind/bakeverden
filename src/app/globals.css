@@ -80,9 +80,6 @@ h1, h2, h3, h4, h5, h6 {
 
 a, a:hover, a:focus, a:active { text-decoration: none; }
 
-/* Content photography sits back into the warm page instead of on top of it */
-.washed { filter: saturate(0.6) contrast(0.85) brightness(1.1) opacity(0.94); }
-
 /* ============================================
    LAYOUT
    ============================================ */
