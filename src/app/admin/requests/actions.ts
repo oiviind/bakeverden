@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 
 export async function updateRequestStatus(
   id: string,
-  status: 'ny' | 'kontaktet' | 'avtalt' | 'avslått'
+  status: 'ny' | 'kontaktet' | 'avtalt' | 'levert' | 'avslått'
 ) {
   const supabase = createAdminClient()
   const { error } = await supabase

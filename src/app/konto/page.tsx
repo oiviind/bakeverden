@@ -15,6 +15,7 @@ const REQUEST_STATUS_LABELS: Record<string, { label: string; variant: 'success' 
   ny: { label: 'Mottatt', variant: 'warning' },
   kontaktet: { label: 'Kontaktet', variant: 'info' },
   avtalt: { label: 'Avtalt', variant: 'success' },
+  levert: { label: 'Levert', variant: 'success' },
   avslått: { label: 'Avslått', variant: 'error' },
 }
 
@@ -50,6 +51,41 @@ export default async function AccountPage() {
 
   const activeOrders = (orders ?? []).filter((o) => o.status !== 'delivered')
   const pastOrders = (orders ?? []).filter((o) => o.status === 'delivered')
+
+  const activeRequests = (requests ?? []).filter((r) => r.status !== 'levert')
+  const pastRequests = (requests ?? []).filter((r) => r.status === 'levert')
+
+  const renderRequest = (request: NonNullable<typeof requests>[number]) => {
+    const status = REQUEST_STATUS_LABELS[request.status] ?? { label: request.status, variant: 'info' as const }
+    const details = [
+      request.num_people ? `${request.num_people} personer` : null,
+      request.desired_date ? `Ønsket dato: ${fmtDate(request.desired_date)}` : null,
+    ].filter(Boolean).join(' · ')
+    return (
+      <Card key={request.id}>
+        <Card.Content>
+          <div className="flex justify-between items-center mb-3">
+            <Card.Meta>{fmtDate(request.created_at)}</Card.Meta>
+            <Badge variant={status.variant}>{status.label}</Badge>
+          </div>
+          <Card.Title>{request.occasion}</Card.Title>
+          {details && <p className="text-sm mb-2">{details}</p>}
+          <Card.Description>{request.description}</Card.Description>
+        </Card.Content>
+      </Card>
+    )
+  }
+
+  const chevron = (
+    <svg
+      className="h-5 w-5 shrink-0 text-[var(--text-light)] transition-transform group-open:rotate-180"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+    </svg>
+  )
 
   const renderOrder = (order: NonNullable<typeof orders>[number]) => {
     const status = STATUS_LABELS[order.status] ?? { label: order.status, variant: 'info' as const }
@@ -117,14 +153,7 @@ export default async function AccountPage() {
                 <details className="group mt-8">
                   <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-3 border-b border-[var(--border)] py-3 [&::-webkit-details-marker]:hidden">
                     <span className="section-heading">Tidligere bestillinger ({pastOrders.length})</span>
-                    <svg
-                      className="h-5 w-5 shrink-0 text-[var(--text-light)] transition-transform group-open:rotate-180"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" />
-                    </svg>
+                    {chevron}
                   </summary>
                   <div className="space-y-4 md:space-y-6 mt-4">{pastOrders.map(renderOrder)}</div>
                 </details>
@@ -141,28 +170,23 @@ export default async function AccountPage() {
               </Card.Content>
             </Card>
           ) : (
-            <div className="space-y-4 md:space-y-6">
-              {requests.map((request) => {
-                const status = REQUEST_STATUS_LABELS[request.status] ?? { label: request.status, variant: 'info' as const }
-                const details = [
-                  request.num_people ? `${request.num_people} personer` : null,
-                  request.desired_date ? `Ønsket dato: ${fmtDate(request.desired_date)}` : null,
-                ].filter(Boolean).join(' · ')
-                return (
-                  <Card key={request.id}>
-                    <Card.Content>
-                      <div className="flex justify-between items-center mb-3">
-                        <Card.Meta>{fmtDate(request.created_at)}</Card.Meta>
-                        <Badge variant={status.variant}>{status.label}</Badge>
-                      </div>
-                      <Card.Title>{request.occasion}</Card.Title>
-                      {details && <p className="text-sm mb-2">{details}</p>}
-                      <Card.Description>{request.description}</Card.Description>
-                    </Card.Content>
-                  </Card>
-                )
-              })}
-            </div>
+            <>
+              {activeRequests.length === 0 ? (
+                <p className="text-sm">Du har ingen aktive forespørsler.</p>
+              ) : (
+                <div className="space-y-4 md:space-y-6">{activeRequests.map(renderRequest)}</div>
+              )}
+
+              {pastRequests.length > 0 && (
+                <details className="group mt-8">
+                  <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-3 border-b border-[var(--border)] py-3 [&::-webkit-details-marker]:hidden">
+                    <span className="section-heading">Tidligere forespørsler ({pastRequests.length})</span>
+                    {chevron}
+                  </summary>
+                  <div className="space-y-4 md:space-y-6 mt-4">{pastRequests.map(renderRequest)}</div>
+                </details>
+              )}
+            </>
           )}
         </div>
       </main>

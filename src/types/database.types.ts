@@ -51,7 +51,7 @@ export interface CakeRequest {
   name: string
   email: string
   phone: string | null
-  status: 'ny' | 'kontaktet' | 'avtalt' | 'avslått'
+  status: 'ny' | 'kontaktet' | 'avtalt' | 'levert' | 'avslått'
   created_at: string
 }
 

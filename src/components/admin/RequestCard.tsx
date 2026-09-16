@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { updateRequestStatus } from '@/app/admin/requests/actions'
 import { Card, Badge } from '@/components/ui'
 
-type RequestStatus = 'ny' | 'kontaktet' | 'avtalt' | 'avslått'
+type RequestStatus = 'ny' | 'kontaktet' | 'avtalt' | 'levert' | 'avslått'
 
 interface RequestCardProps {
   request: {
@@ -25,6 +25,7 @@ const statusConfig: Record<RequestStatus, { label: string; variant: 'warning' | 
   ny: { label: 'Ny', variant: 'warning' },
   kontaktet: { label: 'Kontaktet', variant: 'info' },
   avtalt: { label: 'Avtalt', variant: 'success' },
+  levert: { label: 'Levert', variant: 'success' },
   avslått: { label: 'Avslått', variant: 'error' },
 }
 
