@@ -28,6 +28,16 @@
   top: 2rem;
 }
 
+/* Same footprint as Card.Image / two description lines, so cards without image or description line up */
+.imagePlaceholder {
+  height: 250px;
+  background: var(--secondary);
+}
+
+.description {
+  min-height: 2lh;
+}
+
 /* Mobile-compact overrides for BatchCard — applied via className on Card sub-components */
 
 .card {
@@ -45,6 +55,12 @@
 
 .actions {
   padding-top: 0.75rem;
+  margin-top: auto;
+}
+
+/* When pickup exists it already takes the free space */
+.pickup + .actions {
+  margin-top: 0;
 }
 
 .pickup {

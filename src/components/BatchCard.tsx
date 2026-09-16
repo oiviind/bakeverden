@@ -30,13 +30,16 @@ export default function BatchCard({ batch }: BatchCardProps) {
   return (
     <>
       <Card muted={isSoldOut} className={styles.card}>
-        {batch.image_url && (
-          <Link href={`/reserve/${batch.id}`}>
+        <Link href={`/reserve/${batch.id}`}>
             <div className="relative">
-              <Card.Image
-                src={batch.image_url}
-                alt={batch.title}
-              />
+              {batch.image_url ? (
+                <Card.Image
+                  src={batch.image_url}
+                  alt={batch.title}
+                />
+              ) : (
+                <div className={styles.imagePlaceholder} />
+              )}
               {isSoldOut && (
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
                   <span className="bg-white text-gray-900 px-4 py-2 rounded-lg font-bold text-lg">
@@ -52,7 +55,6 @@ export default function BatchCard({ batch }: BatchCardProps) {
               )}
             </div>
           </Link>
-        )}
 
         <Card.Content className={styles.content}>
           <Link href={`/reserve/${batch.id}`}>
@@ -61,11 +63,9 @@ export default function BatchCard({ batch }: BatchCardProps) {
             </Card.Title>
           </Link>
 
-          {batch.description && (
-            <Card.Description className={`${styles.description} text-sm mb-4 line-clamp-2`}>
-              {batch.description}
-            </Card.Description>
-          )}
+          <Card.Description className={`${styles.description} text-sm mb-4 line-clamp-2`}>
+            {batch.description}
+          </Card.Description>
 
           <div className="flex items-center justify-between mb-4">
             <div className="md:block hidden">
