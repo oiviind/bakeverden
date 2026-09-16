@@ -11,24 +11,35 @@ const STATUS_LABELS: Record<string, { label: string; variant: 'success' | 'warni
   cancelled: { label: 'Avbrutt', variant: 'error' },
 }
 
+const REQUEST_STATUS_LABELS: Record<string, { label: string; variant: 'success' | 'warning' | 'error' | 'info' }> = {
+  ny: { label: 'Mottatt', variant: 'warning' },
+  kontaktet: { label: 'Kontaktet', variant: 'info' },
+  avtalt: { label: 'Avtalt', variant: 'success' },
+  avslått: { label: 'Avslått', variant: 'error' },
+}
+
 export default async function AccountPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/logg-inn')
 
-  // Claim guest orders placed with the same (verified) email
+  // Claim guest orders and requests placed with the same (verified) email
   if (user.email) {
-    await createAdminClient()
-      .from('orders')
-      .update({ user_id: user.id })
-      .is('user_id', null)
-      .ilike('email', user.email.replace(/[\\%_]/g, '\\$&'))
+    const admin = createAdminClient()
+    const emailPattern = user.email.replace(/[\\%_]/g, '\\$&')
+    await admin.from('orders').update({ user_id: user.id }).is('user_id', null).ilike('email', emailPattern)
+    await admin.from('cake_requests').update({ user_id: user.id }).is('user_id', null).ilike('email', emailPattern)
   }
 
   // RLS restricts rows to user_id = auth.uid()
   const { data: orders } = await supabase
     .from('orders')
     .select('id, status, total_price, created_at, order_items(quantity, price_at_time, batch:product_batches(title))')
+    .order('created_at', { ascending: false })
+
+  const { data: requests } = await supabase
+    .from('cake_requests')
+    .select('id, occasion, num_people, desired_date, description, status, created_at')
     .order('created_at', { ascending: false })
 
   // Set by Google OAuth; absent for email OTP logins
@@ -119,6 +130,39 @@ export default async function AccountPage() {
                 </details>
               )}
             </>
+          )}
+
+          <h2 className="section-heading mt-10 mb-4">Mine forespørsler</h2>
+
+          {!requests || requests.length === 0 ? (
+            <Card>
+              <Card.Content>
+                <p className="text-center py-4">Du har ingen forespørsler ennå.</p>
+              </Card.Content>
+            </Card>
+          ) : (
+            <div className="space-y-4 md:space-y-6">
+              {requests.map((request) => {
+                const status = REQUEST_STATUS_LABELS[request.status] ?? { label: request.status, variant: 'info' as const }
+                const details = [
+                  request.num_people ? `${request.num_people} personer` : null,
+                  request.desired_date ? `Ønsket dato: ${fmtDate(request.desired_date)}` : null,
+                ].filter(Boolean).join(' · ')
+                return (
+                  <Card key={request.id}>
+                    <Card.Content>
+                      <div className="flex justify-between items-center mb-3">
+                        <Card.Meta>{fmtDate(request.created_at)}</Card.Meta>
+                        <Badge variant={status.variant}>{status.label}</Badge>
+                      </div>
+                      <Card.Title>{request.occasion}</Card.Title>
+                      {details && <p className="text-sm mb-2">{details}</p>}
+                      <Card.Description>{request.description}</Card.Description>
+                    </Card.Content>
+                  </Card>
+                )
+              })}
+            </div>
           )}
         </div>
       </main>

@@ -1,8 +1,12 @@
+import { createClient } from '@/lib/supabase/server'
 import Header from '@/components/Header'
 import { Card, Alert } from '@/components/ui'
 import CakeRequestForm from '@/components/CakeRequestForm'
 
-export default function BestillPage() {
+export default async function BestillPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -19,7 +23,7 @@ export default function BestillPage() {
 
           <Card>
             <Card.Content>
-              <CakeRequestForm />
+              <CakeRequestForm isLoggedIn={!!user} />
             </Card.Content>
           </Card>
         </div>

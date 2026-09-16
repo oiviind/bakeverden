@@ -6,7 +6,7 @@ import { Button, Alert } from '@/components/ui'
 
 const OCCASIONS = ['Dåp', 'Bryllup', 'Bursdag', 'Konfirmasjon', 'Annet']
 
-export default function CakeRequestForm() {
+export default function CakeRequestForm({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -88,10 +88,12 @@ export default function CakeRequestForm() {
         <input type="text" name="name" required className="form-input" />
       </div>
 
-      <div className="form-group">
-        <label className="form-label">E-post *</label>
-        <input type="email" name="email" required className="form-input" />
-      </div>
+      {!isLoggedIn && (
+        <div className="form-group">
+          <label className="form-label">E-post *</label>
+          <input type="email" name="email" required className="form-input" />
+        </div>
+      )}
 
       <div className="form-group">
         <label className="form-label">Telefon (anbefalt)</label>

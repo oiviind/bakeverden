@@ -11,15 +11,17 @@ export async function submitCakeRequest(formData: FormData) {
   const desired_date = (formData.get('desired_date') as string) || null
   const description = formData.get('description') as string
   const name = formData.get('name') as string
-  const email = formData.get('email') as string
   const phone = (formData.get('phone') as string) || null
-
-  if (!occasion || !description || !name || !email) {
-    return { success: false, error: 'Fyll ut alle påkrevde felt' }
-  }
 
   try {
     const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    const email = user?.email ?? (formData.get('email') as string)
+
+    if (!occasion || !description || !name || !email) {
+      return { success: false, error: 'Fyll ut alle påkrevde felt' }
+    }
+
     const { error } = await supabase.from('cake_requests').insert({
       occasion,
       num_people,
@@ -28,6 +30,7 @@ export async function submitCakeRequest(formData: FormData) {
       name,
       email,
       phone,
+      user_id: user?.id ?? null,
     })
 
     if (error) return { success: false, error: error.message }
