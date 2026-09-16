@@ -1,38 +1,48 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { createClient } from '@/lib/supabase/client'
-import { Alert, Button } from '@/components/ui'
+import { Alert, Badge, Button } from '@/components/ui'
 import styles from './LoginForm.module.css'
 
 type Status = 'idle' | 'loading' | 'sent' | 'verifying' | 'error'
 
+const CODE_LENGTH = 6
+const emptyDigits = () => Array<string>(CODE_LENGTH).fill('')
+
 export default function LoginForm({ callbackFailed }: { callbackFailed: boolean }) {
   const [supabase] = useState(() => createClient())
   const [email, setEmail] = useState('')
-  const [code, setCode] = useState('')
-  const [codeError, setCodeError] = useState(false)
+  const [digits, setDigits] = useState<string[]>(emptyDigits)
+  const [codeMessage, setCodeMessage] = useState<{ variant: 'success' | 'error'; text: string } | null>(null)
   const [status, setStatus] = useState<Status>(callbackFailed ? 'error' : 'idle')
   const [errorMessage, setErrorMessage] = useState(
     callbackFailed ? 'Innloggingen ble ikke fullført. Prøv igjen.' : ''
   )
+  const digitRefs = useRef<(HTMLInputElement | null)[]>([])
 
   const redirectTo = () => `${window.location.origin}/auth/callback`
+
+  const sendCode = async () => {
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectTo() },
+    })
+    return !error
+  }
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('loading')
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: redirectTo() },
-    })
-
-    if (error) {
+    if (!(await sendCode())) {
       setErrorMessage('Kunne ikke sende engangskode. Prøv igjen.')
       setStatus('error')
       return
     }
+    setDigits(emptyDigits())
+    setCodeMessage(null)
     setStatus('sent')
   }
 
@@ -48,75 +58,74 @@ export default function LoginForm({ callbackFailed }: { callbackFailed: boolean 
     }
   }
 
-  const handleCodeSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setStatus('verifying')
-    setCodeError(false)
+  // ---- Step 2: code popup ----
 
-    const { error } = await supabase.auth.verifyOtp({ email, token: code.trim(), type: 'email' })
+  const verifyCode = async (token: string) => {
+    setStatus('verifying')
+    setCodeMessage(null)
+
+    const { error } = await supabase.auth.verifyOtp({ email, token, type: 'email' })
 
     if (error) {
-      setCodeError(true)
+      setCodeMessage({ variant: 'error', text: 'Feil eller utløpt kode. Prøv igjen.' })
+      setDigits(emptyDigits())
       setStatus('sent')
+      digitRefs.current[0]?.focus()
       return
     }
     // Full navigation so server components see the new session cookie
     window.location.assign('/konto')
   }
 
-  if (status === 'sent' || status === 'verifying') {
-    return (
-      <div className="flex flex-col gap-4">
-        <Alert variant="success">
-          Vi har sendt en engangskode til {email}. Skriv den inn under.
-        </Alert>
-        {codeError && <Alert variant="error">Feil eller utløpt kode. Prøv igjen.</Alert>}
+  // Handles typing, paste and one-time-code autofill (fills from index i onwards)
+  const handleDigitChange = (i: number, value: string) => {
+    const chars = value.replace(/\D/g, '').slice(0, CODE_LENGTH - i)
+    const next = [...digits]
 
-        <form onSubmit={handleCodeSubmit} className="flex flex-col gap-4">
-          <div className="form-group">
-            <label htmlFor="code" className="form-label">Engangskode</label>
-            <input
-              id="code"
-              type="text"
-              name="code"
-              required
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              className="form-input"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-          </div>
-          <Button type="submit" fullWidth loading={status === 'verifying'}>
-            Logg inn
-          </Button>
-        </form>
-      </div>
-    )
+    if (!chars) {
+      next[i] = ''
+      setDigits(next)
+      return
+    }
+
+    chars.split('').forEach((c, j) => { next[i + j] = c })
+    setDigits(next)
+    digitRefs.current[Math.min(i + chars.length, CODE_LENGTH - 1)]?.focus()
+
+    if (next.every(Boolean)) verifyCode(next.join(''))
   }
 
-  return (
-    <div className="flex flex-col gap-4">
-      {status === 'error' && <Alert variant="error">{errorMessage}</Alert>}
+  const handleDigitKeyDown = (i: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Backspace' && !digits[i] && i > 0) {
+      digitRefs.current[i - 1]?.focus()
+    }
+  }
 
-      <form onSubmit={handleEmailSubmit} className="flex flex-col gap-4">
-        <div className="form-group">
-          <label htmlFor="email" className="form-label">E-post</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            required
-            autoComplete="email"
-            className="form-input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <Button type="submit" fullWidth loading={status === 'loading'}>
-          Send engangskode
-        </Button>
-      </form>
+  const handleResend = async () => {
+    setCodeMessage(null)
+    setDigits(emptyDigits())
+    const ok = await sendCode()
+    setCodeMessage(
+      ok
+        ? { variant: 'success', text: 'Ny kode er sendt.' }
+        : { variant: 'error', text: 'Kunne ikke sende ny kode. Prøv igjen.' }
+    )
+    digitRefs.current[0]?.focus()
+  }
+
+  const closeCodeStep = () => {
+    setDigits(emptyDigits())
+    setCodeMessage(null)
+    setStatus('idle')
+  }
+
+  const codeStepOpen = status === 'sent' || status === 'verifying'
+
+  return (
+    <div className="flex flex-col gap-6">
+      <p className={styles.subtitle}>Ingen passord å huske.</p>
+
+      {status === 'error' && <Alert variant="error">{errorMessage}</Alert>}
 
       <button
         type="button"
@@ -132,6 +141,84 @@ export default function LoginForm({ callbackFailed }: { callbackFailed: boolean 
         </svg>
         Logg inn med Google
       </button>
+
+      <div className={styles.divider}>eller</div>
+
+      <form onSubmit={handleEmailSubmit} className="flex flex-col gap-4">
+        <div className="form-group">
+          <label htmlFor="email" className="form-label">E-post</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            required
+            autoComplete="email"
+            placeholder="navn@epost.no"
+            className="form-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <Button type="submit" fullWidth loading={status === 'loading'}>
+          Send engangskode
+        </Button>
+        <p className={styles.hint}>Du får en 6-sifret kode på e-post.</p>
+      </form>
+
+      {codeStepOpen && createPortal(
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={closeCodeStep}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="code-step-title"
+            className={styles.dialog}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Badge variant="info">Steg 2</Badge>
+            <h2 id="code-step-title" className={`section-heading ${styles.dialogTitle}`}>
+              Sjekk e-posten
+            </h2>
+            <p className={styles.dialogText}>
+              Vi sendte en kode til <strong>{email}</strong>.
+            </p>
+
+            {codeMessage && <Alert variant={codeMessage.variant}>{codeMessage.text}</Alert>}
+
+            <div className={styles.digits}>
+              {digits.map((digit, i) => (
+                <input
+                  key={i}
+                  ref={(el) => { digitRefs.current[i] = el }}
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete={i === 0 ? 'one-time-code' : 'off'}
+                  autoFocus={i === 0}
+                  aria-label={`Siffer ${i + 1}`}
+                  className={styles.digit}
+                  value={digit}
+                  disabled={status === 'verifying'}
+                  onFocus={(e) => e.target.select()}
+                  onChange={(e) => handleDigitChange(i, e.target.value)}
+                  onKeyDown={(e) => handleDigitKeyDown(i, e)}
+                />
+              ))}
+            </div>
+
+            <div className={styles.dialogLinks}>
+              <button type="button" className={styles.linkBtn} onClick={handleResend}>
+                Send på nytt
+              </button>
+              <button type="button" className={styles.linkBtn} onClick={closeCodeStep}>
+                Bruk en annen e-post
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   )
 }

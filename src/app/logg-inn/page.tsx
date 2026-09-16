@@ -16,7 +16,7 @@ export default async function LoginPage({
         <div className="max-w-sm mx-auto">
           <Card>
             <Card.Content>
-              <h1 className="section-heading mb-6 text-center">Logg inn</h1>
+              <h1 className="section-heading mb-4 text-center">Logg inn</h1>
               <LoginForm callbackFailed={error === '1'} />
             </Card.Content>
           </Card>

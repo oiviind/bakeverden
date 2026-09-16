@@ -35,3 +35,116 @@
   margin-right: 10px;
   flex-shrink: 0;
 }
+
+/* ---- Login form ---- */
+.subtitle {
+  margin-top: -1rem;
+  text-align: center;
+  color: var(--text-light);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.hint {
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--text-light);
+}
+
+/* ---- Step 2: code popup ---- */
+.dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  max-width: 28rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.dialogTitle {
+  margin-top: 0.25rem;
+}
+
+.dialogText {
+  margin-top: -0.75rem;
+  color: var(--text-light);
+}
+
+.dialogText strong {
+  color: var(--text);
+}
+
+.digits {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.digit {
+  width: 100%;
+  min-height: 56px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s;
+}
+
+.digit:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.digit:disabled {
+  opacity: 0.6;
+}
+
+.dialogLinks {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.5rem;
+}
+
+.linkBtn {
+  min-height: 44px;
+  color: var(--primary-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  .dialog {
+    padding: 2rem;
+  }
+
+  .digits {
+    gap: 0.75rem;
+  }
+
+  .digit {
+    min-height: 72px;
+    border-radius: var(--radius-md);
+  }
+}
