@@ -123,7 +123,7 @@ export async function sendReadyEmail(
       from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
       to: email,
       subject: 'Dine kaker er klare for henting 🎂',
-      text: `Hei!\n\nBestillingen din er nå klar for henting 🎉\n\nKvittering:\n${itemLines}\n------------------------\nTotalt: ${total} kr\nBetaling ved henting.\n\n📍 Hentes på:\nLyngvegen 11, 2833 Raufoss\nSe i kart: https://www.google.com/maps/search/?api=1&query=Lyngvegen+11,+2833+Raufoss\n\nTa kontakt dersom du trenger et annet tidspunkt.\n– Kjersti`,
+      text: `Hei!\n\nBestillingen din er nå klar for henting 🎉\n\nKvittering:\n${itemLines}\n------------------------\nTotalt: ${total} kr\nBetaling ved henting.\n\n📍 Hentes på:\nLyngvegen 11, 2833 Raufoss\nSe i kart: https://www.google.com/maps/search/?api=1&query=Lyngvegen+11,+2833+Raufoss\n\nTa kontakt dersom du trenger et annet tidspunkt.\n\nMed vennlig hilsen,\nKjersti`,
     })
     if (error) return { success: false, error: error.message }
     return { success: true }
