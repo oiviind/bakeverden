@@ -13,7 +13,7 @@ export default function LoginForm({ callbackFailed }: { callbackFailed: boolean 
   const [codeError, setCodeError] = useState(false)
   const [status, setStatus] = useState<Status>(callbackFailed ? 'error' : 'idle')
   const [errorMessage, setErrorMessage] = useState(
-    callbackFailed ? 'Innloggingslenken er ugyldig eller utløpt. Prøv igjen.' : ''
+    callbackFailed ? 'Innloggingen ble ikke fullført. Prøv igjen.' : ''
   )
 
   const redirectTo = () => `${window.location.origin}/auth/callback`
@@ -28,7 +28,7 @@ export default function LoginForm({ callbackFailed }: { callbackFailed: boolean 
     })
 
     if (error) {
-      setErrorMessage('Kunne ikke sende innloggingslenke. Prøv igjen.')
+      setErrorMessage('Kunne ikke sende engangskode. Prøv igjen.')
       setStatus('error')
       return
     }
@@ -67,7 +67,7 @@ export default function LoginForm({ callbackFailed }: { callbackFailed: boolean 
     return (
       <div className="flex flex-col gap-4">
         <Alert variant="success">
-          Sjekk e-posten din. Skriv inn koden fra e-posten, eller klikk på lenken.
+          Vi har sendt en engangskode til {email}. Skriv den inn under.
         </Alert>
         {codeError && <Alert variant="error">Feil eller utløpt kode. Prøv igjen.</Alert>}
 
@@ -113,7 +113,7 @@ export default function LoginForm({ callbackFailed }: { callbackFailed: boolean 
           />
         </div>
         <Button type="submit" fullWidth loading={status === 'loading'}>
-          Send innloggingslenke
+          Send engangskode
         </Button>
       </form>
 
