@@ -85,8 +85,9 @@ export default async function Home() {
             <span className={`${styles.tag} ${styles.tagAccent}`}>Julesalget er åpent</span>
             <h2 className={styles.sectionTitle}>Julebakst</h2>
             <p className={styles.julebakstIntro}>
-              Julekakene bestilles direkte fra menyen – ingen forespørsel nødvendig.
-              Legg i kurv, velg hentedato i kassen, så står de klare.
+              Legg kakene du ønsker i kurven og send inn bestillingen. Du får beskjed
+              på e-post eller SMS når de er klare til henting, og henteadressen får du
+              etter at bestillingen er sendt.
             </p>
           </div>
           <Link href="/julebakst" className={getButtonClassName('primary', 'lg')}>
