@@ -1,5 +1,5 @@
 // src/app/admin/bestillinger/page.tsx
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import Header from '@/components/Header'
 import OrderTabs from '@/components/admin/OrderTabs'
 import UpdatedToast from '@/components/admin/UpdatedToast'
@@ -8,7 +8,7 @@ import { Alert } from '@/components/ui'
 export const revalidate = 0
 
 export default async function AdminOrdersPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data: orders, error } = await supabase
     .from('orders')

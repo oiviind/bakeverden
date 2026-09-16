@@ -68,6 +68,7 @@ export interface Order {
   name: string
   phone: string
   email?: string
+  user_id?: string | null
   total_price: number
   status: 'pending' | 'ready' | 'delivered' | 'cancelled'
   sms_sent: boolean

@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 
 interface CreateOrderResult {
   success: boolean
@@ -9,8 +9,9 @@ interface CreateOrderResult {
 }
 
 export async function createMultipleOrders(formData: FormData): Promise<CreateOrderResult> {
-  const supabase = createClient()
-  
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   const name = formData.get('name') as string
   const phone = formData.get('phone') as string
   const email = formData.get('email') as string
@@ -73,7 +74,8 @@ export async function createMultipleOrders(formData: FormData): Promise<CreateOr
         phone: phone,
         email: email,
         total_price: totalPrice,
-        status: 'pending'
+        status: 'pending',
+        user_id: user?.id ?? null
       })
       .select()
       .single()

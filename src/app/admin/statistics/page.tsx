@@ -1,12 +1,12 @@
 // src/app/admin/statistics/page.tsx
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Card } from '@/components/ui'
 import Header from '@/components/Header'
 
 export const revalidate = 0
 
 export default async function StatisticsPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data: orders } = await supabase
     .from('orders')

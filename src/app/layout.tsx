@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Caprasimo, Figtree } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/contexts/CartContext";
+import { AuthProvider } from "@/lib/contexts/AuthContext";
 import Footer from "@/components/Footer";
 
 const caprasimo = Caprasimo({
@@ -58,10 +59,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
-        <CartProvider>
-          {children}
-          <Footer />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            {children}
+            <Footer />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

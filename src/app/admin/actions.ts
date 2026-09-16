@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { Resend } from 'resend'
 
@@ -11,7 +11,7 @@ export async function updateOrderStatus(
   try {
     console.log('🔍 updateOrderStatus called:', { orderId, status }) // Debug log
     
-    const supabase = await createClient()
+    const supabase = createAdminClient()
 
     const { data, error } = await supabase
       .from('orders')
@@ -44,7 +44,7 @@ export async function updateOrderStatus(
 
 export async function sendReceiptEmail(orderId: string) {
   try {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { data: order, error } = await supabase
       .from('orders')
       .select('*, order_items(quantity, price_at_time, batch:product_batches(title))')
@@ -77,7 +77,7 @@ export async function sendReceiptEmail(orderId: string) {
 
 export async function markEmailSent(orderId: string) {
   try {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { error } = await supabase
       .from('orders')
       .update({ email_sent: true })
@@ -93,7 +93,7 @@ export async function markEmailSent(orderId: string) {
 
 export async function markSmsSent(orderId: string) {
   try {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     const { error } = await supabase
       .from('orders')
       .update({ sms_sent: true })

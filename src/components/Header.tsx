@@ -4,7 +4,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCart } from '@/lib/contexts/CartContext'
+import { useAuth } from '@/lib/contexts/AuthContext'
 import { logoutAction } from '@/app/admin/login/actions'
+import { signOutAction } from '@/lib/actions/auth'
 import styles from './Header.module.css'
 
 interface HeaderProps {
@@ -14,6 +16,7 @@ interface HeaderProps {
 export default function Header({ isLoggedIn = false }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { getTotalItems } = useCart()
+  const { user } = useAuth()
   const itemCount = getTotalItems()
 
   return (
@@ -47,6 +50,22 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
                 </span>
               )}
             </Link>
+            {user ? (
+              <>
+                <Link href="/konto" className={styles.navLink}>
+                  👤 Min konto
+                </Link>
+                <form action={signOutAction}>
+                  <button type="submit" className={styles.navLink}>
+                    Logg ut
+                  </button>
+                </form>
+              </>
+            ) : (
+              <Link href="/logg-inn" className={styles.navLink}>
+                👤 Logg inn
+              </Link>
+            )}
             {isLoggedIn && (
               <form action={logoutAction}>
                 <button type="submit" className={styles.navLink}>
@@ -127,6 +146,20 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
                 )}
               </span>
             </Link>
+            {user ? (
+              <>
+                <Link href="/konto" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
+                  👤 Min konto
+                </Link>
+                <form action={signOutAction}>
+                  <button type="submit" className={`${styles.mobileLink} w-full text-left`}>Logg ut</button>
+                </form>
+              </>
+            ) : (
+              <Link href="/logg-inn" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
+                👤 Logg inn
+              </Link>
+            )}
             <div className={styles.mobileDivider} />
             {isLoggedIn ? (
               <>

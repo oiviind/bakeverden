@@ -62,7 +62,7 @@ export default async function AdminPage() {
 
   const [ordersRes, requestsRes, batchesTotalRes, batchesActiveRes, galleryRes] =
     await Promise.all([
-      supabase
+      adminSupabase
         .from('orders')
         .select('id, status, created_at'),
       adminSupabase.from('cake_requests').select('id, status, created_at'),
