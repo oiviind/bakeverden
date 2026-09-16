@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -16,7 +17,9 @@ export async function submitCakeRequest(formData: FormData) {
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    const email = user?.email ?? (formData.get('email') as string)
+    // Admin enters orders on behalf of a customer — use form email, no notification
+    const isAdmin = (await cookies()).get('admin_auth')?.value === process.env.ADMIN_COOKIE_SECRET
+    const email = isAdmin ? (formData.get('email') as string) : user?.email ?? (formData.get('email') as string)
 
     if (!occasion || !description || !name || !email) {
       return { success: false, error: 'Fyll ut alle påkrevde felt' }
@@ -30,12 +33,12 @@ export async function submitCakeRequest(formData: FormData) {
       name,
       email,
       phone,
-      user_id: user?.id ?? null,
+      user_id: isAdmin ? null : user?.id ?? null,
     })
 
     if (error) return { success: false, error: error.message }
 
-    await resend.emails.send({
+    if (!isAdmin) await resend.emails.send({
       from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
       to: 'kjerstisbakeverden@gmail.com',
       subject: `Ny kakeforespørsel fra ${name}`,

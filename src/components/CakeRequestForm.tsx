@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { submitCakeRequest } from '@/lib/actions/submitCakeRequest'
 import { Button, Alert } from '@/components/ui'
 
 const OCCASIONS = ['Dåp', 'Bryllup', 'Bursdag', 'Konfirmasjon', 'Annet']
 
-export default function CakeRequestForm({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
+export default function CakeRequestForm({ isLoggedIn = false, isAdmin = false }: { isLoggedIn?: boolean; isAdmin?: boolean }) {
+  const router = useRouter()
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -18,7 +20,9 @@ export default function CakeRequestForm({ isLoggedIn = false }: { isLoggedIn?: b
     try {
       const result = await submitCakeRequest(new FormData(e.currentTarget))
       setLoading(false)
-      if (result.success) {
+      if (result.success && isAdmin) {
+        router.push('/admin/requests')
+      } else if (result.success) {
         setSubmitted(true)
       } else {
         setError(result.error || 'Noe gikk galt')
@@ -88,7 +92,7 @@ export default function CakeRequestForm({ isLoggedIn = false }: { isLoggedIn?: b
         <input type="text" name="name" required className="form-input" />
       </div>
 
-      {!isLoggedIn && (
+      {(!isLoggedIn || isAdmin) && (
         <div className="form-group">
           <label className="form-label">E-post *</label>
           <input type="email" name="email" required className="form-input" />
@@ -101,7 +105,7 @@ export default function CakeRequestForm({ isLoggedIn = false }: { isLoggedIn?: b
       </div>
 
       <Button type="submit" variant="primary" fullWidth loading={loading}>
-        Send forespørsel
+        {isAdmin ? 'Opprett kakebestilling' : 'Send forespørsel'}
       </Button>
     </form>
   )
