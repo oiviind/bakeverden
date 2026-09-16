@@ -1,8 +1,25 @@
-<h2>Logg inn hos Kjerstis Bakeverden</h2>
+<div style="background-color: #f5ead8; padding: 32px 16px; font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: #201e1d;">
+  <div style="max-width: 480px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e4d7c0; border-radius: 16px; padding: 32px;">
 
-<p>Engangskoden din er:</p>
-<p><strong style="font-size: 24px; letter-spacing: 4px;">{{ .Token }}</strong></p>
+    <h1 style="margin: 0 0 24px; font-size: 22px; color: #8c491a;">Kjerstis Bakeverden</h1>
 
-<p>Du kan også <a href="{{ .ConfirmationURL }}">klikke her for å logge inn</a>.</p>
+    <p style="margin: 0 0 8px; font-size: 16px;">Hei!</p>
+    <p style="margin: 0 0 24px; font-size: 16px;">Her er engangskoden din for å logge inn:</p>
 
-<p>Hvis du ikke ba om denne e-posten, kan du se bort fra den.</p>
+    <div style="background-color: #ebddc5; border-radius: 8px; padding: 16px; text-align: center; margin-bottom: 24px;">
+      <span style="font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #8c491a;">{{ .Token }}</span>
+    </div>
+
+    <p style="margin: 0 0 24px; font-size: 16px; text-align: center;">
+      <a href="{{ .ConfirmationURL }}" style="display: inline-block; background-color: #c67139; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 28px; font-weight: 600;">Eller logg inn direkte</a>
+    </p>
+
+    <p style="margin: 0; font-size: 14px; color: #756b5c;">
+      Koden er gyldig i én time. Hvis du ikke ba om denne e-posten, kan du se bort fra den.
+    </p>
+
+  </div>
+  <p style="max-width: 480px; margin: 16px auto 0; font-size: 12px; color: #756b5c; text-align: center;">
+    Kjerstis Bakeverden · Lyngvegen 11, 2833 Raufoss
+  </p>
+</div>
