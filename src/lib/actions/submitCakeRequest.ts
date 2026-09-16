@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { cookies } from 'next/headers'
 import { Resend } from 'resend'
 
@@ -25,7 +26,8 @@ export async function submitCakeRequest(formData: FormData) {
       return { success: false, error: 'Fyll ut alle påkrevde felt' }
     }
 
-    const { error } = await supabase.from('cake_requests').insert({
+    // Admin (cookie-verified) bypasses RLS, since a Supabase user may also be logged in
+    const { error } = await (isAdmin ? createAdminClient() : supabase).from('cake_requests').insert({
       occasion,
       num_people,
       desired_date,
