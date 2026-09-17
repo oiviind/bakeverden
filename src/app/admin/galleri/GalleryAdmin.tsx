@@ -45,34 +45,56 @@ export default function GalleryAdmin({ initialImages }: { initialImages: Gallery
 
     for (const originalFile of files) {
       try {
-        let blob: Blob = originalFile
+        let blobs: Blob[] = [originalFile]
         let fileName = originalFile.name
+        let mimeType = originalFile.type
 
         const isHeic = ['image/heic', 'image/heif'].includes(originalFile.type) ||
           /\.(heic|heif)$/i.test(fileName)
+        const isPdf = originalFile.type === 'application/pdf' || /\.pdf$/i.test(fileName)
 
         if (isHeic) {
           const heic2any = (await import('heic2any')).default
           const converted = await heic2any({ blob: originalFile, toType: 'image/jpeg', quality: 0.9 })
-          blob = Array.isArray(converted) ? converted[0] : converted
+          blobs = [Array.isArray(converted) ? converted[0] : converted]
           fileName = fileName.replace(/\.(heic|heif)$/i, '.jpg')
+          mimeType = 'image/jpeg'
         }
 
-        const base64 = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader()
-          reader.onloadend = () => resolve((reader.result as string).split(',')[1])
-          reader.onerror = reject
-          reader.readAsDataURL(blob)
-        })
+        // PDF: render each page to a JPEG
+        if (isPdf) {
+          const pdfjs = await import('pdfjs-dist')
+          pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString()
+          const pdf = await pdfjs.getDocument({ data: await originalFile.arrayBuffer() }).promise
+          blobs = []
+          for (let p = 1; p <= pdf.numPages; p++) {
+            const page = await pdf.getPage(p)
+            const viewport = page.getViewport({ scale: 2 })
+            const canvas = document.createElement('canvas')
+            canvas.width = viewport.width
+            canvas.height = viewport.height
+            await page.render({ canvas, viewport }).promise
+            blobs.push(await new Promise<Blob>((resolve, reject) =>
+              canvas.toBlob(b => (b ? resolve(b) : reject()), 'image/jpeg', 0.9)
+            ))
+          }
+          fileName = fileName.replace(/\.pdf$/i, '.jpg')
+          mimeType = 'image/jpeg'
+        }
 
-        const result = await uploadImage({
-          base64Data: base64,
-          fileName,
-          mimeType: isHeic ? 'image/jpeg' : originalFile.type,
-        })
+        for (const blob of blobs) {
+          const base64 = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onloadend = () => resolve((reader.result as string).split(',')[1])
+            reader.onerror = reject
+            reader.readAsDataURL(blob)
+          })
 
-        if (result.success && result.imageUrl) {
-          setPendingUrls(prev => [...prev, result.imageUrl!])
+          const result = await uploadImage({ base64Data: base64, fileName, mimeType })
+
+          if (result.success && result.imageUrl) {
+            setPendingUrls(prev => [...prev, result.imageUrl!])
+          }
         }
       } catch {
         // skip failed files
@@ -116,7 +138,7 @@ export default function GalleryAdmin({ initialImages }: { initialImages: Gallery
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/*,application/pdf"
             multiple
             onChange={handleFilesChange}
             className="hidden"
@@ -124,7 +146,7 @@ export default function GalleryAdmin({ initialImages }: { initialImages: Gallery
           <Button type="button" variant="secondary" onClick={() => fileInputRef.current?.click()} loading={uploading}>
             {uploading ? '⏳ Laster opp...' : '📷 Velg bilder'}
           </Button>
-          <small className="text-gray-500 mt-1 block">Maks 20MB per bilde. HEIC konverteres automatisk.</small>
+          <small className="text-gray-500 mt-1 block">Maks 20MB per bilde. HEIC og PDF konverteres automatisk (én side = ett bilde).</small>
         </div>
 
         {pendingUrls.length > 0 && (
