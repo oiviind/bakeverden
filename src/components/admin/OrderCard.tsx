@@ -32,7 +32,7 @@ export default function OrderCard({ order }: OrderCardProps) {
     if (!order.email) return
     setLoading(true)
     setError(null)
-    const result = await sendReadyEmail(order.email, order.order_items, order.total_price)
+    const result = await sendReadyEmail(order.email, order.name, order.order_number, order.order_items, order.total_price)
     setLoading(false)
     if (result.success) {
       setEmailSent(true)

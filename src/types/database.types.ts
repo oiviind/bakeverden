@@ -65,6 +65,7 @@ export interface GalleryImage {
 
 export interface Order {
   id: string
+  order_number: number
   name: string
   phone: string
   email?: string

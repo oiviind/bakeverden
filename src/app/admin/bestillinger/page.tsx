@@ -14,6 +14,7 @@ export default async function AdminOrdersPage() {
     .from('orders')
     .select(`
       id,
+      order_number,
       name,
       phone,
       email,

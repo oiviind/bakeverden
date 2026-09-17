@@ -107,23 +107,213 @@ export async function markSmsSent(orderId: string) {
   }
 }
 
+// --- «Kaken din er klar»-e-post (HTML, tabellbasert for e-postklienter) ---
+
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+// Norsk tusenskille med hardt mellomrom: 1&nbsp;200 kr
+const formatKr = (n: number) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '&nbsp;')} kr`
+
+function readyEmailHtml(
+  firstName: string,
+  orderNumber: number | null | undefined,
+  items: Array<{ quantity: number; price_at_time: number; batch?: { title: string } | null }>,
+  total: number
+) {
+  const cell = 'font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:25px;mso-line-height-rule:exactly;color:#201e1d;border-bottom:1px solid #e0d2b8;'
+  const itemRows = items
+    .map(item => `
+              <tr>
+                <td width="380" style="width:380px;padding:10px 0 10px 0;${cell}">
+                  ${escapeHtml(item.batch?.title ?? 'Ukjent')}<span style="color:#6b6359;"> &nbsp;${item.quantity} × ${formatKr(item.price_at_time)}</span>
+                </td>
+                <td width="140" align="right" style="width:140px;padding:10px 0 10px 0;${cell}">
+                  ${formatKr(item.quantity * item.price_at_time)}
+                </td>
+              </tr>`)
+    .join('')
+  const greeting = firstName ? `Hei ${escapeHtml(firstName)}!` : 'Hei!'
+
+  return `<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>Kaken din er klar — Kjerstis Bakeverden</title>
+<!--[if mso]>
+<style>body,table,td,a{font-family:Arial,Helvetica,sans-serif !important}</style>
+<![endif]-->
+<style>
+  @media only screen and (max-width:620px){
+    .pad{padding-left:24px !important;padding-right:24px !important}
+    .h1{font-size:30px !important;line-height:36px !important}
+    .stackcell{display:block !important;width:100% !important;text-align:left !important;padding-left:0 !important}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#efe3cf;">
+<span style="display:none !important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all;">Bestillingen din står klar i Lyngvegen 11. Betal med Vipps eller kontant når du henter.</span>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#efe3cf;">
+  <tr>
+    <td align="center" style="padding:32px 12px;">
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px;max-width:600px;background-color:#f5ead8;border-radius:20px;">
+
+        <!-- tittel -->
+        <tr>
+          <td class="pad" style="padding:38px 40px 0 40px;">
+            <h1 class="h1" style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:36px;line-height:42px;mso-line-height-rule:exactly;color:#201e1d;font-weight:normal;">Kaken din er klar</h1>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="pad" style="padding:16px 40px 0 40px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:27px;mso-line-height-rule:exactly;color:#3a3532;">
+            ${greeting}<br><br>
+            Nå er bestillingen din ferdig og står klar til å hentes.
+          </td>
+        </tr>
+
+        <!-- hentested -->
+        <tr>
+          <td class="pad" style="padding:28px 40px 0 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#e6edd6;border-radius:16px;">
+              <tr>
+                <td style="padding:24px 26px 6px 26px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;mso-line-height-rule:exactly;color:#4a5738;letter-spacing:0.08em;text-transform:uppercase;font-weight:bold;">
+                  Hentested
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:0 26px 4px 26px;font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:32px;mso-line-height-rule:exactly;color:#201e1d;">
+                  Lyngvegen 11, 2833 Raufoss
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:0 26px 18px 26px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:25px;mso-line-height-rule:exactly;color:#3a3532;">
+                  Den står på trappa i en pose.
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:0 26px 26px 26px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" bgcolor="#c67139" style="border-radius:999px;">
+                        <a href="https://www.google.com/maps/search/?api=1&amp;query=Lyngvegen+11,+2833+Raufoss" style="display:block;padding:14px 30px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:20px;mso-line-height-rule:exactly;font-weight:bold;color:#ffffff;text-decoration:none;border-radius:999px;">Åpne i kart</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- bestilling -->${orderNumber ? `
+        <tr>
+          <td class="pad" style="padding:32px 40px 0 40px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;mso-line-height-rule:exactly;color:#8a5a2e;letter-spacing:0.08em;text-transform:uppercase;font-weight:bold;">
+            Bestilling #${orderNumber}
+          </td>
+        </tr>` : ''}
+        <tr>
+          <td class="pad" style="padding:${orderNumber ? '4px' : '22px'} 40px 0 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">${itemRows}
+              <tr>
+                <td width="380" style="width:380px;padding:14px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:20px;line-height:26px;mso-line-height-rule:exactly;color:#201e1d;">
+                  Å betale
+                </td>
+                <td width="140" align="right" style="width:140px;padding:14px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:20px;line-height:26px;mso-line-height-rule:exactly;color:#201e1d;">
+                  ${formatKr(total)}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- betaling -->
+        <tr>
+          <td class="pad" style="padding:22px 40px 0 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#f7ded0;border-radius:16px;">
+              <tr>
+                <td style="padding:22px 26px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:27px;mso-line-height-rule:exactly;color:#3a3532;">
+                  <strong style="color:#201e1d;">Betaling ved henting.</strong><br>
+                  Vipps til <strong style="color:#201e1d;">454&nbsp;77&nbsp;878</strong>, eller kontant.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- hvis noe ikke stemmer -->
+        <tr>
+          <td class="pad" style="padding:28px 40px 0 40px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:27px;mso-line-height-rule:exactly;color:#3a3532;">
+            Hvis noe ikke stemmer eller du ikke finner frem, kontakt meg på
+            <a href="tel:+4745477878" style="color:#a1552a;text-decoration:underline;">454&nbsp;77&nbsp;878</a>.
+          </td>
+        </tr>
+
+        <tr>
+          <td class="pad" style="padding:26px 40px 0 40px;font-family:Georgia,'Times New Roman',serif;font-size:19px;line-height:28px;mso-line-height-rule:exactly;color:#201e1d;">
+            Hilsen Kjersti
+          </td>
+        </tr>
+
+        <!-- anmeldelse, diskret -->
+        <tr>
+          <td class="pad" style="padding:30px 40px 0 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
+              <tr>
+                <td style="border-top:1px solid #e0d2b8;padding:22px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:25px;mso-line-height-rule:exactly;color:#3a3532;">
+                  Blir du fornøyd, setter jeg stor pris på noen ord på Google.
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;">
+                    <tr>
+                      <td align="center" style="border-radius:999px;border:2px solid #c67139;">
+                        <a href="https://g.page/r/CVLiAwSkbdQpECE/review" style="display:block;padding:12px 26px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:20px;mso-line-height-rule:exactly;font-weight:bold;color:#a1552a;text-decoration:none;border-radius:999px;">Legg igjen en anmeldelse</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="pad" style="padding:22px 40px 32px 40px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;mso-line-height-rule:exactly;color:#6b6359;">
+            Kjerstis Bakeverden · Lyngvegen 11, 2833 Raufoss<br>
+            Du får denne e-posten fordi du har bestilt hos meg.
+          </td>
+        </tr>
+
+      </table>
+
+    </td>
+  </tr>
+</table>
+</body>
+</html>`
+}
+
 export async function sendReadyEmail(
   email: string,
+  name: string,
+  orderNumber: number | null | undefined,
   orderItems?: Array<{ quantity: number; price_at_time: number; batch?: { title: string } | null }>,
   totalPrice?: number
 ) {
   try {
-    const itemLines = orderItems
-      ?.map(item => `- ${item.batch?.title ?? 'Ukjent'}: ${item.quantity} stk × ${item.price_at_time} kr`)
-      .join('\n') ?? ''
-    const total = totalPrice ?? orderItems?.reduce((sum, item) => sum + item.quantity * item.price_at_time, 0) ?? 0
+    const items = orderItems ?? []
+    const total = totalPrice ?? items.reduce((sum, item) => sum + item.quantity * item.price_at_time, 0)
+    const firstName = name?.trim().split(/\s+/)[0] ?? ''
 
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { error } = await resend.emails.send({
       from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
       to: email,
-      subject: 'Dine kaker er klare for henting 🎂',
-      text: `Hei!\n\nBestillingen din er nå klar for henting 🎉\n\nKvittering:\n${itemLines}\n------------------------\nTotalt: ${total} kr\nBetaling ved henting.\n\n📍 Hentes på:\nLyngvegen 11, 2833 Raufoss\nSe i kart: https://www.google.com/maps/search/?api=1&query=Lyngvegen+11,+2833+Raufoss\n\nTa kontakt dersom du trenger et annet tidspunkt.\n\nMed vennlig hilsen,\nKjersti`,
+      subject: 'Kaken din er klar — Kjerstis Bakeverden',
+      html: readyEmailHtml(firstName, orderNumber, items, total),
     })
     if (error) return { success: false, error: error.message }
     return { success: true }
