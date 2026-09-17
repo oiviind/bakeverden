@@ -38,6 +38,7 @@
 }
 
 .lg {
+  min-height: 48px;
   font-size: 1.125rem;
   padding: 1rem 2rem;
 }
@@ -53,12 +54,12 @@
 }
 
 .secondary {
-  background: var(--btn-secondary);
+  background: var(--btn-secondary-hover);   /* white → 6.46:1 (WCAG AA) */
   color: white;
 }
 
 .secondary:hover:not(:disabled) {
-  background: var(--btn-secondary-hover);
+  background: var(--color-accent-2-tint-text);
   transform: translateY(-1px);
 }
 

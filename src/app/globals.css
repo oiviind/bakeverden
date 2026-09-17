@@ -40,6 +40,8 @@
     --color-accent-tint-text: #8c491a;
     --color-accent-2-tint: #e1eecc;
     --color-accent-2-tint-text: #3d472b;
+
+    --surface: #ffffff;        /* kortbakgrunn */
   }
 
 /* ============================================

@@ -3,86 +3,80 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { Pencil, ImageIcon } from 'lucide-react'
 import { toggleBatchActive } from '@/lib/actions/toggleBatchActive'
-import { Card, Badge, Button, Alert, getButtonClassName } from '@/components/ui'
+import { Alert, getButtonClassName } from '@/components/ui'
+import styles from './BatchListItem.module.css'
 
 interface BatchListItemProps {
   batch: any
 }
 
 export default function BatchListItem({ batch }: BatchListItemProps) {
-  const [loading, setLoading] = useState(false)
+  const [isActive, setIsActive] = useState<boolean>(batch.is_active)
+  const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Optimistic toggle — revert if the save fails
   async function handleToggle() {
-    setLoading(true)
+    const next = !isActive
+    setIsActive(next)
+    setSaving(true)
     setError(null)
 
-    const result = await toggleBatchActive(batch.id, !batch.is_active)
+    const result = await toggleBatchActive(batch.id, next)
 
-    setLoading(false)
+    setSaving(false)
 
     if (!result.success) {
+      setIsActive(!next)
       setError(result.error || 'Noe gikk galt')
     }
   }
 
-  const ingredients = batch.batch_ingredients?.map((bi: any) => bi.ingredient) || []
-
   return (
-    <Card>
-      <Card.Content>
-        {error && (
-          <Alert variant="error" className="mb-4">{error}</Alert>
-        )}
-
-        <div className="flex justify-between items-start mb-3">
-          <div className="flex-1">
-            <h3 className="font-bold text-lg">{batch.title}</h3>
-            <p className="text-sm text-gray-600">{batch.description}</p>
-          </div>
-          <Badge variant={batch.is_active ? 'success' : 'error'}>
-            {batch.is_active ? 'Aktiv' : 'Inaktiv'}
-          </Badge>
-        </div>
-
-        {ingredients.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
-            {ingredients.map((ing: any) => (
-              <Badge
-                key={ing.id}
-                variant={ing.allergen ? 'error' : 'info'}
-              >
-                {ing.name}
-              </Badge>
-            ))}
+    <div className={`${styles.card} ${isActive ? '' : styles.inactive}`}>
+      {/* Header: image + name + price */}
+      <div className={styles.header}>
+        {batch.image_url ? (
+          <img src={batch.image_url} alt={batch.title} className={styles.image} />
+        ) : (
+          <div className={styles.placeholder}>
+            <ImageIcon size={28} strokeWidth={2.75} aria-hidden />
           </div>
         )}
-
-        <div className="text-sm text-gray-600 mb-4">
-          <span>💰 {batch.price},-</span>
-          {batch.total_quantity < 999999 && (
-            <span className="ml-4">📦 {batch.remaining_quantity}/{batch.total_quantity}</span>
-          )}
+        <div className={styles.info}>
+          <h2 className={styles.title}>{batch.title}</h2>
+          <p className={styles.price}>{batch.price} kr</p>
         </div>
+      </div>
 
-        <div className="flex flex-col gap-2">
-          <Link
-            href={`/admin/batches/${batch.id}/edit`}
-            className={getButtonClassName('secondary', 'md', true)}
-          >
-            ✏️ Rediger
-          </Link>
-          <Button
-            onClick={handleToggle}
-            loading={loading}
-            variant={batch.is_active ? 'danger' : 'primary'}
-            fullWidth
-          >
-            {batch.is_active ? '🚫 Deaktiver kake' : '✅ Aktiver kake'}
-          </Button>
-        </div>
-      </Card.Content>
-    </Card>
+      {/* Status switch */}
+      <button
+        type="button"
+        role="switch"
+        aria-checked={isActive}
+        onClick={handleToggle}
+        disabled={saving}
+        className={styles.statusRow}
+      >
+        <span className={styles.track}>
+          <span className={styles.thumb} />
+        </span>
+        <span className={styles.statusText}>
+          {isActive ? 'Vises i butikken' : 'Skjult for kunder'}
+        </span>
+      </button>
+
+      {error && <Alert variant="error">{error}</Alert>}
+
+      <Link
+        href={`/admin/batches/${batch.id}/edit`}
+        className={getButtonClassName('secondary', 'lg', true)}
+      >
+        <Pencil size={18} strokeWidth={2.75} aria-hidden />
+        Rediger kake
+      </Link>
+    </div>
   )
 }

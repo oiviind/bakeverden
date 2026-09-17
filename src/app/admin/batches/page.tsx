@@ -23,17 +23,12 @@ export default async function AdminBatchesPage() {
     `)
     .order('created_at', { ascending: false })
 
-  const { data: allIngredients } = await supabase
-    .from('ingredients')
-    .select('*')
-    .order('name')
-
   return (
     <div className="min-h-screen bg-gray-50">
       <UpdatedToast />
               <Header isLoggedIn={true} />
       <main className="container pt-4 pb-6">
-        <BatchTabs batches={batches || []} ingredients={allIngredients || []} />
+        <BatchTabs batches={batches || []} />
       </main>
     </div>
   )
