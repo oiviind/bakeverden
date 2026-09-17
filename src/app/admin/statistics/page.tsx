@@ -67,30 +67,30 @@ export default async function StatisticsPage() {
           {/* Cake statistics */}
           <section className="mb-8">
             <h2 className="section-heading mb-4">Antall kaker</h2>
-            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible md:pb-0">
-              <Card className="min-w-[70vw] flex-shrink-0 md:min-w-0 md:flex-shrink">
-                <Card.Content>
+            <div className="grid grid-cols-3 gap-2 md:gap-4">
+              <Card>
+                <Card.Content className="p-3! md:p-6!">
                   <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-2">Totalt bestilt</p>
-                    <p className="text-4xl font-bold text-primary">{stats.totalOrdered}</p>
+                    <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">Totalt bestilt</p>
+                    <p className="text-xl md:text-4xl font-bold text-primary">{stats.totalOrdered}</p>
                   </div>
                 </Card.Content>
               </Card>
 
-              <Card className="min-w-[70vw] flex-shrink-0 md:min-w-0 md:flex-shrink">
-                <Card.Content>
+              <Card>
+                <Card.Content className="p-3! md:p-6!">
                   <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-2">Levert</p>
-                    <p className="text-4xl font-bold text-success">{stats.totalDelivered}</p>
+                    <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">Levert</p>
+                    <p className="text-xl md:text-4xl font-bold text-success">{stats.totalDelivered}</p>
                   </div>
                 </Card.Content>
               </Card>
 
-              <Card className="min-w-[70vw] flex-shrink-0 md:min-w-0 md:flex-shrink">
-                <Card.Content>
+              <Card>
+                <Card.Content className="p-3! md:p-6!">
                   <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-2">Klare for henting</p>
-                    <p className="text-4xl font-bold text-primary">
+                    <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">Klare for henting</p>
+                    <p className="text-xl md:text-4xl font-bold text-primary">
                       {stats.totalReady}
                     </p>
                   </div>
@@ -102,30 +102,30 @@ export default async function StatisticsPage() {
           {/* Revenue statistics */}
           <section className="mb-8">
             <h2 className="section-heading mb-4">Økonomi</h2>
-            <div className="flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible md:pb-0">
-              <Card className="min-w-[70vw] flex-shrink-0 md:min-w-0 md:flex-shrink">
-                <Card.Content>
+            <div className="grid grid-cols-3 gap-2 md:gap-4">
+              <Card>
+                <Card.Content className="p-3! md:p-6!">
                   <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-2">Total inntekt (bestilt)</p>
-                    <p className="text-4xl font-bold text-primary">{stats.revenueTotal},-</p>
+                    <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">Total inntekt (bestilt)</p>
+                    <p className="text-xl md:text-4xl font-bold text-primary">{stats.revenueTotal},-</p>
                   </div>
                 </Card.Content>
               </Card>
 
-              <Card className="min-w-[70vw] flex-shrink-0 md:min-w-0 md:flex-shrink">
-                <Card.Content>
+              <Card>
+                <Card.Content className="p-3! md:p-6!">
                   <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-2">Inntekt (levert)</p>
-                    <p className="text-4xl font-bold text-success">{stats.revenueDelivered},-</p>
+                    <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">Inntekt (levert)</p>
+                    <p className="text-xl md:text-4xl font-bold text-success">{stats.revenueDelivered},-</p>
                   </div>
                 </Card.Content>
               </Card>
 
-              <Card className="min-w-[70vw] flex-shrink-0 md:min-w-0 md:flex-shrink">
-                <Card.Content>
+              <Card>
+                <Card.Content className="p-3! md:p-6!">
                   <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-2">Forventet (klare)</p>
-                    <p className="text-4xl font-bold text-primary">
+                    <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">Forventet (klare)</p>
+                    <p className="text-xl md:text-4xl font-bold text-primary">
                       {stats.revenueReady},-
                     </p>
                   </div>
