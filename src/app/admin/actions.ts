@@ -53,18 +53,14 @@ export async function sendReceiptEmail(orderId: string) {
 
     if (error || !order?.email) return { success: false, error: 'Ordre ikke funnet' }
 
-    const itemLines = (order.order_items ?? [])
-      .map((item: { quantity: number; price_at_time: number; batch?: { title: string } }) =>
-        `- ${item.batch?.title ?? 'Ukjent'}: ${item.quantity} stk × ${item.price_at_time} kr`
-      )
-      .join('\n')
+    const firstName = order.name?.trim().split(/\s+/)[0] ?? ''
 
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { error: emailError } = await resend.emails.send({
       from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
       to: order.email,
-      subject: 'Kvittering fra Kjerstis Bakeverden',
-      text: `Hei ${order.name},\nTusen takk for din bestilling!\n\n${itemLines}\n\nTotalt: ${order.total_price} kr\n\nDu vil bli kontaktet igjen når din bestilling er klar!\nBetaling ved henting.\n\n📍 Hentes på:\nLyngvegen 11, 2833 Raufoss\nSe i kart: https://www.google.com/maps/search/?api=1&query=Lyngvegen+11,+2833+Raufoss\n\nMed vennlig hilsen,\nKjersti`,
+      subject: 'Takk for bestillingen — Kjerstis Bakeverden',
+      html: orderEmailHtml('receipt', firstName, order.order_number, order.order_items ?? [], order.total_price),
     })
 
     if (emailError) return { success: false, error: emailError.message }
@@ -107,7 +103,7 @@ export async function markSmsSent(orderId: string) {
   }
 }
 
-// --- «Kaken din er klar»-e-post (HTML, tabellbasert for e-postklienter) ---
+// --- Ordre-e-poster: kvittering og «Kaken din er klar» (HTML, tabellbasert for e-postklienter) ---
 
 const escapeHtml = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -115,7 +111,8 @@ const escapeHtml = (s: string) =>
 // Norsk tusenskille med hardt mellomrom: 1&nbsp;200 kr
 const formatKr = (n: number) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '&nbsp;')} kr`
 
-function readyEmailHtml(
+function orderEmailHtml(
+  kind: 'receipt' | 'ready',
   firstName: string,
   orderNumber: number | null | undefined,
   items: Array<{ quantity: number; price_at_time: number; batch?: { title: string } | null }>,
@@ -134,6 +131,14 @@ function readyEmailHtml(
               </tr>`)
     .join('')
   const greeting = firstName ? `Hei ${escapeHtml(firstName)}!` : 'Hei!'
+  const ready = kind === 'ready'
+  const title = ready ? 'Kaken din er klar' : 'Takk for bestillingen'
+  const preheader = ready
+    ? 'Bestillingen din står klar i Lyngvegen 11. Betal med Vipps eller kontant når du henter.'
+    : 'Vi har mottatt bestillingen din. Du får en ny e-post når den er klar til henting.'
+  const intro = ready
+    ? 'Nå er bestillingen din ferdig og står klar til å hentes.'
+    : 'Tusen takk for bestillingen! Du får en ny e-post når den er klar til å hentes.'
 
   return `<!DOCTYPE html>
 <html lang="nb">
@@ -142,7 +147,7 @@ function readyEmailHtml(
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta name="supported-color-schemes" content="light dark">
-<title>Kaken din er klar — Kjerstis Bakeverden</title>
+<title>${title} — Kjerstis Bakeverden</title>
 <!--[if mso]>
 <style>body,table,td,a{font-family:Arial,Helvetica,sans-serif !important}</style>
 <![endif]-->
@@ -155,7 +160,7 @@ function readyEmailHtml(
 </style>
 </head>
 <body style="margin:0;padding:0;background-color:#efe3cf;">
-<span style="display:none !important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all;">Bestillingen din står klar i Lyngvegen 11. Betal med Vipps eller kontant når du henter.</span>
+<span style="display:none !important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all;">${preheader}</span>
 
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#efe3cf;">
   <tr>
@@ -166,14 +171,14 @@ function readyEmailHtml(
         <!-- tittel -->
         <tr>
           <td class="pad" style="padding:38px 40px 0 40px;">
-            <h1 class="h1" style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:36px;line-height:42px;mso-line-height-rule:exactly;color:#201e1d;font-weight:normal;">Kaken din er klar</h1>
+            <h1 class="h1" style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:36px;line-height:42px;mso-line-height-rule:exactly;color:#201e1d;font-weight:normal;">${title}</h1>
           </td>
         </tr>
 
         <tr>
           <td class="pad" style="padding:16px 40px 0 40px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:27px;mso-line-height-rule:exactly;color:#3a3532;">
             ${greeting}<br><br>
-            Nå er bestillingen din ferdig og står klar til å hentes.
+            ${intro}
           </td>
         </tr>
 
@@ -190,12 +195,15 @@ function readyEmailHtml(
                 <td style="padding:0 26px 4px 26px;font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:32px;mso-line-height-rule:exactly;color:#201e1d;">
                   Lyngvegen 11, 2833 Raufoss
                 </td>
-              </tr>
+              </tr>${ready ? `
               <tr>
                 <td style="padding:0 26px 18px 26px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:25px;mso-line-height-rule:exactly;color:#3a3532;">
                   Den står på trappa i en pose.
                 </td>
-              </tr>
+              </tr>` : `
+              <tr>
+                <td style="padding:0 0 14px 0;font-size:0;line-height:0;">&nbsp;</td>
+              </tr>`}
               <tr>
                 <td style="padding:0 26px 26px 26px;">
                   <table role="presentation" cellpadding="0" cellspacing="0" border="0">
@@ -249,7 +257,7 @@ function readyEmailHtml(
         <!-- hvis noe ikke stemmer -->
         <tr>
           <td class="pad" style="padding:28px 40px 0 40px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:27px;mso-line-height-rule:exactly;color:#3a3532;">
-            Hvis noe ikke stemmer eller du ikke finner frem, kontakt meg på
+            ${ready ? 'Hvis noe ikke stemmer eller du ikke finner frem' : 'Hvis noe ikke stemmer'}, kontakt meg på
             <a href="tel:+4745477878" style="color:#a1552a;text-decoration:underline;">454&nbsp;77&nbsp;878</a>.
           </td>
         </tr>
@@ -260,7 +268,7 @@ function readyEmailHtml(
           </td>
         </tr>
 
-        <!-- anmeldelse, diskret -->
+        <!-- anmeldelse, diskret (kun i «klar»-e-posten) -->${ready ? `
         <tr>
           <td class="pad" style="padding:30px 40px 0 40px;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
@@ -278,7 +286,7 @@ function readyEmailHtml(
               </tr>
             </table>
           </td>
-        </tr>
+        </tr>` : ''}
 
         <tr>
           <td class="pad" style="padding:22px 40px 32px 40px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;mso-line-height-rule:exactly;color:#6b6359;">
@@ -313,7 +321,7 @@ export async function sendReadyEmail(
       from: 'Kjerstis Bakeverden <noreply@kjerstisbakeverden.com>',
       to: email,
       subject: 'Kaken din er klar — Kjerstis Bakeverden',
-      html: readyEmailHtml(firstName, orderNumber, items, total),
+      html: orderEmailHtml('ready', firstName, orderNumber, items, total),
     })
     if (error) return { success: false, error: error.message }
     return { success: true }
